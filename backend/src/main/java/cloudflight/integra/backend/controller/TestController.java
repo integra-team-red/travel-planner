@@ -10,6 +10,6 @@ public class TestController {
 
     @GetMapping("/test")
     public List<String> testEndpoint() {
-        return List.of("hello", "world", "marius");
+        return List.of("hello", "world");
     }
 }
