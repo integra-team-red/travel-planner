@@ -4,16 +4,11 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/backend" />
           </set>
         </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/springboot-skeleton" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
       </GradleProjectSettings>
     </option>
   </component>
