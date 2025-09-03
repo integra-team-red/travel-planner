@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController(value = "/city")
+@RestController()
+@RequestMapping("/city")
 public class CityController {
     private CityService service;
 
