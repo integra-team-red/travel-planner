@@ -1,4 +1,4 @@
-GET http://localhost:8080/api/cities
+GET http://localhost:8080/api/city
 ###
 POST http://localhost:8080/api/city
 Content-Type: application/json
