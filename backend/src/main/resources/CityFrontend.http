@@ -1,0 +1,37 @@
+GET http://localhost:8080/api/cities
+###
+POST http://localhost:8080/api/city
+Content-Type: application/json
+
+{
+  "name": "Timis"
+}
+###
+POST http://localhost:8080/api/city
+Content-Type: application/json
+
+{
+  "id": 30,
+  "name": "Arad"
+}
+###
+DELETE http://localhost:8080/api/city/1
+###
+DELETE http://localhost:8080/api/city/2
+###
+PUT http://localhost:8080/api/city/1
+Content-Type: application/json
+
+{
+  "id": 40,
+  "name": "Bucuresti"
+}
+###
+PUT http://localhost:8080/api/city/1
+Content-Type: application/json
+
+{
+  "name": "Iasi"
+}
+###
+PUT http://localhost:8080/api/city/2
