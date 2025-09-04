@@ -1,0 +1,32 @@
+GET http://localhost:8080/api/point-of-interest
+###
+POST http://localhost:8080/api/city
+Content-Type: application/json
+
+{
+  "name": "Botosani"
+}
+###
+POST http://localhost:8080/api/point-of-interest
+Content-Type: application/json
+
+{
+    "name": "Monumentul eroilor",
+    "description": "Monumentul din fata parcului Mihai Eminescu",
+    "cityId": 1,
+    "price": 0,
+    "type": "MONUMENT"
+}
+###
+PUT http://localhost:8080/api/point-of-interest/1
+Content-Type: application/json
+
+{
+"name": "Monumentul Eroilor",
+"description": "Monumentul din fata parcului mare",
+"cityId": 1,
+"price": 0,
+"type": "MONUMENT"
+}
+###
+DELETE http://localhost:8080/api/point-of-interest/1
