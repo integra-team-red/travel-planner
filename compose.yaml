@@ -3,12 +3,8 @@ services:
   db:
     image: postgres
     container_name: travel_planner_postgres
-    env_file: "backend/env.properties"
-    restart: always
+    env_file: "env.properties"
+    restart: unless-stopped
     ports:
       - "5400:5432"
     shm_size: 128mb # shared memory limit
-    environment:
-      POSTGRES_DB: travelPlanner
-      POSTGRES_USER: fellowTraveller
-      POSTGRES_PASSWORD: 9Lpj03Fhx1]b
