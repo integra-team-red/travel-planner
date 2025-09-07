@@ -1,0 +1,21 @@
+name: End Sprint ⌚
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'
+
+jobs:
+  move-to-next-iteration:
+    name: Move to next iteration
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: blombard/move-to-next-iteration@master
+        with:
+          owner: integra-team-red
+          number: 2
+          token: ${{ secrets.PROJECT_PAT }}
+          iteration-field: Version
+          iteration: last
+          new-iteration: current
+          excluded-statuses: 'Done'
