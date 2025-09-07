@@ -1,0 +1,27 @@
+GET http://localhost:8080/api/restaurant
+
+###
+POST http://localhost:8080/api/restaurant
+Content-Type: application/json
+
+{
+  "name": "La Mama",
+  "cityId": 101,
+  "averagePrice": 45.5,
+  "cuisineType": "Romanian"
+}
+
+###
+PUT http://localhost:8080/api/restaurant/1
+Content-Type: application/json
+
+{
+  "name": "Trattoria Roma",
+  "cityId": 102,
+  "averagePrice": 60.0,
+  "cuisineType": "Italian"
+}
+
+###
+DELETE http://localhost:8080/api/restaurant/1
+
