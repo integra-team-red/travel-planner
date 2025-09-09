@@ -1,16 +1,25 @@
 package cloudflight.integra.backend.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="point_of_interest")
 public class PointOfInterest {
 
     public enum PointOfInterestType {
         MUSEUM, LANDMARK, PARK, MONUMENT, OTHER
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     Long id;
     String name;
     String description;
+    @Column(columnDefinition = "serial")
     Long cityId;
     Double price;
+    @Enumerated(EnumType.STRING)
     PointOfInterestType type;
 
     public PointOfInterest() {}
