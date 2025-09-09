@@ -9,6 +9,6 @@ public interface ServiceProposal {
     Optional<Proposal> findByName(String name);
     List<Proposal> findAll();
     Optional<Proposal> findById(Long id);
-    void deleteById(Long id);
+    Proposal deleteById(Long id);
     Proposal update(Proposal proposal);
 }

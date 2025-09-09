@@ -19,6 +19,10 @@ public class Restaurant {
         this.cuisineType = cuisineType;
     }
 
+    public Restaurant(){
+
+    }
+
     public String getCuisineType() {
         return cuisineType;
     }
@@ -52,6 +56,11 @@ public class Restaurant {
 
     public Restaurant setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Restaurant setCityId(Long cityId){
+        this.cityId = cityId;
         return this;
     }
 }

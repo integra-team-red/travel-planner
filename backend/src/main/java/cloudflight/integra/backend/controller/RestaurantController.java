@@ -1,6 +1,8 @@
 package cloudflight.integra.backend.controller;
 
 
+import cloudflight.integra.backend.DTO.RestaurantDTO;
+import cloudflight.integra.backend.mapper.RestaurantMapper;
 import cloudflight.integra.backend.model.Restaurant;
 import cloudflight.integra.backend.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/restaurant")
@@ -21,9 +24,12 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Restaurant>> getRestaurants() {
+    public ResponseEntity<List<RestaurantDTO>> getRestaurants() {
         try {
-            List<Restaurant> restaurants = restaurantService.getAllRestaurants();
+            List<RestaurantDTO> restaurants = restaurantService.getAllRestaurants()
+                    .stream()
+                    .map(RestaurantMapper::RestaurantToDTO)
+                    .collect(Collectors.toList());
             return ResponseEntity.ok(restaurants);
         } catch (Exception e) {
             e.printStackTrace(); // log the error
@@ -32,25 +38,26 @@ public class RestaurantController {
     }
 
     @PostMapping
-    public ResponseEntity<Restaurant> addRestaurant(@RequestBody Restaurant restaurant) {
-        return ResponseEntity.ok(restaurantService.addRestaurant(restaurant));
+    public ResponseEntity<RestaurantDTO> addRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
+        Restaurant savedRestaurant = restaurantService.addRestaurant(RestaurantMapper.RestaurantToEntity(restaurantDTO));
+        return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(savedRestaurant));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Restaurant> deleteRestaurant(@PathVariable Long id) {
+    public ResponseEntity<RestaurantDTO> deleteRestaurant(@PathVariable Long id) {
         Restaurant deletedRestaurant= restaurantService.deleteRestaurant(id);
         if(deletedRestaurant ==null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.ok(deletedRestaurant);
+        return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(deletedRestaurant));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Restaurant> updateRestaurant(@PathVariable Long id, @RequestBody Restaurant restaurant) {
-        Restaurant updatedRestaurant= restaurantService.updateRestaurant(id, restaurant);
+    public ResponseEntity<RestaurantDTO> updateRestaurant(@PathVariable Long id, @RequestBody RestaurantDTO newRestaurantDTO) {
+        Restaurant updatedRestaurant= restaurantService.updateRestaurant(id, RestaurantMapper.RestaurantToEntity(newRestaurantDTO));
         if(updatedRestaurant ==null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.ok(updatedRestaurant);
+        return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(updatedRestaurant));
     }
 }
