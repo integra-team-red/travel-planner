@@ -1,4 +1,4 @@
 package cloudflight.integra.backend.DTO;
 
-public record CityDTO(int id, String name) {
+public record CityDTO(Long id, String name) {
 }

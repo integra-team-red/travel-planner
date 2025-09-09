@@ -8,10 +8,10 @@ import java.util.List;
 
 @Repository
 public class InMemoryCityRepository implements CityRepository {
-    private HashMap<Integer, City> cities;
-    private int lastId = 1;
+    private HashMap<Long, City> cities;
+    private Long lastId = 1L;
 
-    private int generateId() {
+    private Long generateId() {
         return lastId++;
     }
 
@@ -31,16 +31,16 @@ public class InMemoryCityRepository implements CityRepository {
     }
 
     @Override
-    public City deleteCity(int id) {
+    public City deleteCity(Long id) {
         return cities.remove(id);
     }
 
     @Override
-    public City updateCity(int id, City newCity) {
+    public City updateCity(Long id, City newCity) {
         return cities.put(id, newCity);
     }
 
-    public City findCity(int id) {
+    public City findCity(Long id) {
         return cities.get(id);
     }
 }
