@@ -39,10 +39,14 @@ public class POIController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<POIDTO> deletePointOfInterest(@PathVariable Long id) {
+    /*public ResponseEntity<POIDTO> deletePointOfInterest(@PathVariable Long id) {
         PointOfInterest deletedPOI = service.deletePointOfInterest(id);
         if (deletedPOI == null) { return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); }
         return ResponseEntity.ok(POIMapper.POIToDTO(deletedPOI));
+    }*/
+    ResponseEntity<HttpStatus> deletePointOfInterest(@PathVariable Long id){
+        service.deletePointOfInterest(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping(value = "/{id}")

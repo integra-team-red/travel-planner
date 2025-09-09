@@ -7,6 +7,6 @@ import java.util.List;
 public interface POIService {
     PointOfInterest addPointOfInterest(PointOfInterest pointOfInterest);
     PointOfInterest updatePointOfInterest(Long id, PointOfInterest pointOfInterest);
-    PointOfInterest deletePointOfInterest(Long id);
+    void deletePointOfInterest(Long id);
     List<PointOfInterest> getAllPointsOfInterest();
 }
