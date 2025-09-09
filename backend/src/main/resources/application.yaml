@@ -4,6 +4,7 @@ spring:
   config:
     import: "optional:file:env.properties"
 
+
   datasource:
     url: ${DATABASE_URL}
     username: ${POSTGRES_USER}
@@ -27,3 +28,6 @@ server:
   servlet:
     context-path: /api
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
