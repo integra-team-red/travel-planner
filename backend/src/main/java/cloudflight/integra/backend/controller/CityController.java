@@ -45,7 +45,7 @@ public class CityController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<CityDTO> deleteCity(@PathVariable int id) {
+    public ResponseEntity<CityDTO> deleteCity(@PathVariable Long id) {
         City deletedCity = service.deleteCity(id);
         if (deletedCity == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -54,7 +54,7 @@ public class CityController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CityDTO> updateCity(@PathVariable int id, @RequestBody CityDTO newCityDTO) {
+    public ResponseEntity<CityDTO> updateCity(@PathVariable Long id, @RequestBody CityDTO newCityDTO) {
 
         if (newCityDTO.id() != 0) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();

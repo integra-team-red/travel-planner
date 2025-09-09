@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CityService {
     City addCity(City city);
-    City deleteCity(int id);
-    City updateCity(int id, City newCity);
+    City deleteCity(Long id);
+    City updateCity(Long id, City newCity);
     List<City> getAllCities();
 }

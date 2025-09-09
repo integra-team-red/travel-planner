@@ -1,24 +1,22 @@
 package cloudflight.integra.backend.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    @Column(columnDefinition = "serial")
+    Long id;
 
     String name;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public City setId(int id) {
+    public City setId(Long id) {
         this.id = id;
         return this;
     }

@@ -24,12 +24,12 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public City deleteCity(int id) {
+    public City deleteCity(Long id) {
         return repository.deleteCity(id);
     }
 
     @Override
-    public City updateCity(int id, City newCity) {
+    public City updateCity(Long id, City newCity) {
         if (repository.findCity(id) == null) {
             return null;
         }

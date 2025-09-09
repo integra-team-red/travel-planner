@@ -7,7 +7,7 @@ import java.util.List;
 public interface CityRepository {
     City addCity(City city);
     List<City> getAllCities();
-    City deleteCity(int id);
-    City updateCity(int id, City newCity);
-    City findCity(int id);
+    City deleteCity(Long id);
+    City updateCity(Long id, City newCity);
+    City findCity(Long id);
 }
