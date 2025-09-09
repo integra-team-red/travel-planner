@@ -1,3 +1,12 @@
+# How to view OpenAPI spec
+Navigate to either of these links after booting the app: 
+- _**{server}**_:_**{server_port}**_/_**{context_path}**_/swagger-ui.html
+- _**{server}**_:_**{server_port}**_/_**{context_path}**_/swagger-ui/index.html
+
+Where:
+- **{server}** - localhost
+- **{server_port}** - 8080
+- **{context_path}** - api
 # frontend
 
 This template should help get you started developing with Vue 3 in Vite.
