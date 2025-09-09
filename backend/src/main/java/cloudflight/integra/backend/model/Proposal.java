@@ -1,12 +1,15 @@
 package cloudflight.integra.backend.model;
 
-public class Proposal{
+public class Proposal {
     private Long id;
     private String name;
     private Type type;
     private Status status;
 
-    public Proposal(Long id, String name, Type type){
+    public Proposal() {
+    }
+
+    public Proposal(Long id, String name, Type type) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -44,4 +47,6 @@ public class Proposal{
     public void setStatus(Status status) {
         this.status = status;
     }
+
+
 }

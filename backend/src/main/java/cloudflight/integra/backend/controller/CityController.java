@@ -1,5 +1,7 @@
 package cloudflight.integra.backend.controller;
 
+import cloudflight.integra.backend.DTO.CityDTO;
+import cloudflight.integra.backend.mapper.CityMapper;
 import cloudflight.integra.backend.model.City;
 import cloudflight.integra.backend.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/city")
@@ -20,42 +23,47 @@ public class CityController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<City>> getCities() {
-        return ResponseEntity.ok(service.getAllCities());
+    public ResponseEntity<List<CityDTO>> getCities() {
+        List<CityDTO> cities = service.getAllCities()
+                .stream()
+                .map(CityMapper::CityToDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(cities);
     }
 
     @PostMapping()
-    public ResponseEntity<City> addCity(@RequestBody City city) {
-        /// TODO: Remove this if statement after implementing DTOs
-        if (city.getId() != 0) {
+    public ResponseEntity<CityDTO> addCity(@RequestBody CityDTO cityDTO) {
+
+        if (cityDTO.id() != 0) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-        if (!isValidName(city.getName())) {
+        if (!isValidName(cityDTO.name())) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-        return ResponseEntity.ok(service.addCity(city));
+        City savedCity = service.addCity(CityMapper.CityToEntity(cityDTO));
+        return ResponseEntity.ok(CityMapper.CityToDTO(savedCity));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<City> deleteCity(@PathVariable int id) {
+    public ResponseEntity<CityDTO> deleteCity(@PathVariable int id) {
         City deletedCity = service.deleteCity(id);
         if (deletedCity == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.ok(deletedCity);
+        return ResponseEntity.ok(CityMapper.CityToDTO(deletedCity));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<City> updateCity(@PathVariable int id, @RequestBody City newCity) {
-        /// TODO: Remove this if statement after implementing DTOs
-        if (newCity.getId() != 0) {
+    public ResponseEntity<CityDTO> updateCity(@PathVariable int id, @RequestBody CityDTO newCityDTO) {
+
+        if (newCityDTO.id() != 0) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-        City updatedCity = service.updateCity(id, newCity);
+        City updatedCity = service.updateCity(id, CityMapper.CityToEntity(newCityDTO));
         if (updatedCity == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.ok(updatedCity);
+        return ResponseEntity.ok(CityMapper.CityToDTO(updatedCity));
     }
 
     private boolean isValidName(String cityName) {

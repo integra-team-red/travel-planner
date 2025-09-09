@@ -33,8 +33,9 @@ public class ServiceProposalImplementation implements ServiceProposal {
         return repositoryProposal.findAll();
     }
     @Override
-    public void deleteById(Long id) {
+    public Proposal deleteById(Long id) {
         repositoryProposal.deleteById(id);
+        return null;
     }
     @Override
     public Optional<Proposal> findById(Long id) {

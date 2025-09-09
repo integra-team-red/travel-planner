@@ -1,5 +1,8 @@
 package cloudflight.integra.backend.controller;
 
+import cloudflight.integra.backend.DTO.POIDTO;
+import cloudflight.integra.backend.mapper.CityMapper;
+import cloudflight.integra.backend.mapper.POIMapper;
 import cloudflight.integra.backend.model.PointOfInterest;
 import cloudflight.integra.backend.service.POIService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/point-of-interest")
@@ -17,35 +21,40 @@ public class POIController {
     public POIController(final POIService poiService) {service = poiService;}
 
     @GetMapping
-    public ResponseEntity<List<PointOfInterest>> getPointsOfInterest() {
-        return ResponseEntity.ok(service.getAllPointsOfInterest());
+    public ResponseEntity<List<POIDTO>> getPointsOfInterest() {
+        List<POIDTO> pois = service.getAllPointsOfInterest()
+                .stream()
+                .map(POIMapper::POIToDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(pois);
     }
 
     @PostMapping
-    public ResponseEntity<PointOfInterest> addPointOfInterest(@RequestBody PointOfInterest pointOfInterest) {
-        /// TODO: Remove this if statement after implementing DTOs
-        if(pointOfInterest.getId() != null && pointOfInterest.getId() != 0) { return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build(); }
+    public ResponseEntity<POIDTO> addPointOfInterest(@RequestBody POIDTO poiDTO) {
+
+        if(poiDTO.id() != null && poiDTO.id() != 0) { return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build(); }
         /// TODO: cityId validation
-        return ResponseEntity.ok(service.addPointOfInterest(pointOfInterest));
+        PointOfInterest savedPoi = service.addPointOfInterest(POIMapper.POIToEntity(poiDTO));
+        return ResponseEntity.ok(POIMapper.POIToDTO(savedPoi));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<PointOfInterest> deletePointOfInterest(@PathVariable Long id) {
+    public ResponseEntity<POIDTO> deletePointOfInterest(@PathVariable Long id) {
         PointOfInterest deletedPOI = service.deletePointOfInterest(id);
         if (deletedPOI == null) { return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); }
-        return ResponseEntity.ok(deletedPOI);
+        return ResponseEntity.ok(POIMapper.POIToDTO(deletedPOI));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<PointOfInterest> updatePointOfInterest(@PathVariable Long id, @RequestBody PointOfInterest newPointOfInterest) {
-        /// TODO: Remove this if statement after implementing DTOs
-        if(newPointOfInterest.getId() != null && newPointOfInterest.getId() != 0) {
+    public ResponseEntity<POIDTO> updatePointOfInterest(@PathVariable Long id, @RequestBody POIDTO newPointOfInterestDTO) {
+
+        if(newPointOfInterestDTO.id() != null && newPointOfInterestDTO.id() != 0) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
 
-        PointOfInterest updatedPOI = service.updatePointOfInterest(id, newPointOfInterest);
+        PointOfInterest updatedPOI = service.updatePointOfInterest(id, POIMapper.POIToEntity(newPointOfInterestDTO));
         if (updatedPOI == null) { return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); }
-        return ResponseEntity.ok(updatedPOI);
+        return ResponseEntity.ok(POIMapper.POIToDTO(updatedPOI));
     }
 
 }
