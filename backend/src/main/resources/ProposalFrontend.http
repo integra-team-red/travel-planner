@@ -1,0 +1,23 @@
+GET http://localhost:8080/api/proposal
+###
+GET http://localhost:8080/api/proposal/6
+###
+POST http://localhost:8080/api/proposal
+Content-Type: application/json
+
+{
+  "name": "DaPino",
+  "type": "RESTAURANT"
+}
+###
+DELETE http://localhost:8080/api/proposal/6
+###
+PUT http://localhost:8080/api/proposal/6
+Content-Type: application/json
+
+{
+  "name": "New Croco",
+  "type": "RESTAURANT",
+  "status": "REJECTED"
+}
+###
