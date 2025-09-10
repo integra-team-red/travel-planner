@@ -10,17 +10,16 @@ import java.util.List;
 
 @Service
 public class POIServiceImpl implements POIService {
-    @Autowired
+
     private DBPOIRepository repo;
-    @Autowired
     private DBCityRepository cityRepo;
 
-    //@Autowired
-    //public POIServiceImpl(/*DBPOIRepository repo, */CityRepository cityRepo) {
+    @Autowired
+    public POIServiceImpl(DBPOIRepository repo, DBCityRepository cityRepo) {
 
-    //this.repo = repo;
-    //this.cityRepo = cityRepo;
-    //}
+    this.repo = repo;
+    this.cityRepo = cityRepo;
+    }
 
     @Override
     public PointOfInterest addPointOfInterest(PointOfInterest pointOfInterest) {
@@ -28,12 +27,6 @@ public class POIServiceImpl implements POIService {
     }
 
     @Override
-    /*public PointOfInterest updatePointOfInterest(Long id, PointOfInterest pointOfInterest) {
-        if(repo.findById(id) == null) {
-            return null;
-        }
-        return repo.updatePointOfInterest(id, pointOfInterest);
-    }*/
     public PointOfInterest updatePointOfInterest(Long id, PointOfInterest pointOfInterest) {
         PointOfInterest DBPOI = repo.findById(id).get();
 
