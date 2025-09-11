@@ -16,9 +16,8 @@ public class POIServiceImpl implements POIService {
 
     @Autowired
     public POIServiceImpl(DBPOIRepository repo, DBCityRepository cityRepo) {
-
-    this.repo = repo;
-    this.cityRepo = cityRepo;
+        this.repo = repo;
+        this.cityRepo = cityRepo;
     }
 
     @Override
@@ -32,7 +31,7 @@ public class POIServiceImpl implements POIService {
 
         DBPOI.setName(pointOfInterest.getName());
         DBPOI.setDescription(pointOfInterest.getDescription());
-        DBPOI.setCityId(pointOfInterest.getCityId());
+        DBPOI.setCity(pointOfInterest.getCity());
         DBPOI.setPrice(pointOfInterest.getPrice());
 
         return DBPOI;
