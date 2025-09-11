@@ -1,6 +1,7 @@
 package cloudflight.integra.backend.mapper;
 
 import cloudflight.integra.backend.DTO.POIDTO;
+import cloudflight.integra.backend.model.City;
 import cloudflight.integra.backend.model.PointOfInterest;
 
 public class POIMapper {
@@ -14,12 +15,12 @@ public class POIMapper {
         );
     }
 
-    public static PointOfInterest POIToEntity(POIDTO poi_dto) {
+    public static PointOfInterest POIToEntity(POIDTO poi_dto, City city) {
         PointOfInterest poi = new PointOfInterest();
         poi.setId(poi_dto.id());
         poi.setName(poi_dto.name());
         poi.setDescription(poi_dto.description());
-        poi.setCityId(poi_dto.cityId());
+        poi.setCity(city);
         poi.setPrice(poi_dto.price());
         poi.setType(poi_dto.type() != null
                 ? PointOfInterest.PointOfInterestType.valueOf(poi_dto.type()) : null);

@@ -16,19 +16,21 @@ public class PointOfInterest {
     Long id;
     String name;
     String description;
-    @Column(columnDefinition = "serial")
-    Long cityId;
+    //@Column(columnDefinition = "serial")
+    @ManyToOne
+    @JoinColumn(name="city_id", nullable = false)
+    private City city;
     Double price;
     @Enumerated(EnumType.STRING)
     PointOfInterestType type;
 
     public PointOfInterest() {}
 
-    public PointOfInterest(Long id, String name, String description, Long cityId, Double price, PointOfInterestType type) {
+    public PointOfInterest(Long id, String name, String description, City city, Double price, PointOfInterestType type) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.cityId = cityId;
+        this.city = city;
         this.price = price;
         this.type = type;
     }
@@ -61,11 +63,15 @@ public class PointOfInterest {
     }
 
     public Long getCityId() {
-        return cityId;
+        return city.getId();
     }
 
-    public PointOfInterest setCityId(Long cityId) {
-        this.cityId = cityId;
+    public City getCity() {
+        return city;
+    }
+
+    public PointOfInterest setCity(City city) {
+        this.city = city;
         return this;
     }
 

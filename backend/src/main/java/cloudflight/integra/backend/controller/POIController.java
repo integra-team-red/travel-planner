@@ -3,7 +3,9 @@ package cloudflight.integra.backend.controller;
 import cloudflight.integra.backend.DTO.POIDTO;
 import cloudflight.integra.backend.mapper.CityMapper;
 import cloudflight.integra.backend.mapper.POIMapper;
+import cloudflight.integra.backend.model.City;
 import cloudflight.integra.backend.model.PointOfInterest;
+import cloudflight.integra.backend.service.CityService;
 import cloudflight.integra.backend.service.POIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +18,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/point-of-interest")
 public class POIController {
     private final POIService service;
+    private final CityService cityService;
 
     @Autowired
-    public POIController(final POIService poiService) {service = poiService;}
+    public POIController(final POIService poiService, final CityService cityService) {
+        this.service = poiService;
+        this.cityService = cityService;
+    }
 
     @GetMapping
     public ResponseEntity<List<POIDTO>> getPointsOfInterest() {
@@ -34,7 +40,8 @@ public class POIController {
 
         if(poiDTO.id() != null && poiDTO.id() != 0) { return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build(); }
         /// TODO: cityId validation
-        PointOfInterest savedPoi = service.addPointOfInterest(POIMapper.POIToEntity(poiDTO));
+        City city = cityService.getCity(poiDTO.cityId());
+        PointOfInterest savedPoi = service.addPointOfInterest(POIMapper.POIToEntity(poiDTO, city));
         return ResponseEntity.ok(POIMapper.POIToDTO(savedPoi));
     }
 
@@ -50,8 +57,8 @@ public class POIController {
         if(newPointOfInterestDTO.id() != null && newPointOfInterestDTO.id() != 0) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
-
-        PointOfInterest updatedPOI = service.updatePointOfInterest(id, POIMapper.POIToEntity(newPointOfInterestDTO));
+        City city = cityService.getCity(newPointOfInterestDTO.cityId());
+        PointOfInterest updatedPOI = service.updatePointOfInterest(id, POIMapper.POIToEntity(newPointOfInterestDTO, city));
         if (updatedPOI == null) { return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); }
         return ResponseEntity.ok(POIMapper.POIToDTO(updatedPOI));
     }
