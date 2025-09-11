@@ -32,10 +32,10 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City updateCity(Long id, City newCity) {
-        City DBCity = repository.findById(id).get();
+        City dbCity = repository.findById(id).get();
 
-        DBCity.setName(newCity.getName());
-        return DBCity;
+        dbCity.setName(newCity.getName());
+        return dbCity;
     }
 
     @Override
