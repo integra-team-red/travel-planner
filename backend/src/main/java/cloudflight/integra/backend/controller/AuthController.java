@@ -26,36 +26,38 @@ public class AuthController {
 
     @GetMapping(value = "/1")
     public ResponseEntity<HttpStatus> testAccessAny() {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+                .build();
     }
 
     @GetMapping(value = "/2")
     public ResponseEntity<HttpStatus> testAccessUser() {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+                .build();
     }
 
     @GetMapping(value = "/3")
     public ResponseEntity<HttpStatus> testAccessAdmin() {
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+                .build();
     }
 
     @PostMapping(value = "/login")
     public ResponseEntity<HttpStatus> login(@RequestBody User user) {
         try {
-            Authentication authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            user.getEmail(), user.getPassword()
-                    )
-            );
+            Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(user
+                    .getEmail(), user.getPassword()));
 
             return ResponseEntity.ok()
-                    .header(
-                            HttpHeaders.AUTHORIZATION,
-                            jwtService.generateToken(user.getEmail(), authentication.getAuthorities())
-                    ).build();
-        } catch(AuthenticationException exception) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                    .header(HttpHeaders.AUTHORIZATION,
+                            jwtService.generateToken(user.getEmail(),
+                                                     authentication
+                                                             .getAuthorities()))
+                    .build();
+        } catch (AuthenticationException exception) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .build();
         }
     }
 }

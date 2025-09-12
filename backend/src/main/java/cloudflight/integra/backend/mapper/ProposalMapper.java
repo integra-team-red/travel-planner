@@ -5,10 +5,7 @@ import cloudflight.integra.backend.model.Proposal;
 
 public class ProposalMapper {
     public static ProposalDTO ProposalToDTO(Proposal proposal) {
-        return new ProposalDTO(proposal.getId(),
-                proposal.getName(),
-                proposal.getType(),
-                proposal.getStatus());
+        return new ProposalDTO(proposal.getId(), proposal.getName(), proposal.getType(), proposal.getStatus());
     }
 
     public static Proposal ProposalToEntity(ProposalDTO proposal_dto) {
@@ -19,5 +16,4 @@ public class ProposalMapper {
         proposal.setStatus(proposal_dto.status());
         return proposal;
     }
-
 }

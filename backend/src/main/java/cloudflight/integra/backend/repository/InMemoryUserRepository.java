@@ -13,20 +13,21 @@ public class InMemoryUserRepository implements UserRepository {
 
     public InMemoryUserRepository() {
         users = new HashMap<>();
-        users.put("user", () -> User
-                .withUsername("ROLE_user")
-                .password("user")
-                .roles("user")
-                .build());
-        users.put("admin", () -> User
-                .withUsername("ROLE_admin")
-                .password("admin")
-                .roles("admin")
-                .build());
+        users.put("user",
+                  () -> User.withUsername("ROLE_user")
+                          .password("user")
+                          .roles("user")
+                          .build());
+
+        users.put("admin",
+                  () -> User.withUsername("ROLE_admin")
+                          .password("admin")
+                          .roles("admin")
+                          .build());
     }
 
-
     public UserDetails findUserByEmail(String email) {
-        return users.get(email).get();
+        return users.get(email)
+                .get();
     }
 }

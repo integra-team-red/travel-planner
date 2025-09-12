@@ -4,14 +4,14 @@ import cloudflight.integra.backend.model.Proposal;
 import cloudflight.integra.backend.model.Status;
 import cloudflight.integra.backend.model.validation.proposal.ProposalValidator;
 import cloudflight.integra.backend.repository.ProposalRepository;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
-public class ProposalServiceImpl implements ServiceProposal{
+public class ProposalServiceImpl implements ServiceProposal {
+
     private final ProposalRepository proposalRepository;
     private final ProposalValidator proposalValidator;
 
@@ -24,7 +24,8 @@ public class ProposalServiceImpl implements ServiceProposal{
     @Override
     public Proposal update(Proposal proposal) {
         proposalValidator.validate(proposal);
-        Proposal p=proposalRepository.findById(proposal.getId()).orElseThrow(() -> new RuntimeException("Proposal not found: " + proposal.getId()));
+        Proposal p = proposalRepository.findById(proposal.getId())
+                .orElseThrow(() -> new RuntimeException("Proposal not found: " + proposal.getId()));
         p.setName(proposal.getName());
         p.setStatus(proposal.getStatus());
         p.setType(proposal.getType());
@@ -33,11 +34,12 @@ public class ProposalServiceImpl implements ServiceProposal{
 
     @Override
     public Proposal deleteById(Long id) {
-        Proposal p = proposalRepository.findById(id).orElseThrow(() -> new RuntimeException("Proposal not found: " + id));
+        Proposal p = proposalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Proposal not found: " + id));
         proposalRepository.delete(p);
         return p;
-
     }
+
     @Override
     public Optional<Proposal> findById(Long id) {
         return proposalRepository.findById(id);

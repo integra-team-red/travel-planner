@@ -7,9 +7,7 @@ public class Restaurant {
     private Double averagePrice;
     private String cuisineType;
 
-    public Long getCityId() {
-        return cityId;
-    }
+    public Long getCityId() { return cityId; }
 
     public Restaurant(Long id, String name, Long cityId, Double averagePrice, String cuisineType) {
         this.id = id;
@@ -19,17 +17,12 @@ public class Restaurant {
         this.cuisineType = cuisineType;
     }
 
-    public Restaurant(){
-
+    public Restaurant() {
     }
 
-    public String getCuisineType() {
-        return cuisineType;
-    }
+    public String getCuisineType() { return cuisineType; }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public Restaurant setName(String name) {
         this.name = name;
@@ -41,13 +34,9 @@ public class Restaurant {
         return this;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public Double getAveragePrice() {
-        return averagePrice;
-    }
+    public Double getAveragePrice() { return averagePrice; }
 
     public Restaurant setAveragePrice(Double averagePrice) {
         this.averagePrice = averagePrice;
@@ -59,7 +48,7 @@ public class Restaurant {
         return this;
     }
 
-    public Restaurant setCityId(Long cityId){
+    public Restaurant setCityId(Long cityId) {
         this.cityId = cityId;
         return this;
     }

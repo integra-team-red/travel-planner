@@ -1,6 +1,5 @@
 package cloudflight.integra.backend.service;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -17,16 +16,18 @@ import java.util.Date;
 public class JwtService {
     private final SecretKey SECRET;
 
-    /// TODO(MC): Maybe update this to use asymmetric keys and get the key from env.properties
+    // TODO(MC): Maybe update this to use asymmetric keys and get the key from env.properties
     public JwtService() throws NoSuchAlgorithmException {
-        SECRET = KeyGenerator.getInstance("HmacSHA256").generateKey();
+        SECRET = KeyGenerator.getInstance("HmacSHA256")
+                .generateKey();
     }
 
     public String generateToken(String email, Collection<? extends GrantedAuthority> authorities) {
         var userRole = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(authority -> authority.startsWith("ROLE_"))
-                .findFirst().orElse("ROLE_user");
+                .findFirst()
+                .orElse("ROLE_user");
 
         int validStateDurationInMillis = 30 * 60 * 1000;
         return Jwts.builder()
@@ -42,13 +43,10 @@ public class JwtService {
         Claims claims;
         try {
             claims = extractAllClaims(token);
-        } catch(JwtException exception) {
+        } catch (JwtException exception) {
             return false;
         }
-        if (isTokenExpired(claims)) {
-            return false;
-        }
-        return true;
+        return !isTokenExpired(claims);
     }
 
     public String extractEmailFromToken(String token) throws JwtException {
@@ -67,6 +65,7 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(Claims tokenPayload) {
-        return tokenPayload.getExpiration().before(new Date());
+        return tokenPayload.getExpiration()
+                .before(new Date());
     }
 }
