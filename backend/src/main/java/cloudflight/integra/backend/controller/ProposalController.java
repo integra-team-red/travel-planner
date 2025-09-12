@@ -4,13 +4,11 @@ import cloudflight.integra.backend.DTO.ProposalDTO;
 import cloudflight.integra.backend.mapper.ProposalMapper;
 import cloudflight.integra.backend.model.Proposal;
 import cloudflight.integra.backend.service.ProposalServiceImpl;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 @RestController
 @RequestMapping("/proposal")
@@ -18,12 +16,10 @@ public class ProposalController {
     private ProposalServiceImpl proposalService;
 
     @Autowired
-    private void setProposalService(ProposalServiceImpl serviceProposal) {
-        this.proposalService = serviceProposal;
-    }
+    private void setProposalService(ProposalServiceImpl serviceProposal) { this.proposalService = serviceProposal; }
 
     @PostMapping
-    public ResponseEntity<ProposalDTO> createProposal(@RequestBody ProposalDTO proposalDTO){
+    public ResponseEntity<ProposalDTO> createProposal(@RequestBody ProposalDTO proposalDTO) {
         Proposal savedProposal = proposalService.save(ProposalMapper.ProposalToEntity(proposalDTO));
         return ResponseEntity.ok(ProposalMapper.ProposalToDTO(savedProposal));
     }
@@ -46,7 +42,8 @@ public class ProposalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProposalDTO> updateProposal(@PathVariable("id") Long id, @RequestBody ProposalDTO newProposalDTO) {
+    public ResponseEntity<ProposalDTO> updateProposal(@PathVariable("id") Long id,
+                                                      @RequestBody ProposalDTO newProposalDTO) {
         Proposal proposalToUpdate = ProposalMapper.ProposalToEntity(newProposalDTO);
         proposalToUpdate.setId(id);
         Proposal updatedProposal = proposalService.update(proposalToUpdate);

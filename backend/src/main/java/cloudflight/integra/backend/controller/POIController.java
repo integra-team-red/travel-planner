@@ -1,18 +1,17 @@
 package cloudflight.integra.backend.controller;
 
 import cloudflight.integra.backend.DTO.POIDTO;
-import cloudflight.integra.backend.mapper.CityMapper;
+import cloudflight.integra.backend.city.City;
 import cloudflight.integra.backend.mapper.POIMapper;
-import cloudflight.integra.backend.model.City;
 import cloudflight.integra.backend.model.PointOfInterest;
 import cloudflight.integra.backend.service.CityService;
 import cloudflight.integra.backend.service.POIService;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/point-of-interest")
@@ -38,29 +37,39 @@ public class POIController {
     @PostMapping
     public ResponseEntity<POIDTO> addPointOfInterest(@RequestBody POIDTO poiDTO) {
 
-        if(poiDTO.id() != null && poiDTO.id() != 0) { return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build(); }
-        /// TODO: cityId validation
+        if (poiDTO.id() != null && poiDTO.id() != 0) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .build();
+        }
+        // TODO: cityId validation
         City city = cityService.getCity(poiDTO.cityId());
         PointOfInterest savedPoi = service.addPointOfInterest(POIMapper.POIToEntity(poiDTO, city));
         return ResponseEntity.ok(POIMapper.POIToDTO(savedPoi));
     }
 
     @DeleteMapping(value = "/{id}")
-    ResponseEntity<HttpStatus> deletePointOfInterest(@PathVariable Long id){
+    ResponseEntity<HttpStatus> deletePointOfInterest(@PathVariable Long id) {
         service.deletePointOfInterest(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<POIDTO> updatePointOfInterest(@PathVariable Long id, @RequestBody POIDTO newPointOfInterestDTO) {
+    public ResponseEntity<POIDTO> updatePointOfInterest(@PathVariable Long id,
+                                                        @RequestBody POIDTO newPointOfInterestDTO) {
 
-        if(newPointOfInterestDTO.id() != null && newPointOfInterestDTO.id() != 0) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+        if (newPointOfInterestDTO.id() != null && newPointOfInterestDTO.id() != 0) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .build();
         }
         City city = cityService.getCity(newPointOfInterestDTO.cityId());
-        PointOfInterest updatedPOI = service.updatePointOfInterest(id, POIMapper.POIToEntity(newPointOfInterestDTO, city));
-        if (updatedPOI == null) { return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); }
+        PointOfInterest updatedPOI = service.updatePointOfInterest(id,
+                                                                   POIMapper
+                                                                           .POIToEntity(newPointOfInterestDTO, city));
+        if (updatedPOI == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .build();
+        }
         return ResponseEntity.ok(POIMapper.POIToDTO(updatedPOI));
     }
-
 }

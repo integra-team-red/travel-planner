@@ -2,10 +2,9 @@ package cloudflight.integra.backend.service;
 
 import cloudflight.integra.backend.model.Restaurant;
 import cloudflight.integra.backend.repository.RestaurantRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
@@ -23,9 +22,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<Restaurant> getAllRestaurants() {
-        return restaurantRepository.getAllRestaurants();
-    }
+    public List<Restaurant> getAllRestaurants() { return restaurantRepository.getAllRestaurants(); }
 
     @Override
     public Restaurant deleteRestaurant(Long id) {

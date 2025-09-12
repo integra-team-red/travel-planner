@@ -1,8 +1,5 @@
-package cloudflight.integra.backend.controller;
+package cloudflight.integra.backend.city;
 
-import cloudflight.integra.backend.DTO.CityDTO;
-import cloudflight.integra.backend.mapper.CityMapper;
-import cloudflight.integra.backend.model.City;
 import cloudflight.integra.backend.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,31 +31,36 @@ public class CityController {
     @PostMapping()
     public ResponseEntity<CityDTO> addCity(@RequestBody CityDTO cityDTO) {
 
-        if(cityDTO.id() != null && cityDTO.id() != 0) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+        if (cityDTO.id() != null && cityDTO.id() != 0) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .build();
         }
         if (!isValidName(cityDTO.name())) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .build();
         }
         City savedCity = service.addCity(CityMapper.CityToEntity(cityDTO));
         return ResponseEntity.ok(CityMapper.CityToDTO(savedCity));
     }
 
     @DeleteMapping(value = "/{id}")
-    ResponseEntity<HttpStatus> deleteCity(@PathVariable Long id){
+    ResponseEntity<HttpStatus> deleteCity(@PathVariable Long id) {
         service.deleteCity(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<CityDTO> updateCity(@PathVariable Long id, @RequestBody CityDTO newCityDTO) {
 
-        if(newCityDTO.id() != null && newCityDTO.id() != 0) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+        if (newCityDTO.id() != null && newCityDTO.id() != 0) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .build();
         }
         City updatedCity = service.updateCity(id, CityMapper.CityToEntity(newCityDTO));
         if (updatedCity == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .build();
         }
         return ResponseEntity.ok(CityMapper.CityToDTO(updatedCity));
     }
@@ -66,7 +68,6 @@ public class CityController {
     private boolean isValidName(String cityName) {
         int nameLength = cityName.length();
 
-        return 2 < nameLength && nameLength < 32 &&
-                cityName.matches("^([A-Za-z]+(-|\\s))*[A-Za-z]+$");
+        return 2 < nameLength && nameLength < 32 && cityName.matches("^([A-Za-z]+(-|\\s))*[A-Za-z]+$");
     }
 }

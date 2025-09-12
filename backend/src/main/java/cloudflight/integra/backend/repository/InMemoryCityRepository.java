@@ -1,10 +1,9 @@
 package cloudflight.integra.backend.repository;
 
-import cloudflight.integra.backend.model.City;
-import org.springframework.stereotype.Repository;
-
+import cloudflight.integra.backend.city.City;
 import java.util.HashMap;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryCityRepository implements CityRepository {
@@ -26,9 +25,9 @@ public class InMemoryCityRepository implements CityRepository {
     }
 
     @Override
-    public List<City> getAllCities() {
-        return cities.values().stream().toList();
-    }
+    public List<City> getAllCities() { return cities.values()
+            .stream()
+            .toList(); }
 
     @Override
     public City deleteCity(Long id) {
