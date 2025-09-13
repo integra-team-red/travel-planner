@@ -10,14 +10,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
+
+      - name: Checkout sources 📄
         uses: actions/checkout@v4
-      - name: Setup Java
+
+      - name: Setup Java ☕
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 21 # todo(leo): migrate to 24 when available
-      - name: Setup Gradle
+
+      - name: Setup Gradle 💾
         uses: gradle/actions/setup-gradle@v4
-      - name: Build with Gradle
+
+      - name: Build with Gradle 🏗️
         run: ./backend/gradlew -p ./backend/ spotlessCheck
+
+      - name: Install Node.js 🟢
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install frontend dependencies 🔎
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run frontend lint 🧶
+        working-directory: ./frontend
+        run: npm run lint
