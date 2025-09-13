@@ -1,12 +1,9 @@
 package cloudflight.integra.backend.repository;
 
-import cloudflight.integra.backend.model.City;
 import cloudflight.integra.backend.model.PointOfInterest;
-import org.springframework.stereotype.Repository;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryPOIRepository implements POIRepository {
@@ -28,9 +25,9 @@ public class InMemoryPOIRepository implements POIRepository {
     }
 
     @Override
-    public List<PointOfInterest> getAllPointsOfInterest() {
-        return pointsOfInterest.values().stream().toList();
-    }
+    public List<PointOfInterest> getAllPointsOfInterest() { return pointsOfInterest.values()
+            .stream()
+            .toList(); }
 
     public PointOfInterest findPointOfInterestById(Long id) {
         return pointsOfInterest.get(id);
@@ -44,5 +41,4 @@ public class InMemoryPOIRepository implements POIRepository {
     public PointOfInterest deletePointOfInterestById(Long id) {
         return pointsOfInterest.remove(id);
     }
-
 }

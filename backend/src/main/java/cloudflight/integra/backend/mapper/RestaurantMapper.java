@@ -6,10 +6,11 @@ import cloudflight.integra.backend.model.Restaurant;
 public class RestaurantMapper {
     public static RestaurantDTO RestaurantToDTO(Restaurant restaurant) {
         return new RestaurantDTO(restaurant.getId(),
-                restaurant.getName(),
-                restaurant.getCityId(),
-                restaurant.getAveragePrice(),
-                restaurant.getCuisineType());
+                                 restaurant.getName(),
+                                 restaurant.getCityId(),
+                                 restaurant
+                                         .getAveragePrice(),
+                                 restaurant.getCuisineType());
     }
 
     public static Restaurant RestaurantToEntity(RestaurantDTO restaurant_dto) {

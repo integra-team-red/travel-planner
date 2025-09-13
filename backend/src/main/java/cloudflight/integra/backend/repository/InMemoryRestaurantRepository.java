@@ -1,16 +1,18 @@
 package cloudflight.integra.backend.repository;
-import cloudflight.integra.backend.model.Restaurant;
-import org.springframework.stereotype.Repository;
 
+import cloudflight.integra.backend.model.Restaurant;
 import java.util.HashMap;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryRestaurantRepository implements RestaurantRepository {
     private HashMap<Long, Restaurant> restaurants;
     private Long lastid = 1L;
 
-    private Long generateId(){ return lastid++; }
+    private Long generateId() {
+        return lastid++;
+    }
 
     public InMemoryRestaurantRepository() {
         restaurants = new HashMap<>();
@@ -20,13 +22,12 @@ public class InMemoryRestaurantRepository implements RestaurantRepository {
     public Restaurant addRestaurant(Restaurant restaurant) {
         restaurant.setId(generateId());
         return restaurants.put(restaurant.getId(), restaurant);
-
     }
 
     @Override
-    public List<Restaurant> getAllRestaurants() {
-        return restaurants.values().stream().toList();
-    }
+    public List<Restaurant> getAllRestaurants() { return restaurants.values()
+            .stream()
+            .toList(); }
 
     @Override
     public Restaurant deleteRestaurant(Long id) {

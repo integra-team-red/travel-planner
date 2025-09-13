@@ -3,10 +3,9 @@ package cloudflight.integra.backend.service;
 import cloudflight.integra.backend.model.PointOfInterest;
 import cloudflight.integra.backend.repository.DBCityRepository;
 import cloudflight.integra.backend.repository.DBPOIRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class POIServiceImpl implements POIService {
@@ -27,7 +26,8 @@ public class POIServiceImpl implements POIService {
 
     @Override
     public PointOfInterest updatePointOfInterest(Long id, PointOfInterest pointOfInterest) {
-        PointOfInterest DBPOI = repo.findById(id).get();
+        PointOfInterest DBPOI = repo.findById(id)
+                .get();
 
         DBPOI.setName(pointOfInterest.getName());
         DBPOI.setDescription(pointOfInterest.getDescription());
@@ -43,7 +43,5 @@ public class POIServiceImpl implements POIService {
     }
 
     @Override
-    public List<PointOfInterest> getAllPointsOfInterest() {
-        return repo.findAll();
-    }
+    public List<PointOfInterest> getAllPointsOfInterest() { return repo.findAll(); }
 }
