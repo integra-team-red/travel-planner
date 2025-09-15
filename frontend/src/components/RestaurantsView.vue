@@ -1,11 +1,11 @@
 <script setup lang="ts">
+
 </script>
 
 <template>
-    <div>
-        <router-view/>
-    </div>
+<h1>Restaurants :)</h1>
 </template>
 
 <style scoped>
+
 </style>
