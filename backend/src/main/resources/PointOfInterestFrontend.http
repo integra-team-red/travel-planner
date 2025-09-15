@@ -30,3 +30,67 @@ Content-Type: application/json
 }
 ###
 DELETE http://localhost:8080/api/point-of-interest/1
+###
+GET http://localhost:8080/api/point-of-interest/downloadApprovedPOIs
+###
+POST http://localhost:8080/api/point-of-interest/uploadApprovedPOIs
+Content-Type: application/json
+
+[
+  {
+    "id": 2,
+    "name": "Monumentul eroilor",
+    "description": "Monumentul din fata parcului Mihai Eminescu",
+    "cityId": 1,
+    "price": 0.0,
+    "type": "MONUMENT"
+  },
+  {
+    "id": 3,
+    "name": "Monumentul eroilor",
+    "description": "Monumentul din fata parcului Mihai Eminescu",
+    "cityId": 1,
+    "price": 0.0,
+    "type": "MONUMENT"
+  },
+  {
+    "id": 4,
+    "name": "Monumentul eroilor",
+    "description": "Monumentul din fata parcului Mihai Eminescu",
+    "cityId": 1,
+    "price": 0.0,
+    "type": "MONUMENT"
+  },
+  {
+    "id": 5,
+    "name": "Monumentul eroilor",
+    "description": "Monumentul din fata parcului Mihai Eminescu",
+    "cityId": 1,
+    "price": 0.0,
+    "type": "MONUMENT"
+  },
+  {
+    "id": 6,
+    "name": "Monumentul eroilor",
+    "description": "Monumentul din fata parcului Mihai Eminescu",
+    "cityId": 1,
+    "price": 0.0,
+    "type": "MONUMENT"
+  },
+  {
+    "id": 7,
+    "name": "Monumentul eroilor",
+    "description": "Monumentul din fata parcului Mihai Eminescu",
+    "cityId": 1,
+    "price": 0.0,
+    "type": "MONUMENT"
+  },
+  {
+    "id": 8,
+    "name": "Monumentul eroilor",
+    "description": "Monumentul din fata parcului Mihai Eminescu",
+    "cityId": 1,
+    "price": 0.0,
+    "type": "MONUMENT"
+  }
+]
