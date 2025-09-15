@@ -1,18 +1,22 @@
 package cloudflight.integra.backend.city;
 
 import cloudflight.integra.backend.service.CityService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/city")
 public class CityController {
-    private CityService service;
+    private final CityService service;
 
     @Autowired
     public CityController(CityService cityService) {
@@ -69,5 +73,26 @@ public class CityController {
         int nameLength = cityName.length();
 
         return 2 < nameLength && nameLength < 32 && cityName.matches("^([A-Za-z]+(-|\\s))*[A-Za-z]+$");
+    }
+
+    @GetMapping(value = "/downloadApprovedCities")
+    public ResponseEntity<String> exportApprovedCitiesToJson() throws IOException {
+        final var jsonMapper = new ObjectMapper();
+        final var outputStream = new StringWriter();
+
+        jsonMapper.writeValue(outputStream, CityMapper.EntityListToDTOList(service.getAllCities()));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Disposition", "attachment; filename=\"ApprovedPOIs.json\"")
+                .contentLength(outputStream.getBuffer()
+                        .length())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(outputStream.toString());
+    }
+
+    @PostMapping(value = "/uploadApprovedCities")
+    public ResponseEntity<List<CityDTO>> importApprovedCitiesFromJson(@RequestBody List<CityDTO> cities) {
+        cities.forEach(cityDto -> service.addCity(CityMapper.CityToEntity(cityDto)));
+        return ResponseEntity.ok(CityMapper.EntityListToDTOList(service.getAllCities()));
     }
 }
