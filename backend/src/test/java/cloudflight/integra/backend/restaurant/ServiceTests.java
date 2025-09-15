@@ -1,9 +1,5 @@
 package cloudflight.integra.backend.restaurant;
 
-import cloudflight.integra.backend.model.Restaurant;
-import cloudflight.integra.backend.repository.DBRestaurantRepository;
-import cloudflight.integra.backend.service.RestaurantServiceImpl;
-import org.assertj.core.api.Condition;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

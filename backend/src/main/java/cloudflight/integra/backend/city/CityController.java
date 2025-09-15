@@ -1,6 +1,5 @@
 package cloudflight.integra.backend.city;
 
-import cloudflight.integra.backend.service.CityService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
