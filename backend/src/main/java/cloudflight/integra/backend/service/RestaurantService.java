@@ -8,7 +8,7 @@ public interface RestaurantService {
 
     List<Restaurant> getAllRestaurants();
 
-    Restaurant deleteRestaurant(Long id);
+    void deleteRestaurant(Long id);
 
     Restaurant updateRestaurant(Long id, Restaurant restaurant);
 }

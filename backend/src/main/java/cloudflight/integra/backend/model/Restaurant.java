@@ -1,26 +1,30 @@
 package cloudflight.integra.backend.model;
 
+import cloudflight.integra.backend.city.City;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "restaurant")
 public class Restaurant {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "serial")
     private Long id;
     private String name;
-    private Long cityId;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
     private Double averagePrice;
     private String cuisineType;
 
-    public Long getCityId() { return cityId; }
+    public Long getId() { return id; }
 
-    public Restaurant(Long id, String name, Long cityId, Double averagePrice, String cuisineType) {
+    public Restaurant setId(Long id) {
         this.id = id;
-        this.name = name;
-        this.cityId = cityId;
-        this.averagePrice = averagePrice;
-        this.cuisineType = cuisineType;
+        return this;
     }
-
-    public Restaurant() {
-    }
-
-    public String getCuisineType() { return cuisineType; }
 
     public String getName() { return name; }
 
@@ -29,12 +33,12 @@ public class Restaurant {
         return this;
     }
 
-    public Restaurant setCuisineType(String cuisineType) {
-        this.cuisineType = cuisineType;
+    public City getCity() { return city; }
+
+    public Restaurant setCity(City city) {
+        this.city = city;
         return this;
     }
-
-    public Long getId() { return id; }
 
     public Double getAveragePrice() { return averagePrice; }
 
@@ -43,13 +47,13 @@ public class Restaurant {
         return this;
     }
 
-    public Restaurant setId(Long id) {
-        this.id = id;
+    public String getCuisineType() { return cuisineType; }
+
+    public Restaurant setCuisineType(String cuisineType) {
+        this.cuisineType = cuisineType;
         return this;
     }
 
-    public Restaurant setCityId(Long cityId) {
-        this.cityId = cityId;
-        return this;
-    }
+    public Long getCityId() { return city.getId(); }
+
 }
