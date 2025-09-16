@@ -71,6 +71,9 @@ public class PointOfInterest {
         this.city = city;
         return this;
     }
+    public String getCityName(){
+        return city.getName();
+    }
 
     public Double getPrice() { return price; }
 

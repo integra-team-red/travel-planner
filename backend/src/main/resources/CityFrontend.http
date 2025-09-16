@@ -4,7 +4,7 @@ POST http://localhost:8080/api/city
 Content-Type: application/json
 
 {
-  "name": "Timis"
+  "name": "Botosani"
 }
 ###
 POST http://localhost:8080/api/city

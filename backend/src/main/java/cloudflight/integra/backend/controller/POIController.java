@@ -71,6 +71,11 @@ public class POIController {
         return ResponseEntity.ok(POIMapper.POIToDTO(updatedPOI));
     }
 
+    @GetMapping("/bycity")
+    public List<PointOfInterest> getPointsOfInterestByCity(@RequestParam(required = false) Long cityId, @RequestParam(required = false) String cityName) {
+            return service.getPointsOfInterestByCity(cityId, cityName);
+    }
+
     @GetMapping(value = "/download")
     public ResponseEntity<String> exportApprovedPOIsToJson() throws IOException {
         final var jsonMapper = new ObjectMapper();

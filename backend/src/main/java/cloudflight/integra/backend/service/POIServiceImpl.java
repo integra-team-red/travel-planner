@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class POIServiceImpl implements POIService {
 
-    private DBPOIRepository repo;
-    private DBCityRepository cityRepo;
+    private final DBPOIRepository repo;
+    private final DBCityRepository cityRepo;
 
     @Autowired
     public POIServiceImpl(DBPOIRepository repo, DBCityRepository cityRepo) {
@@ -44,4 +44,14 @@ public class POIServiceImpl implements POIService {
 
     @Override
     public List<PointOfInterest> getAllPointsOfInterest() { return repo.findAll(); }
+    @Override
+    public List<PointOfInterest> getPointsOfInterestByCity(Long id, String name){
+        if (id!=null)
+            return repo.findByCity_Id(id);
+        else if (name!=null && !name.isBlank())
+            return repo.findByCity_Name(name.trim());
+        else
+            return List.of();
+    }
+
 }

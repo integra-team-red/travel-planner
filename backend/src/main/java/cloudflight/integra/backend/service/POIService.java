@@ -11,4 +11,5 @@ public interface POIService {
     void deletePointOfInterest(Long id);
 
     List<PointOfInterest> getAllPointsOfInterest();
+    List<PointOfInterest> getPointsOfInterestByCity(Long id, String name);
 }
