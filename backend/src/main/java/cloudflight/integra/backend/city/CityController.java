@@ -75,7 +75,7 @@ public class CityController {
         return 2 < nameLength && nameLength < 32 && cityName.matches("^([A-Za-z]+(-|\\s))*[A-Za-z]+$");
     }
 
-    @GetMapping(value = "/downloadApprovedCities")
+    @GetMapping(value = "/download")
     public ResponseEntity<String> exportApprovedCitiesToJson() throws IOException {
         final var jsonMapper = new ObjectMapper();
         final var outputStream = new StringWriter();
@@ -83,14 +83,14 @@ public class CityController {
         jsonMapper.writeValue(outputStream, CityMapper.EntityListToDTOList(service.getAllCities()));
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .header("Content-Disposition", "attachment; filename=\"ApprovedPOIs.json\"")
+                .header("Content-Disposition", "attachment; filename=\"ApprovedCities.json\"")
                 .contentLength(outputStream.getBuffer()
                         .length())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(outputStream.toString());
     }
 
-    @PostMapping(value = "/uploadApprovedCities")
+    @PostMapping(value = "/upload")
     public ResponseEntity<List<CityDTO>> importApprovedCitiesFromJson(@RequestBody List<CityDTO> cities) {
         cities.forEach(cityDto -> service.addCity(CityMapper.CityToEntity(cityDto)));
         return ResponseEntity.ok(CityMapper.EntityListToDTOList(service.getAllCities()));
