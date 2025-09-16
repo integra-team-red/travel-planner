@@ -31,6 +31,17 @@ Content-Type: application/json
 ###
 DELETE http://localhost:8080/api/point-of-interest/1
 ###
+GET http://localhost:8080/api/point-of-interest/bycity?cityId=1
+###
+GET http://localhost:8080/api/point-of-interest/bycity?cityName=Timis
+###
+###
+GET http://localhost:8080/api/point-of-interest/bycity?cityId=1
+###
+GET http://localhost:8080/api/point-of-interest/bycity?cityName="Timis"
+###
+
+###
 GET http://localhost:8080/api/point-of-interest/downloadApprovedPOIs
 ###
 POST http://localhost:8080/api/point-of-interest/uploadApprovedPOIs
