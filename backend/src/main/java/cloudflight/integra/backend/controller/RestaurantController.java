@@ -1,8 +1,10 @@
 package cloudflight.integra.backend.controller;
 
 import cloudflight.integra.backend.DTO.RestaurantDTO;
+import cloudflight.integra.backend.city.City;
 import cloudflight.integra.backend.mapper.RestaurantMapper;
 import cloudflight.integra.backend.model.Restaurant;
+import cloudflight.integra.backend.service.CityService;
 import cloudflight.integra.backend.service.RestaurantService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/restaurant")
 public class RestaurantController {
     private RestaurantService restaurantService;
+    private CityService cityService;
 
     @Autowired
-    public RestaurantController(RestaurantService restaurantService) {
+    public RestaurantController(RestaurantService restaurantService, CityService cityService) {
         this.restaurantService = restaurantService;
+        this.cityService = cityService;
     }
 
     @GetMapping
@@ -38,27 +42,28 @@ public class RestaurantController {
 
     @PostMapping
     public ResponseEntity<RestaurantDTO> addRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
+        City city = cityService.getCity(restaurantDTO.cityId());
         Restaurant savedRestaurant = restaurantService.addRestaurant(RestaurantMapper
-                .RestaurantToEntity(restaurantDTO));
+                .RestaurantToEntity(restaurantDTO, city));
         return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(savedRestaurant));
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<RestaurantDTO> deleteRestaurant(@PathVariable Long id) {
-        Restaurant deletedRestaurant = restaurantService.deleteRestaurant(id);
-        if (deletedRestaurant == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .build();
-        }
-        return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(deletedRestaurant));
+        restaurantService.deleteRestaurant(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
+
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<RestaurantDTO> updateRestaurant(@PathVariable Long id,
                                                           @RequestBody RestaurantDTO newRestaurantDTO) {
+        City city = cityService.getCity(newRestaurantDTO.cityId());
         Restaurant updatedRestaurant = restaurantService.updateRestaurant(id,
                                                                           RestaurantMapper
-                                                                                  .RestaurantToEntity(newRestaurantDTO));
+                                                                                  .RestaurantToEntity(newRestaurantDTO,
+                                                                                                      city));
         if (updatedRestaurant == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .build();

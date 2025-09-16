@@ -1,4 +1,4 @@
 package cloudflight.integra.backend.DTO;
 
-public record RestaurantDTO(long id, String name, long cityId, double averagePrice, String cuisineType) {
+public record RestaurantDTO(Long id, String name, Long cityId, Double averagePrice, String cuisineType) {
 }
