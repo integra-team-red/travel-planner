@@ -71,7 +71,7 @@ public class POIController {
         return ResponseEntity.ok(POIMapper.POIToDTO(updatedPOI));
     }
 
-    @GetMapping(value = "/downloadApprovedPOIs")
+    @GetMapping(value = "/download")
     public ResponseEntity<String> exportApprovedPOIsToJson() throws IOException {
         final var jsonMapper = new ObjectMapper();
         final var outputStream = new StringWriter();
@@ -87,7 +87,7 @@ public class POIController {
                 .body(outputStream.toString());
     }
 
-    @PostMapping(value = "/uploadApprovedPOIs")
+    @PostMapping(value = "/upload")
     public ResponseEntity<List<POIDTO>> importApprovedPOIsFromJson(@RequestBody List<POIDTO> poiDtos) {
         poiDtos.forEach(poiDto -> service.addPointOfInterest(POIMapper.POIToEntity(poiDto,
                                                                                    cityService.getCity(poiDto
