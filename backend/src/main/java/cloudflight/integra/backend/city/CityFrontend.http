@@ -17,7 +17,7 @@ Content-Type: application/json
 ###
 DELETE http://localhost:8080/api/city/1
 ###
-DELETE http://localhost:8080/api/city/2
+DELETE http://localhost:8080/api/city/4
 ###
 PUT http://localhost:8080/api/city/1
 Content-Type: application/json
@@ -27,7 +27,7 @@ Content-Type: application/json
   "name": "Bucuresti"
 }
 ###
-PUT http://localhost:8080/api/city/1
+PUT http://localhost:8080/api/city/3
 Content-Type: application/json
 
 {
