@@ -1,3 +1,11 @@
+package cloudflight.integra.backend.service;
+
+import cloudflight.integra.backend.model.Restaurant;
+import cloudflight.integra.backend.repository.DBCityRepository;
+import cloudflight.integra.backend.repository.DBRestaurantRepository;
+
+import java.util.Collection;
+import java.util.List;
 package cloudflight.integra.backend.restaurant;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -11,6 +19,7 @@ import java.util.List;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     private final DBRestaurantRepository repository;
+    private DBCityRepository cityRepository;
 
     @Autowired
     public RestaurantServiceImpl(DBRestaurantRepository repository) {
@@ -62,4 +71,15 @@ public class RestaurantServiceImpl implements RestaurantService {
         return repository.findAllByCuisine(cuisineType, PageRequest.of(pageNumber, pageSize))
                 .toList();
     }
+
+    @Override
+    public List<Restaurant> getRestaurantsByCity(Long id, String name) {
+        if (id != null)
+            return repository.findByCity_Id(id);
+        else if (name != null)
+            return repository.findByCity_Name(name);
+        else
+            return List.of();
+    }
+
 }
