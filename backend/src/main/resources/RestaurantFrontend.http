@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "name": "La Mama",
-  "cityId": 101,
+  "cityId": 2,
   "averagePrice": 45.5,
   "cuisineType": "Romanian"
 }
@@ -24,4 +24,16 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:8080/api/restaurant/1
+
+###
+GET http://localhost:8080/api/restaurant/bycity?cityId=2
+
+###
+GET http://localhost:8080/api/restaurant/bycity?cityId=1
+
+###
+GET http://localhost:8080/api/restaurant/bycity?cityName=Arad
+
+###
+GET http://localhost:8080/api/restaurant/bycity?cityName=Timis
 
