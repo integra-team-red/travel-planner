@@ -72,8 +72,9 @@ public class POIController {
     }
 
     @GetMapping("/bycity")
-    public List<PointOfInterest> getPointsOfInterestByCity(@RequestParam(required = false) Long cityId, @RequestParam(required = false) String cityName) {
-            return service.getPointsOfInterestByCity(cityId, cityName);
+    public List<PointOfInterest> getPointsOfInterestByCity(@RequestParam(required = false) Long cityId,
+                                                           @RequestParam(required = false) String cityName) {
+        return service.getPointsOfInterestByCity(cityId, cityName);
     }
 
     @GetMapping(value = "/download")
