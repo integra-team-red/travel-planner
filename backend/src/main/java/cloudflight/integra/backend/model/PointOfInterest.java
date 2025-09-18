@@ -64,7 +64,9 @@ public class PointOfInterest {
     }
 
     public Long getCityId() { return city.getId(); }
+
     public String getCityName() { return city.getName(); }
+
     public City getCity() { return city; }
 
     public PointOfInterest setCity(City city) {

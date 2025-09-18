@@ -11,5 +11,6 @@ public interface RestaurantService {
     void deleteRestaurant(Long id);
 
     Restaurant updateRestaurant(Long id, Restaurant restaurant);
-    List<Restaurant> getRestaurantsByCity(Long id,String name);
+
+    List<Restaurant> getRestaurantsByCity(Long id, String name);
 }

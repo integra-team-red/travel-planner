@@ -70,8 +70,10 @@ public class RestaurantController {
         }
         return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(updatedRestaurant));
     }
-    @GetMapping(value="/bycity")
-    public List<Restaurant> getRestaurantsByCity(@RequestParam(required = false) Long cityId, @RequestParam(required = false) String cityName){
-        return restaurantService.getRestaurantsByCity(cityId,cityName);
+
+    @GetMapping(value = "/bycity")
+    public List<Restaurant> getRestaurantsByCity(@RequestParam(required = false) Long cityId,
+                                                 @RequestParam(required = false) String cityName) {
+        return restaurantService.getRestaurantsByCity(cityId, cityName);
     }
 }

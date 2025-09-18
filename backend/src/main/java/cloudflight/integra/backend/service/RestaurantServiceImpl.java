@@ -48,9 +48,9 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<Restaurant> getRestaurantsByCity(Long id, String name) {
-        if(id!=null)
+        if (id != null)
             return restaurantRepository.findByCity_Id(id);
-        else if (name!=null)
+        else if (name != null)
             return restaurantRepository.findByCity_Name(name);
         else
             return List.of();
