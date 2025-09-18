@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
   "name": "Trattoria Roma",
-  "cityId": 102,
+  "cityId": 2,
   "averagePrice": 60.0,
   "cuisineType": "Italian"
 }

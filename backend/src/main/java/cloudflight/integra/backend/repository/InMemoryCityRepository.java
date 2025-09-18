@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryCityRepository implements CityRepository {
-    private HashMap<Long, City> cities;
+    private final HashMap<Long, City> cities;
     private Long lastId = 1L;
 
     private Long generateId() {
