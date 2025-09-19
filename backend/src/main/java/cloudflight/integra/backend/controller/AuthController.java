@@ -2,6 +2,7 @@ package cloudflight.integra.backend.controller;
 
 import cloudflight.integra.backend.model.User;
 import cloudflight.integra.backend.service.JwtService;
+import io.jsonwebtoken.JwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -65,6 +66,18 @@ public class AuthController {
         } catch (AuthenticationException exception) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .build();
+        }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+        String token = authHeader.substring(7);
+        try {
+            String email = jwtService.extractEmailFromToken(token);
+            return ResponseEntity.ok(email);
+        } catch (JwtException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid token");
         }
     }
 }
