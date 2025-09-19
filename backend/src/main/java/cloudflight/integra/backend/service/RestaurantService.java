@@ -17,4 +17,6 @@ public interface RestaurantService {
     List<Restaurant> getAllRestaurantsSortedByAveragePrice(int pageNumber, int pageSize, boolean isDescending);
 
     List<Restaurant> getAllRestaurantsByCuisine(int pageNumber, int pageSize, String cuisineType);
+
+    List<Restaurant> getRestaurantsByCity(Long id, String name);
 }

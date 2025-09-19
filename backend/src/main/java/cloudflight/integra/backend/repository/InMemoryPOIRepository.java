@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class InMemoryPOIRepository implements POIRepository {
-    private HashMap<Long, PointOfInterest> pointsOfInterest;
+    private final HashMap<Long, PointOfInterest> pointsOfInterest;
     private Long lastId = 1L;
 
     private Long generateId() {
