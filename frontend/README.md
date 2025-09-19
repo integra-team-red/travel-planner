@@ -1,12 +1,38 @@
 # How to view OpenAPI spec
-Navigate to either of these links after booting the app: 
+There are two ways to view this app's specs:
+
+1. **(Complete)** Navigate to either of these links after booting the app: 
 - _**{server}**_:_**{server_port}**_/_**{context_path}**_/swagger-ui.html
 - _**{server}**_:_**{server_port}**_/_**{context_path}**_/swagger-ui/index.html
 
-Where:
-- **{server}** - localhost
-- **{server_port}** - 8080
-- **{context_path}** - api
+    Where:
+  - **{server}** - localhost
+  - **{server_port}** - 8080
+  - **{context_path}** - api
+
+After landing on one of these pages, click the blue hyperlink below the "OpenAPI definition" heading 
+to view the specification as a JSON file.
+2. **(Partial; lacks headers)** From IntelliJ:
+- go to the 'Main Menu' (Alt + \\)
+- select 'View' -> 'Tool Windows'
+- select 'Endpoints'
+- select all listed endpoints (click the first entry; scroll down; shift click last entry)
+- go to the 'OpenAPI' tab and click on the floppy disk icon
+
+Once the preview's done loading, you may go to 'Editor' (check top right icons),
+copy all text (Ctrl + A) and save it permanently to a YAML file if you wish.
+
+# How to work with openapi-ts (generating typescript REST clients)
+## REST Client Generation
+To generate a fresh REST client, **you'll first need to have the backend running (default)**.
+To change this behaviour and instead use a file directly, refer to the below point on
+OpenAPI spec generation.
+
+After starting the backend server, run `npm run openapi-ts` from a CLI in travel-planner\frontend.
+The generation output can be found in frontend\src\client by default.
+## Configuring the Generation Behaviour
+To configure settings like the input file / URL (must be JSON / YAML) and output folder you'll have to modify openapi-ts.config.ts
+
 # frontend
 
 This template should help get you started developing with Vue 3 in Vite.

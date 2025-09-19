@@ -2,6 +2,10 @@ package cloudflight.integra.backend.controller;
 
 import cloudflight.integra.backend.model.User;
 import cloudflight.integra.backend.service.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,6 +47,9 @@ public class AuthController {
                 .build();
     }
 
+    @Operation(summary = "Log into the application by providing an email / password combination", responses = {@ApiResponse(responseCode = "200", description = "Successful login", headers = {@Header(name = HttpHeaders.AUTHORIZATION, description = "Returns a JWT token")
+    }), @ApiResponse(responseCode = "401", description = "Invalid email / password combination", content = @Content)
+    })
     @PostMapping(value = "/login")
     public ResponseEntity<HttpStatus> login(@RequestBody User user) {
         try {
