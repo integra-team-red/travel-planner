@@ -19,6 +19,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping(value = "/restaurant")
 public class RestaurantController {
@@ -77,5 +82,77 @@ public class RestaurantController {
                     .build();
         }
         return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(updatedRestaurant));
+    }
+
+    @Operation(summary = "Get a list of restaurants from a given page from the repository sorted in given direction by name", responses = {@ApiResponse(responseCode = "200", description = "Page returned successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RestaurantDTO.class)))
+    ), @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+    })
+    @GetMapping(value = "/sortedByName")
+    public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByName(@RequestParam int pageSize,
+                                                                             @RequestParam int pageNumber,
+                                                                             @RequestParam Optional<Boolean> isDescending) {
+        pageNumber -= 1;
+        if (pageSize <= 0 || pageNumber <= 0) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .build();
+        }
+        return ResponseEntity.ok(
+                                 RestaurantMapper.EntityListToDTOList(isDescending.isPresent() ? restaurantService
+                                         .getAllRestaurantsSortedByName(pageNumber,
+                                                                        pageSize,
+                                                                        isDescending.get()) : restaurantService
+                                                                                .getAllRestaurantsSortedByName(pageNumber,
+                                                                                                               pageSize,
+                                                                                                               false)
+                                 )
+        );
+    }
+
+    @Operation(summary = "Get a list of restaurants from a given page from the repository sorted in given direction by average price", responses = {@ApiResponse(responseCode = "200", description = "Page returned successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RestaurantDTO.class)))
+    ), @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+    })
+    @GetMapping(value = "/sortedByPrice")
+    public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByAveragePrice(@RequestParam int pageSize,
+                                                                                     @RequestParam int pageNumber,
+                                                                                     @RequestParam Optional<Boolean> isDescending) {
+        pageNumber -= 1;
+        if (pageSize <= 0 || pageNumber <= 0) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .build();
+        }
+        return ResponseEntity.ok(
+                                 RestaurantMapper.EntityListToDTOList(
+                                                                      isDescending.isPresent() ? restaurantService
+                                                                              .getAllRestaurantsSortedByAveragePrice(pageNumber,
+                                                                                                                     pageSize,
+                                                                                                                     isDescending
+                                                                                                                             .get()) : restaurantService
+                                                                                                                                     .getAllRestaurantsSortedByAveragePrice(pageNumber,
+                                                                                                                                                                            pageSize,
+                                                                                                                                                                            false)
+                                 )
+        );
+    }
+
+    @Operation(summary = "Get a list of restaurants from a given page from the repository having the given cuisine type", responses = {@ApiResponse(responseCode = "200", description = "Page returned successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RestaurantDTO.class)))
+    ), @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+    })
+    @GetMapping(value = "/sortedByCuisine")
+    public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByCuisineType(@RequestParam int pageSize,
+                                                                                    @RequestParam int pageNumber,
+                                                                                    @RequestParam String cuisineType) {
+        pageNumber -= 1;
+        if (pageSize <= 0 || pageNumber <= 0) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .build();
+        }
+        return ResponseEntity.ok(
+                                 RestaurantMapper.EntityListToDTOList(
+                                                                      restaurantService.getAllRestaurantsByCuisine(
+                                                                                                                   pageNumber,
+                                                                                                                   pageSize,
+                                                                                                                   cuisineType)
+                                 )
+        );
     }
 }
