@@ -5,6 +5,8 @@ import cloudflight.integra.backend.city.DBCityRepository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -53,6 +55,28 @@ public class POIServiceImpl implements POIService {
             return repo.findByCity_Name(name.trim());
         else
             return List.of();
+    }
+
+    @Override
+    public List<PointOfInterest> getAllPointsOfInterestSortedByName(int pageNumber, int pageSize, boolean isDescending
+    ) {
+        var sortingDirection = isDescending ? Sort.Direction.DESC : Sort.Direction.ASC;
+        return repo.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortingDirection, "name")))
+                .toList();
+    }
+
+    @Override
+    public List<PointOfInterest> getAllPointsOfInterestSortedByPrice(int pageNumber, int pageSize, boolean isDescending
+    ) {
+        var sortingDirection = isDescending ? Sort.Direction.DESC : Sort.Direction.ASC;
+        return repo.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortingDirection, "price")))
+                .toList();
+    }
+
+    @Override
+    public List<PointOfInterest> getAllPointsOfInterestSortedByType(int pageNumber, int pageSize, String type) {
+        return repo.findAllByType(type, PageRequest.of(pageNumber, pageSize))
+                .toList();
     }
 
 }

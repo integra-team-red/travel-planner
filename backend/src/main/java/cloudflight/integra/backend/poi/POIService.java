@@ -12,4 +12,10 @@ public interface POIService {
     List<PointOfInterest> getAllPointsOfInterest();
 
     List<PointOfInterest> getPointsOfInterestByCity(Long id, String name);
+
+    List<PointOfInterest> getAllPointsOfInterestSortedByName(int pageNumber, int pageSize, boolean isDescending);
+
+    List<PointOfInterest> getAllPointsOfInterestSortedByPrice(int pageNumber, int pageSize, boolean isDescending);
+
+    List<PointOfInterest> getAllPointsOfInterestSortedByType(int pageNumber, int pageSize, String type);
 }
