@@ -28,4 +28,5 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-/src/client/
+/src/typescript-client/
+/typescript-client/

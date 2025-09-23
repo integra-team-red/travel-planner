@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.5.4'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.diffplug.spotless' version "7.2.1"
+    id "org.openapi.generator" version "7.15.0"
 }
 
 group = 'cloudflight.integra'
@@ -34,7 +35,27 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
     testImplementation 'org.mockito:mockito-core:5.19.0'
+    testImplementation 'com.h2database:h2'
 }
+
+openApiGenerate {
+    generatorName = "typescript-fetch" //
+    inputSpec = "${rootDir}/openapi.yaml"
+    outputDir = "${rootDir}/../frontend/typescript-client"
+    apiPackage = "api"
+    modelPackage = "model"
+}
+
+tasks.register('generateOpenApiDocs', Test) {
+    useJUnitPlatform()
+    include '**/OpenApiExportTest.class'
+}
+
+tasks.named('openApiGenerate') {
+    dependsOn 'generateOpenApiDocs'
+}
+
+assemble.dependsOn tasks.named('openApiGenerate')
 
 tasks.named('test') {
     useJUnitPlatform()
