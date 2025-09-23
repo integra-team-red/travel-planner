@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("/point-of-interest")
@@ -138,5 +139,65 @@ public class POIController {
                     .build();
         }
         return ResponseEntity.ok(POIMapper.EntityListToDTOList(service.getAllPointsOfInterest()));
+    }
+
+    @Operation(summary = "Get a list of POIs from a given page from the repository sorted in given direction by name", responses = {@ApiResponse(responseCode = "200", description = "Page returned successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = POIDTO.class)))
+    ), @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+    })
+    @GetMapping(value = "/sortedByName")
+    public ResponseEntity<List<POIDTO>> getAllPointsOfInterestSortedByName(@RequestParam int pageSize,
+                                                                           @RequestParam int pageNumber,
+                                                                           @RequestParam Optional<Boolean> isDescending) {
+        pageNumber -= 1;
+        if (pageSize <= 0 || pageNumber < 0) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .build();
+        }
+        return ResponseEntity.ok(POIMapper.EntityListToDTOList(isDescending.isPresent() ? service
+                .getAllPointsOfInterestSortedByName(pageNumber,
+                                                    pageSize,
+                                                    isDescending.get()) : service
+                                                            .getAllPointsOfInterestSortedByName(pageNumber,
+                                                                                                pageSize,
+                                                                                                false)
+        ));
+    }
+
+    @Operation(summary = "Get a list of POIs from a given page from the repository sorted in given direction by price", responses = {@ApiResponse(responseCode = "200", description = "Page returned successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = POIDTO.class)))
+    ), @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+    })
+    @GetMapping(value = "/sortedByPrice")
+    public ResponseEntity<List<POIDTO>> getAllPointsOfInterestSortedByPrice(@RequestParam int pageSize,
+                                                                            @RequestParam int pageNumber,
+                                                                            @RequestParam Optional<Boolean> isDescending) {
+        pageNumber -= 1;
+        if (pageSize <= 0 || pageNumber < 0) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .build();
+        }
+        return ResponseEntity.ok(POIMapper.EntityListToDTOList(isDescending.isPresent() ? service
+                .getAllPointsOfInterestSortedByPrice(pageNumber,
+                                                     pageSize,
+                                                     isDescending.get()
+                ) : service
+                        .getAllPointsOfInterestSortedByPrice(pageNumber, pageSize, false)
+        ));
+    }
+
+    @Operation(summary = "Get a list of POIs from a given page from the repository having the given type", responses = {@ApiResponse(responseCode = "200", description = "Page returned successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = POIDTO.class)))
+    ), @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+    })
+    @GetMapping(value = "/sortedByType")
+    public ResponseEntity<List<POIDTO>> getAllPointsOfInterestSortedByType(@RequestParam int pageSize,
+                                                                           @RequestParam int pageNumber,
+                                                                           @RequestParam String type) {
+        pageNumber -= 1;
+        if (pageSize <= 0 || pageNumber < 0) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .build();
+        }
+        return ResponseEntity.ok(POIMapper.EntityListToDTOList(service.getAllPointsOfInterestSortedByType(pageNumber,
+                                                                                                          pageSize,
+                                                                                                          type)));
     }
 }
