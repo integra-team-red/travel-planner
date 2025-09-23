@@ -16,8 +16,6 @@ public class CityMapper {
     }
 
     public static List<CityDTO> EntityListToDTOList(List<City> cities) {
-        return cities.stream()
-                .map(CityMapper::CityToDTO)
-                .toList();
+        return cities.stream().map(CityMapper::CityToDTO).toList();
     }
 }

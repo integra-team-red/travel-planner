@@ -1,11 +1,11 @@
 package cloudflight.integra.backend.security;
 
+import cloudflight.integra.backend.user.User;
 import io.jsonwebtoken.JwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import cloudflight.integra.backend.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,41 +30,45 @@ public class AuthController {
 
     @GetMapping(value = "/1")
     public ResponseEntity<HttpStatus> testAccessAny() {
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/2")
     public ResponseEntity<HttpStatus> testAccessUser() {
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/3")
     public ResponseEntity<HttpStatus> testAccessAdmin() {
 
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Log into the application by providing an email / password combination", responses = {@ApiResponse(responseCode = "200", description = "Successful login", headers = {@Header(name = HttpHeaders.AUTHORIZATION, description = "Returns a JWT token")
-    }), @ApiResponse(responseCode = "401", description = "Invalid email / password combination", content = @Content)
-    })
+    @Operation(
+            summary = "Log into the application by providing an email / password combination",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Successful login",
+                        headers = {@Header(name = HttpHeaders.AUTHORIZATION, description = "Returns a JWT token")}),
+                @ApiResponse(
+                        responseCode = "401",
+                        description = "Invalid email / password combination",
+                        content = @Content)
+            })
     @PostMapping(value = "/login")
     public ResponseEntity<HttpStatus> login(@RequestBody User user) {
         try {
-            Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(user
-                    .getEmail(), user.getPassword()));
+            Authentication authentication = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION,
-                            jwtService.generateToken(user.getEmail(),
-                                                     authentication
-                                                             .getAuthorities()))
+                    .header(
+                            HttpHeaders.AUTHORIZATION,
+                            jwtService.generateToken(user.getEmail(), authentication.getAuthorities()))
                     .build();
         } catch (AuthenticationException exception) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
@@ -75,8 +79,7 @@ public class AuthController {
             String email = jwtService.extractEmailFromToken(token);
             return ResponseEntity.ok(email);
         } catch (JwtException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Invalid token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
         }
     }
 }

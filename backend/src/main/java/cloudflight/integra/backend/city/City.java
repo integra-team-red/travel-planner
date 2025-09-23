@@ -11,14 +11,18 @@ public class City {
 
     String name;
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
     public City setId(Long id) {
         this.id = id;
         return this;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     public City setName(String name) {
         this.name = name;

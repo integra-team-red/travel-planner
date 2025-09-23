@@ -1,11 +1,10 @@
 package cloudflight.integra.backend.user;
 
+import java.util.HashMap;
+import java.util.function.Supplier;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
-import java.util.function.Supplier;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
@@ -13,21 +12,18 @@ public class InMemoryUserRepository implements UserRepository {
 
     public InMemoryUserRepository() {
         users = new HashMap<>();
-        users.put("user",
-                  () -> User.withUsername("ROLE_user")
-                          .password("user")
-                          .roles("user")
-                          .build());
+        users.put("user", () -> User.withUsername("ROLE_user")
+                .password("user")
+                .roles("user")
+                .build());
 
-        users.put("admin",
-                  () -> User.withUsername("ROLE_admin")
-                          .password("admin")
-                          .roles("admin")
-                          .build());
+        users.put("admin", () -> User.withUsername("ROLE_admin")
+                .password("admin")
+                .roles("admin")
+                .build());
     }
 
     public UserDetails findUserByEmail(String email) {
-        return users.get(email)
-                .get();
+        return users.get(email).get();
     }
 }

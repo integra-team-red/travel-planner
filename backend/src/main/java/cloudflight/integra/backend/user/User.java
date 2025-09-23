@@ -4,14 +4,18 @@ public class User {
     public String email;
     public String password;
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
     public User setEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public String getPassword() { return password; }
+    public String getPassword() {
+        return password;
+    }
 
     public User setPassword(String password) {
         this.password = password;

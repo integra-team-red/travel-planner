@@ -2,7 +2,6 @@ package cloudflight.integra.backend.restaurant;
 
 import java.util.HashMap;
 import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,9 +25,9 @@ public class InMemoryRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public List<Restaurant> getAllRestaurants() { return restaurants.values()
-            .stream()
-            .toList(); }
+    public List<Restaurant> getAllRestaurants() {
+        return restaurants.values().stream().toList();
+    }
 
     @Override
     public Restaurant deleteRestaurant(Long id) {

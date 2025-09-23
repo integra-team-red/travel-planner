@@ -8,7 +8,11 @@ import jakarta.persistence.*;
 public class PointOfInterest {
 
     public enum PointOfInterestType {
-        MUSEUM, LANDMARK, PARK, MONUMENT, OTHER
+        MUSEUM,
+        LANDMARK,
+        PARK,
+        MONUMENT,
+        OTHER
     }
 
     @Id
@@ -29,11 +33,10 @@ public class PointOfInterest {
     @Enumerated(EnumType.STRING)
     PointOfInterestType type;
 
-    public PointOfInterest() {
-    }
+    public PointOfInterest() {}
 
-    public PointOfInterest(Long id, String name, String description, City city, Double price,
-                           PointOfInterestType type) {
+    public PointOfInterest(
+            Long id, String name, String description, City city, Double price, PointOfInterestType type) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -42,46 +45,62 @@ public class PointOfInterest {
         this.type = type;
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
     public PointOfInterest setId(Long id) {
         this.id = id;
         return this;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     public PointOfInterest setName(String name) {
         this.name = name;
         return this;
     }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
     public PointOfInterest setDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public Long getCityId() { return city.getId(); }
+    public Long getCityId() {
+        return city.getId();
+    }
 
-    public String getCityName() { return city.getName(); }
+    public String getCityName() {
+        return city.getName();
+    }
 
-    public City getCity() { return city; }
+    public City getCity() {
+        return city;
+    }
 
     public PointOfInterest setCity(City city) {
         this.city = city;
         return this;
     }
 
-    public Double getPrice() { return price; }
+    public Double getPrice() {
+        return price;
+    }
 
     public PointOfInterest setPrice(Double price) {
         this.price = price;
         return this;
     }
 
-    public PointOfInterestType getType() { return type; }
+    public PointOfInterestType getType() {
+        return type;
+    }
 
     public PointOfInterest setType(PointOfInterestType type) {
         this.type = type;

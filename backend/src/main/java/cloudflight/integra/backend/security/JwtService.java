@@ -3,23 +3,22 @@ package cloudflight.integra.backend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Date;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
     private final SecretKey SECRET;
 
-    // TODO(MC): Maybe update this to use asymmetric keys and get the key from env.properties
+    // TODO(MC): Maybe update this to use asymmetric keys and get the key from
+    // env.properties
     public JwtService() throws NoSuchAlgorithmException {
-        SECRET = KeyGenerator.getInstance("HmacSHA256")
-                .generateKey();
+        SECRET = KeyGenerator.getInstance("HmacSHA256").generateKey();
     }
 
     public String generateToken(String email, Collection<? extends GrantedAuthority> authorities) {
@@ -57,15 +56,10 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) throws JwtException {
-        return Jwts.parser()
-                .verifyWith(SECRET)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        return Jwts.parser().verifyWith(SECRET).build().parseSignedClaims(token).getPayload();
     }
 
     private boolean isTokenExpired(Claims tokenPayload) {
-        return tokenPayload.getExpiration()
-                .before(new Date());
+        return tokenPayload.getExpiration().before(new Date());
     }
 }
