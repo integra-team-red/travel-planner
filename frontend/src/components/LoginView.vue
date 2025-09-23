@@ -4,39 +4,39 @@
     import InputText from 'primevue/inputtext';
     import Password from 'primevue/password';
 
-    import { ref } from 'vue';
+    import {ref} from 'vue';
+    import {authApi} from '@/api.ts';
 
     const email = ref('');
     const password = ref('');
     const checked1 = ref(true);
 
     async function login() {
-      const res = await fetch("http://localhost:8080/api/testAuth/login", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({email: email.value, password: password.value})
-      });
+        const user = {email: email.value, password: password.value};
+        const res = await authApi.loginRaw({user})
 
-      if (res.ok) {
-        const token = res.headers.get("Authorization");
-        if (token) {
-          localStorage.setItem("jwt", token);
-          window.location.href = "/home";
+        if (res.raw.ok) {
+            const token = res.raw.headers.get("Authorization");
+            if (token) {
+                localStorage.setItem("jwt", token);
+                window.location.href = "/home";
+            } else {
+                alert("No token received from server");
+            }
         } else {
-          alert("No token received from server");
+            alert("Invalid credentials");
         }
-      } else {
-        alert("Invalid credentials");
-      }
     }
 </script>
 
 <template>
     <div class="bg-surface-50 dark:bg-surface-950 px-6 py-20 md:px-20 lg:px-80">
-        <div class="bg-surface-0 dark:bg-surface-900 p-8 md:p-12 shadow-sm rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8">
+        <div
+            class="bg-surface-0 dark:bg-surface-900 p-8 md:p-12 shadow-sm rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8">
             <div class="flex flex-col items-center gap-4">
                 <div class="flex items-center gap-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14" width="33" height="32" viewBox="0 0 33 32" fill="none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14" width="33" height="32" viewBox="0 0 33 32"
+                         fill="none">
                         <path
                             fill-rule="evenodd"
                             clip-rule="evenodd"
@@ -46,34 +46,46 @@
                     </svg>
                 </div>
                 <div class="flex flex-col items-center gap-2 w-full">
-                    <div class="text-surface-900 dark:text-surface-0 text-2xl font-semibold leading-tight text-center w-full">Welcome Back</div>
+                    <div
+                        class="text-surface-900 dark:text-surface-0 text-2xl font-semibold leading-tight text-center w-full">
+                        Welcome Back
+                    </div>
                     <div class="text-center w-full">
-                        <span class="text-surface-700 dark:text-surface-200 leading-normal">Don't have an account?</span>
-                        <a class="text-primary font-medium ml-1 cursor-pointer hover:text-primary-emphasis">Create today!</a>
+                        <span
+                            class="text-surface-700 dark:text-surface-200 leading-normal">Don't have an account?</span>
+                        <a class="text-primary font-medium ml-1 cursor-pointer hover:text-primary-emphasis">Create
+                            today!</a>
                     </div>
                 </div>
             </div>
             <div class="flex flex-col gap-6 w-full">
                 <div class="flex flex-col gap-2 w-full">
-                    <label for="email1" class="text-surface-900 dark:text-surface-0 font-medium leading-normal">Email Address</label>
-                    <InputText id="email1" v-model="email" type="text" placeholder="Email address" class="w-full px-3 py-2 shadow-sm rounded-lg" />
+                    <label for="email1" class="text-surface-900 dark:text-surface-0 font-medium leading-normal">Email
+                        Address</label>
+                    <InputText id="email1" v-model="email" type="text" placeholder="Email address"
+                               class="w-full px-3 py-2 shadow-sm rounded-lg"/>
                 </div>
                 <div class="flex flex-col gap-2 w-full">
                     <label for="password1" class="text-surface-900 dark:text-surface-0 font-medium leading-normal">Password</label>
 
-                    <Password id="password1" v-model="password" v-on:keyup.enter="login" placeholder="Password" :toggleMask="true" :feedback="false" input-class="w-full!" />
+                    <Password id="password1" v-model="password" v-on:keyup.enter="login" placeholder="Password"
+                              :toggleMask="true" :feedback="false" input-class="w-full!"/>
                 </div>
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-3 sm:gap-0">
+                <div
+                    class="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-3 sm:gap-0">
                     <div class="flex items-center gap-2">
-                        <Checkbox id="rememberme1" v-model="checked1" :binary="true" />
-                        <label for="rememberme1" class="text-surface-900 dark:text-surface-0 leading-normal">Remember me</label>
+                        <Checkbox id="rememberme1" v-model="checked1" :binary="true"/>
+                        <label for="rememberme1" class="text-surface-900 dark:text-surface-0 leading-normal">Remember
+                            me</label>
                     </div>
-                    <a class="text-primary font-medium cursor-pointer hover:text-primary-emphasis">Forgot your password?</a>
+                    <a class="text-primary font-medium cursor-pointer hover:text-primary-emphasis">Forgot your
+                        password?</a>
                 </div>
             </div>
-            <Button @click="login" label="Sign In" icon="pi pi-user" class="w-full py-2 rounded-lg flex justify-center items-center gap-2">
+            <Button @click="login" label="Sign In" icon="pi pi-user"
+                    class="w-full py-2 rounded-lg flex justify-center items-center gap-2">
                 <template #icon>
-                    <i class="pi pi-user text-base! leading-normal!" />
+                    <i class="pi pi-user text-base! leading-normal!"/>
                 </template>
             </Button>
         </div>
