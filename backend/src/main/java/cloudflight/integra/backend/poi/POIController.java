@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController()
 @RequestMapping("/point-of-interest")
+@SecurityRequirement(name = "bearerAuth")
 public class POIController {
     private final POIService service;
     private final CityService cityService;

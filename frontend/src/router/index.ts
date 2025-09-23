@@ -1,16 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from "@/components/HomeView.vue";
-import CitiesView from '@/components/CitiesView.vue';
-import RestaurantsView from '@/components/RestaurantsView.vue';
-import LoginView from '@/components/LoginView.vue';
-
-import '@/interceptor/interceptor.ts'
+import HomeView from "@/pages/HomeView.vue";
+import CitiesView from '@/pages/CitiesView.vue';
+import RestaurantsView from '@/pages/RestaurantsView.vue';
+import LoginView from '@/pages/LoginView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: '/home',
+            path: '/',
             name: 'home',
             component: HomeView
         },
