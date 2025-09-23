@@ -42,7 +42,7 @@ tasks.named('test') {
 
 spotless {
     java {
-        eclipse().configFile(file("${rootDir}/../codestyle.xml"))
+        palantirJavaFormat()
         target 'src/**/*.java'
     }
 }
