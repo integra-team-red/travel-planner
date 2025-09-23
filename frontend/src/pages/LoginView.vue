@@ -6,20 +6,24 @@
 
     import {ref} from 'vue';
     import {authApi} from '@/api.ts';
+    import {useRouter} from 'vue-router';
 
     const email = ref('');
     const password = ref('');
     const checked1 = ref(true);
 
+    const router = useRouter();
+
     async function login() {
         const user = {email: email.value, password: password.value};
         const res = await authApi.loginRaw({user})
+
 
         if (res.raw.ok) {
             const token = res.raw.headers.get("Authorization");
             if (token) {
                 localStorage.setItem("jwt", token);
-                window.location.href = "/home";
+                await router.push('/');
             } else {
                 alert("No token received from server");
             }
