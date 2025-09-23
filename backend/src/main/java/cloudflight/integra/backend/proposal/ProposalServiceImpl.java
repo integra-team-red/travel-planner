@@ -1,7 +1,6 @@
 package cloudflight.integra.backend.proposal;
 
 import cloudflight.integra.backend.proposal.validation.ProposalValidator;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,8 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     public Proposal update(Proposal proposal) {
         proposalValidator.validate(proposal);
-        Proposal p = proposalRepository.findById(proposal.getId())
+        Proposal p = proposalRepository
+                .findById(proposal.getId())
                 .orElseThrow(() -> new RuntimeException("Proposal not found: " + proposal.getId()));
         p.setName(proposal.getName());
         p.setStatus(proposal.getStatus());
@@ -32,8 +32,8 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     public Proposal deleteById(Long id) {
-        Proposal p = proposalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Proposal not found: " + id));
+        Proposal p =
+                proposalRepository.findById(id).orElseThrow(() -> new RuntimeException("Proposal not found: " + id));
         proposalRepository.delete(p);
         return p;
     }

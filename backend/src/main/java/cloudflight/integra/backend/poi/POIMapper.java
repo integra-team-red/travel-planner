@@ -1,18 +1,17 @@
 package cloudflight.integra.backend.poi;
 
 import cloudflight.integra.backend.city.City;
-
 import java.util.List;
 
 public class POIMapper {
     public static POIDTO POIToDTO(PointOfInterest poi) {
-        return new POIDTO(poi.getId(),
-                          poi.getName(),
-                          poi.getDescription(),
-                          poi.getCityId(),
-                          poi.getPrice(),
-                          poi.getType() != null ? poi.getType()
-                                  .name() : null);
+        return new POIDTO(
+                poi.getId(),
+                poi.getName(),
+                poi.getDescription(),
+                poi.getCityId(),
+                poi.getPrice(),
+                poi.getType() != null ? poi.getType().name() : null);
     }
 
     public static PointOfInterest POIToEntity(POIDTO poi_dto, City city) {
@@ -27,8 +26,6 @@ public class POIMapper {
     }
 
     public static List<POIDTO> EntityListToDTOList(List<PointOfInterest> entityList) {
-        return entityList.stream()
-                .map(POIMapper::POIToDTO)
-                .toList();
+        return entityList.stream().map(POIMapper::POIToDTO).toList();
     }
 }

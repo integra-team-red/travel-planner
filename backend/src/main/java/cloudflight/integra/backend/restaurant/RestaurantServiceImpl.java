@@ -1,25 +1,15 @@
-package cloudflight.integra.backend.service;
-
-import cloudflight.integra.backend.model.Restaurant;
-import cloudflight.integra.backend.repository.DBCityRepository;
-import cloudflight.integra.backend.repository.DBRestaurantRepository;
-
-import java.util.Collection;
-import java.util.List;
 package cloudflight.integra.backend.restaurant;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     private final DBRestaurantRepository repository;
-    private DBCityRepository cityRepository;
 
     @Autowired
     public RestaurantServiceImpl(DBRestaurantRepository repository) {
@@ -33,17 +23,19 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<Restaurant> getAllRestaurants() { return repository.findAll(); }
+    public List<Restaurant> getAllRestaurants() {
+        return repository.findAll();
+    }
 
     @Override
     public void deleteRestaurant(Long id) {
         repository.deleteById(id);
-
     }
 
     @Override
     public Restaurant updateRestaurant(Long id, Restaurant newRestaurant) {
-        Restaurant restaurant = repository.findById(id)
+        Restaurant restaurant = repository
+                .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant with id " + id + " not found"));
         restaurant.setName(newRestaurant.getName());
         restaurant.setCity(newRestaurant.getCity());
@@ -55,31 +47,30 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public List<Restaurant> getAllRestaurantsSortedByName(int pageNumber, int pageSize, boolean isDescending) {
         var sortingDirection = isDescending ? Sort.Direction.DESC : Sort.Direction.ASC;
-        return repository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortingDirection, "name")))
+        return repository
+                .findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortingDirection, "name")))
                 .toList();
     }
 
     @Override
     public List<Restaurant> getAllRestaurantsSortedByAveragePrice(int pageNumber, int pageSize, boolean isDescending) {
         var sortingDirection = isDescending ? Sort.Direction.DESC : Sort.Direction.ASC;
-        return repository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortingDirection, "average_price")))
+        return repository
+                .findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortingDirection, "average_price")))
                 .toList();
     }
 
     @Override
     public List<Restaurant> getAllRestaurantsByCuisine(int pageNumber, int pageSize, String cuisineType) {
-        return repository.findAllByCuisine(cuisineType, PageRequest.of(pageNumber, pageSize))
+        return repository
+                .findAllByCuisine(cuisineType, PageRequest.of(pageNumber, pageSize))
                 .toList();
     }
 
     @Override
     public List<Restaurant> getRestaurantsByCity(Long id, String name) {
-        if (id != null)
-            return repository.findByCity_Id(id);
-        else if (name != null)
-            return repository.findByCity_Name(name);
-        else
-            return List.of();
+        if (id != null) return repository.findByCity_Id(id);
+        else if (name != null) return repository.findByCity_Name(name);
+        else return List.of();
     }
-
 }

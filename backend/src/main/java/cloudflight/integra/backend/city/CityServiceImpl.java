@@ -26,20 +26,20 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City updateCity(Long id, City newCity) {
-        City dbCity = repository.findById(id)
-                .get();
+        City dbCity = repository.findById(id).get();
 
         dbCity.setName(newCity.getName());
         return dbCity;
     }
 
     @Override
-    public List<City> getAllCities() { return repository.findAll(); }
+    public List<City> getAllCities() {
+        return repository.findAll();
+    }
 
     @Override
     public City getCity(Long id) {
-        return repository.findById(id)
-                .get();
+        return repository.findById(id).get();
     }
 
     @Override
