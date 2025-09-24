@@ -3,7 +3,6 @@ import HomeView from "@/components/HomeView.vue";
 import CitiesView from '@/components/CitiesView.vue';
 import RestaurantsView from '@/components/RestaurantsView.vue';
 import LoginView from '@/components/LoginView.vue';
-
 import '@/interceptor/interceptor.ts'
 
 const router = createRouter({
