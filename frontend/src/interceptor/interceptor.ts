@@ -1,3 +1,4 @@
+import { showLoading, hideLoading } from "@/stores/spinner.ts";
 const { fetch: originalFetch } = window;
 
 window.fetch = async (...args) => {
@@ -15,9 +16,9 @@ window.fetch = async (...args) => {
             }
         };
     }
-
+    showLoading();
     const response = await originalFetch(resource, config);
-
+    hideLoading();
     // response interceptor
     if (response.status === 401) {
         localStorage.removeItem("jwt");
