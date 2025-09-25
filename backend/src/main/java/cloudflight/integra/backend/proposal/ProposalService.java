@@ -13,4 +13,6 @@ public interface ProposalService {
     Proposal deleteById(Long id);
 
     Proposal update(Proposal proposal);
+
+    List<Proposal> findByStatus(Status status);
 }
