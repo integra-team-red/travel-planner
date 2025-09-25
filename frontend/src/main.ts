@@ -10,6 +10,7 @@ import './style.css'
 
 import {createI18n} from "vue-i18n";
 import translations from "../translations.json"
+import {ToastService} from 'primevue';
 
 const app = createApp(App)
 
@@ -22,8 +23,14 @@ app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, {
     theme: {
-        preset: Aura
+        preset: Aura,
+        options: {
+            prefix: 'p',
+            darkModeSelector: '.my-app-dark',
+            cssLayer: false
+        }
     }
 })
 
 app.mount('#app')
+app.use(ToastService);

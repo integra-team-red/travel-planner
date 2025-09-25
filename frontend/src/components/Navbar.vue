@@ -3,28 +3,28 @@
     import {useRouter} from 'vue-router';
     import LanguageSelectBox from '@/components/LanguageSelectBox.vue';
 
-    // const user = ref<string>("");
-
     const router = useRouter();
 
-    // await authApi.getCurrentUser(); todo(fix): this not being json for some reason?
-
-    const items: MenuItem[] = [{
-        label: 'Home',
-        icon: 'pi pi-link',
-        command: () => {
-            router.push('/');
+    const items: MenuItem[] = [
+        {
+            label: 'Home',
+            icon: 'pi pi-link',
+            command: () => {
+                router.push('/');
+            }
+        },
+        {
+            label: 'Cities',
+            icon: 'pi pi-building',
+            command: () => {
+                router.push('/cities');
+            }
         }
-    }]
-
-    // function logout() {
-    //     localStorage.removeItem("jwt");
-    //     router.push("/login");
-    // }
+    ]
 </script>
 
 <template>
-    <Menubar :model="items">
+    <Menubar :model="items" class="lg:max-w-6xl mx-auto mt-2">
         <template #start>
             <!--todo: add logo here-->
         </template>

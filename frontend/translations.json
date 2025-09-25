@@ -1,14 +1,36 @@
 {
-  "en-US": {
-    "language": {
-      "english": "english",
-      "romanian": "romanian"
+    "en-US": {
+        "language": {
+            "english": "english",
+            "romanian": "romanian"
+        },
+        "cities": {
+            "header": "Cities",
+            "add": "Add",
+            "added": "The city has been added"
+        },
+        "field-is-required": "The field is required!",
+        "delete": "Delete",
+        "add": "Add",
+        "cancel": "Cancel",
+        "close": "Close",
+        "confirm": "Confirm"
+    },
+    "ro-RO": {
+        "language": {
+            "english": "engleză",
+            "romanian": "română"
+        },
+        "cities": {
+            "header": "Orașe",
+            "add": "Adaugă",
+            "added": "Orașul a fost adăugat"
+        },
+        "field-is-required": "Câmpul este obligatoriu!",
+        "delete": "Șterge",
+        "add": "Adaugă",
+        "cancel": "Intrerupe",
+        "close": "Inchide",
+        "confirm": "Confirmă"
     }
-  },
-  "ro-RO": {
-    "language": {
-      "english": "engleză",
-      "romanian": "română"
-    }
-  }
 }
