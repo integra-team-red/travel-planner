@@ -145,8 +145,7 @@ public class RestaurantController {
     @GetMapping(value = "/sortedByPrice")
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByAveragePrice(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        pageNumber -= 1;
-        if (pageSize <= 0 || pageNumber <= 0) {
+        if (pageSize <= 0 || pageNumber < 0) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.ok(RestaurantMapper.EntityListToDTOList(
@@ -171,8 +170,7 @@ public class RestaurantController {
     @GetMapping(value = "/sortedByCuisine")
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByCuisineType(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam String cuisineType) {
-        pageNumber -= 1;
-        if (pageSize <= 0 || pageNumber <= 0) {
+        if (pageSize <= 0 || pageNumber < 0) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.ok(RestaurantMapper.EntityListToDTOList(

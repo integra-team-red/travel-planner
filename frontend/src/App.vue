@@ -1,12 +1,20 @@
 <script setup lang="ts">
+    import {computed} from "vue";
+    import {useSpinnerStore} from "./stores/spinner.ts";
+    import ProgressSpinner from 'primevue/progressspinner';
     import Navbar from '@/components/Navbar.vue';
+
+    const isLoading = computed(() => useSpinnerStore().isLoading);
 </script>
 
 <template>
     <suspense>
         <div>
             <navbar/>
-            <div>
+            <div v-if="isLoading" id="spinner">
+                <ProgressSpinner/>
+            </div>
+            <div v-else>
                 <router-view/>
             </div>
         </div>
@@ -14,4 +22,11 @@
 </template>
 
 <style scoped>
+    #spinner {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
