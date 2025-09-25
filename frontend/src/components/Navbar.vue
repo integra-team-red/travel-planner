@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import type {MenuItem} from 'primevue/menuitem';
     import {useRouter} from 'vue-router';
+    import LanguageSelectBox from '@/components/LanguageSelectBox.vue';
 
     // const user = ref<string>("");
 
@@ -40,9 +41,12 @@
             </a>
         </template>
         <template #end>
-            <div class="flex items-center gap-2">
-                <InputText placeholder="Search" type="text" class="w-32 sm:w-auto"/>
-                <Avatar image="/img.png" shape="circle"/>
+            <div class="flex">
+                <language-select-box class="mr-2"/>
+                <div class="flex items-center gap-2">
+                    <InputText placeholder="Search" type="text" class="w-32 sm:w-auto"/>
+                    <Avatar image="/img.png" shape="circle"/>
+                </div>
             </div>
         </template>
     </Menubar>
