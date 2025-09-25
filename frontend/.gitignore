@@ -30,3 +30,4 @@ coverage
 *.tsbuildinfo
 /src/typescript-client/
 /typescript-client/
+/components.d.ts

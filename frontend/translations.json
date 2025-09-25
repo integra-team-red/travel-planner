@@ -1,0 +1,14 @@
+{
+  "en-US": {
+    "language": {
+      "english": "english",
+      "romanian": "romanian"
+    }
+  },
+  "ro-RO": {
+    "language": {
+      "english": "engleză",
+      "romanian": "română"
+    }
+  }
+}
