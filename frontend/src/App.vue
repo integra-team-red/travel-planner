@@ -3,6 +3,7 @@
     import {useSpinnerStore} from "./stores/spinner.ts";
     import ProgressSpinner from 'primevue/progressspinner';
     import Navbar from '@/components/Navbar.vue';
+    import PageLayout from '@/components/PageLayout.vue';
 
     const isLoading = computed(() => useSpinnerStore().isLoading);
 </script>
@@ -15,9 +16,11 @@
                 <ProgressSpinner/>
             </div>
             <div v-else>
-                <router-view/>
+                <toast/>
+                <page-layout>
+                    <router-view/>
+                </page-layout>
             </div>
-        </div>
     </suspense>
 </template>
 
