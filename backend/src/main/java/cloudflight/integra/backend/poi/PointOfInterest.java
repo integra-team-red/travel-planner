@@ -7,14 +7,6 @@ import jakarta.persistence.*;
 @Table(name = "point_of_interest")
 public class PointOfInterest {
 
-    public enum PointOfInterestType {
-        MUSEUM,
-        LANDMARK,
-        PARK,
-        MONUMENT,
-        OTHER
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
