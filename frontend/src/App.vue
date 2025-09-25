@@ -1,14 +1,16 @@
 <script setup lang="ts">
     import Navbar from '@/components/Navbar.vue';
+    import PageLayout from '@/components/PageLayout.vue';
 </script>
 
 <template>
     <suspense>
         <div>
             <navbar/>
-            <div>
+            <toast />
+            <page-layout>
                 <router-view/>
-            </div>
+            </page-layout>
         </div>
     </suspense>
 </template>
