@@ -41,16 +41,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // TODO(MC): Research if CSRF should be enabled / disabled
-        http.csrf(customizer -> customizer.disable());
-
-        // Setting permissions on endpoints
-        // TODO(MC): Authorize endpoints accordingly and remove testing endpoints
-        http.authorizeHttpRequests(authorize -> authorize
-                // .requestMatchers("/swagger-ui/**").hasRole("admin")
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/testAuth/1")
                 .permitAll()
                 .requestMatchers(HttpMethod.POST, "/testAuth/login")
                 .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/proposals/**")
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/admin/proposals/*/approve")
+                .hasRole("admin")
+                .requestMatchers(HttpMethod.POST, "/admin/proposals/*/reject")
+                .hasRole("admin")
                 .requestMatchers(HttpMethod.GET, "/testAuth/2")
                 .authenticated()
                 .requestMatchers(HttpMethod.POST, "/testAuth/3")

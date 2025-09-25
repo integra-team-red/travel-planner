@@ -1,5 +1,7 @@
 package cloudflight.integra.backend.proposal;
 
+import cloudflight.integra.backend.city.City;
+import cloudflight.integra.backend.poi.PointOfInterestType;
 import jakarta.persistence.*;
 import java.util.Objects;
 
@@ -16,11 +18,23 @@ public class Proposal {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private ProposalType type;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
+
+    private String description;
+    private Double price;
+    private Double averagePrice;
+    private String cuisineType;
+
+    @Enumerated(EnumType.STRING)
+    private PointOfInterestType poiType;
 
     public Long getId() {
         return id;
@@ -38,11 +52,11 @@ public class Proposal {
         this.name = name;
     }
 
-    public Type getType() {
+    public ProposalType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(ProposalType type) {
         this.type = type;
     }
 
@@ -52,6 +66,54 @@ public class Proposal {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getAveragePrice() {
+        return averagePrice;
+    }
+
+    public void setAveragePrice(Double averagePrice) {
+        this.averagePrice = averagePrice;
+    }
+
+    public String getCuisineType() {
+        return cuisineType;
+    }
+
+    public void setCuisineType(String cuisineType) {
+        this.cuisineType = cuisineType;
+    }
+
+    public PointOfInterestType getPoiType() {
+        return poiType;
+    }
+
+    public void setPoiType(PointOfInterestType poiType) {
+        this.poiType = poiType;
     }
 
     @Override
