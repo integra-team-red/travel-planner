@@ -24,12 +24,10 @@ public class ServiceTests {
     void getAllPointsOfInterestSortedByNameTest() {
         City city = new City();
         city.setName("Viena");
-        PointOfInterest poi1 = new PointOfInterest(
-                1L, "Museum of Science", "Desc", city, 10.0, PointOfInterest.PointOfInterestType.MUSEUM);
-        PointOfInterest poi2 =
-                new PointOfInterest(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterest.PointOfInterestType.PARK);
-        PointOfInterest poi3 =
-                new PointOfInterest(3L, "Zalha", "Desc", city, 20.0, PointOfInterest.PointOfInterestType.MONUMENT);
+        PointOfInterest poi1 =
+                new PointOfInterest(1L, "Museum of Science", "Desc", city, 10.0, PointOfInterestType.MUSEUM);
+        PointOfInterest poi2 = new PointOfInterest(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterestType.PARK);
+        PointOfInterest poi3 = new PointOfInterest(3L, "Zalha", "Desc", city, 20.0, PointOfInterestType.MONUMENT);
 
         Page<PointOfInterest> pageAsc = new PageImpl<>(List.of(poi2, poi1, poi3));
         Page<PointOfInterest> pageDesc = new PageImpl<>(List.of(poi3, poi1, poi2));
@@ -56,12 +54,10 @@ public class ServiceTests {
         City city = new City();
         city.setName("Viena");
 
-        PointOfInterest poi1 = new PointOfInterest(
-                1L, "Museum of Science", "Desc", city, 10.0, PointOfInterest.PointOfInterestType.MUSEUM);
-        PointOfInterest poi2 =
-                new PointOfInterest(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterest.PointOfInterestType.PARK);
-        PointOfInterest poi3 =
-                new PointOfInterest(3L, "Zalha", "Desc", city, 20.0, PointOfInterest.PointOfInterestType.MONUMENT);
+        PointOfInterest poi1 =
+                new PointOfInterest(1L, "Museum of Science", "Desc", city, 10.0, PointOfInterestType.MUSEUM);
+        PointOfInterest poi2 = new PointOfInterest(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterestType.PARK);
+        PointOfInterest poi3 = new PointOfInterest(3L, "Zalha", "Desc", city, 20.0, PointOfInterestType.MONUMENT);
 
         Page<PointOfInterest> pageAsc = new PageImpl<>(List.of(poi1, poi2, poi3));
         Page<PointOfInterest> pageDesc = new PageImpl<>(List.of(poi3, poi2, poi1));
@@ -88,12 +84,10 @@ public class ServiceTests {
         City city = new City();
         city.setName("Viena");
 
-        PointOfInterest poi1 = new PointOfInterest(
-                1L, "Museum of Science", "Desc", city, 10.0, PointOfInterest.PointOfInterestType.MUSEUM);
-        PointOfInterest poi2 =
-                new PointOfInterest(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterest.PointOfInterestType.PARK);
-        PointOfInterest poi3 =
-                new PointOfInterest(3L, "Art Museum", "Desc", city, 20.0, PointOfInterest.PointOfInterestType.MUSEUM);
+        PointOfInterest poi1 =
+                new PointOfInterest(1L, "Museum of Science", "Desc", city, 10.0, PointOfInterestType.MUSEUM);
+        PointOfInterest poi2 = new PointOfInterest(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterestType.PARK);
+        PointOfInterest poi3 = new PointOfInterest(3L, "Art Museum", "Desc", city, 20.0, PointOfInterestType.MUSEUM);
 
         Page<PointOfInterest> pageMuseum = new PageImpl<>(List.of(poi1, poi3));
         when(repo.findAllByType("MUSEUM", PageRequest.of(0, 3))).thenReturn(pageMuseum);

@@ -27,6 +27,12 @@ public class ProposalServiceImpl implements ProposalService {
         p.setName(proposal.getName());
         p.setStatus(proposal.getStatus());
         p.setType(proposal.getType());
+        p.setCity(proposal.getCity());
+        p.setCuisineType(proposal.getCuisineType());
+        p.setDescription(proposal.getDescription());
+        p.setAveragePrice(proposal.getAveragePrice());
+        p.setPoiType(proposal.getPoiType());
+        p.setPrice(proposal.getPrice());
         return proposalRepository.save(p);
     }
 
@@ -53,5 +59,10 @@ public class ProposalServiceImpl implements ProposalService {
         proposal.setStatus(Status.PENDING);
         proposalValidator.validate(proposal);
         return proposalRepository.save(proposal);
+    }
+
+    @Override
+    public List<Proposal> findByStatus(Status status) {
+        return proposalRepository.findByStatus(status);
     }
 }

@@ -21,7 +21,7 @@ public class POIMapper {
         poi.setDescription(poi_dto.description());
         poi.setCity(city);
         poi.setPrice(poi_dto.price());
-        poi.setType(poi_dto.type() != null ? PointOfInterest.PointOfInterestType.valueOf(poi_dto.type()) : null);
+        poi.setType(poi_dto.type() != null ? PointOfInterestType.valueOf(poi_dto.type()) : null);
         return poi;
     }
 
