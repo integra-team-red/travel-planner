@@ -3,10 +3,16 @@ import HomeView from '@/pages/HomeView.vue';
 import CitiesView from '@/pages/CitiesView.vue';
 import RestaurantsView from '@/pages/RestaurantsView.vue';
 import LoginView from '@/pages/LoginView.vue';
+import CitiesImportExport from "@/pages/CitiesImportExport.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        {
+            path: '/citiesImportExport',
+            name: 'citiesImportExport',
+            component: CitiesImportExport
+        },
         {
             path: '/',
             name: 'home',
