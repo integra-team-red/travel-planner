@@ -2,30 +2,24 @@
 import {poiApi} from "@/api.ts";
 import {useToast} from 'primevue';
 import {useI18n} from "vue-i18n";
-import {downloadPOIArrayToUserDevice} from "@/utils/fileutils.ts";
+import {downloadPOIArrayToUserDevice} from "@/utils/file.utils.ts";
+import {showToast} from "@/utils/toast.utils.ts";
 
-const { t } = useI18n();
 const toast = useToast();
+const { t } = useI18n();
 
 function downloadPOIs() {
     poiApi.exportApprovedPOIsToJson()
         .then(
             value => {
                 downloadPOIArrayToUserDevice(value);
-                toast.add({
-                    severity: 'success',
-                    summary: t('pois.download.success'),
-                    life: 5000
-                });
+                showToast('success', t('pois.download.success'), toast);
             }
         )
         .catch(
             () => {
-                toast.add({
-                    severity: 'error',
-                    summary: t('pois.download.failure'),
-                    life: 5000
-                });
+                showToast('error', t('pois.download.failure'), toast);
+
             }
         );
 }
@@ -34,24 +28,15 @@ async function uploadPOIs(file: File, clearCallback: () => void) {
         await poiApi.importApprovedPOIsFromJson({
             pOIDTO: JSON.parse(await file.text())
         });
-        toast.add({
-            severity: 'success',
-            summary: t('pois.upload.success'),
-            life: 5000
-        });
+        showToast('success', t('pois.upload.success'), toast);
     } catch {
-        toast.add({
-            severity: 'error',
-            summary: t('pois.upload.failure'),
-            life: 5000
-        });
+        showToast('error', t('pois.upload.failure'), toast);
     }
     clearCallback();
 }
 </script>
 
 <template>
-    <toast />
     <div class="flex gap-20 flex-col not-sm:px-14">
         <h2 class="pt-18 font-semibold text-3xl">{{t('pois.download.header')}}:</h2>
         <div @click="downloadPOIs" class="flex flex-col self-center justify-center items-center bg-[#BBD1EA] p-5 w-full sm:w-[50%] cursor-pointer rounded-2xl text-gray-600">

@@ -1,6 +1,9 @@
 import type {CityDTO} from "../../typescript-client";
 export function downloadCityArrayToUserDevice(cities: Array<CityDTO>, fileName: string = 'Cities.json') {
     const fileURL = window.URL.createObjectURL(new File([JSON.stringify(cities)], fileName));
+import type {POIDTO} from "../../typescript-client";
+export function downloadPOIArrayToUserDevice(pois: Array<POIDTO>, fileName: string = 'Points of Interest.json') {
+    const fileURL = window.URL.createObjectURL(new File([JSON.stringify(pois)], fileName));
     const a = document.createElement('a');
     a.href = fileURL;
     a.download = fileName;
