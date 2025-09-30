@@ -1,31 +1,24 @@
 <script setup lang="ts">
 import {cityApi} from "@/api.ts";
-import {useToast} from 'primevue';
+import {useToast} from "primevue";
 import {useI18n} from "vue-i18n";
-import {downloadCityArrayToUserDevice} from "@/utils/fileutils.ts";
+import {downloadCityArrayToUserDevice} from "@/utils/file.utils.ts";
+import {showToast} from "@/utils/toast.utils.ts";
 
-const { t } = useI18n();
 const toast = useToast();
+const { t } = useI18n();
 
 function downloadCities() {
     cityApi.exportApprovedCitiesToJson()
         .then(
             value => {
                 downloadCityArrayToUserDevice(value);
-                toast.add({
-                    severity: 'success',
-                    summary: t('cities.download.success'),
-                    life: 5000
-                });
+                showToast('success', t('cities.download.success'), toast);
             }
         )
         .catch(
             () => {
-                toast.add({
-                    severity: 'error',
-                    summary: t('cities.download.failure'),
-                    life: 5000
-                });
+                showToast('error', t('cities.download.failure'), toast);
             }
         );
 }
@@ -35,24 +28,16 @@ async function uploadCities(file: File, clearCallback: () => void) {
         await cityApi.importApprovedCitiesFromJson({
             cityDTO: JSON.parse(await file.text())
         });
-        toast.add({
-            severity: 'success',
-            summary: t('cities.upload.success'),
-            life: 5000
-        });
+        showToast('success', t('cities.upload.success'), toast);
     } catch {
-        toast.add({
-            severity: 'error',
-            summary: t('cities.upload.failure'),
-            life: 5000
-        });
+        showToast('error', t('cities.upload.failure'), toast);
+
     }
     clearCallback();
 }
 </script>
 
 <template>
-    <toast />
     <div class="flex gap-20 flex-col not-sm:px-14">
         <h2 class="pt-18 font-semibold text-3xl">{{t('cities.download.header')}}:</h2>
         <div @click="downloadCities" class="flex flex-col self-center justify-center items-center bg-[#BBD1EA] p-5 w-full sm:w-[50%] cursor-pointer rounded-2xl text-gray-600">
