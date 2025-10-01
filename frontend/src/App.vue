@@ -4,22 +4,24 @@
     import ProgressSpinner from 'primevue/progressspinner';
     import Navbar from '@/components/Navbar.vue';
     import PageLayout from '@/components/PageLayout.vue';
+    import { useRoute } from "vue-router"
 
+    const route = useRoute()
     const isLoading = computed(() => useSpinnerStore().isLoading);
 </script>
 
 <template>
     <suspense>
         <div>
-            <navbar/>
+            <Navbar/>
             <div v-if="isLoading" id="spinner">
                 <ProgressSpinner/>
             </div>
             <div v-else>
-                <toast/>
-                <page-layout>
+                <Toast/>
+                <PageLayout>
                     <router-view/>
-                </page-layout>
+                </PageLayout>
             </div>
         </div>
     </suspense>
