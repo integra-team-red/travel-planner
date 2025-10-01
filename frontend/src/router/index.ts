@@ -6,6 +6,7 @@ import LoginView from '@/pages/LoginView.vue';
 import PointsOfInterestView from "@/pages/PointsOfInterestView.vue";
 import POIImportExport from "@/pages/POIImportExport.vue";
 import CitiesImportExport from "@/pages/CitiesImportExport.vue";
+import TripsView from '@/pages/TripsView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,11 @@ const router = createRouter({
             path: '/login',
             name: 'login',
             component: LoginView
+        },
+        {
+            path: '/trips',
+            name: 'trips',
+            component: TripsView
         }
     ],
 })
