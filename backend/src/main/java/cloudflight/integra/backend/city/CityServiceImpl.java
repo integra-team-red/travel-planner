@@ -29,6 +29,7 @@ public class CityServiceImpl implements CityService {
         City dbCity = repository.findById(id).get();
 
         dbCity.setName(newCity.getName());
+        repository.save(dbCity);
         return dbCity;
     }
 

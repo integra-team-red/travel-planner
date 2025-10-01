@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import {reactive, ref} from 'vue';
+    import {ref} from 'vue';
     import type {CityDTO} from '../../typescript-client';
     import {cityApi} from '@/api.ts';
     import CityCard from '@/components/CityCard.vue';
@@ -12,12 +12,20 @@
     const {t} = useI18n();
     const toast = useToast();
 
-    const inAddingMode = ref(false);
+    enum EditMode {
+        NONE,
+        ADD,
+        UPDATE
+    }
+    const inEditingMode = ref<EditMode>(EditMode.NONE);
 
     const cities = ref<CityDTO[]>([]);
     const selectedCities = ref<number[]>([])
+    const currentCity = ref<number>();
 
-    const initialValues = reactive({
+    const formKey = ref<number>(0);
+
+    const initialValues = ref({
         name: ''
     });
 
@@ -44,10 +52,23 @@
         await fetchCities()
     }
 
+    function onCardClick(city: CityDTO) {
+        inEditingMode.value = EditMode.UPDATE;
+        initialValues.value = city;
+        currentCity.value = city.id;
+        formKey.value++;
+    }
+
+    function onAddClick(){
+        inEditingMode.value = EditMode.ADD;
+        initialValues.value = {};
+        formKey.value++;
+    }
+
     function resolver(submitEvent: FormResolverOptions) {
         const errors: FormErrors = {};
 
-        if (submitEvent.values.name == "") {
+        if (submitEvent.values.name === "" || submitEvent.values.name === null || submitEvent.values.name === undefined) {
             errors.name = [{message: t('field-is-required')}];
         }
 
@@ -59,19 +80,26 @@
 
     async function onFormSubmit(submitEvent: FormSubmitEvent) {
         if (submitEvent.valid) {
-            await cityApi.addCity({cityDTO: submitEvent.values});
-            toast.add({
-                severity: 'success',
-                summary: t('cities.added'),
-                life: 3000
-            });
-            await fetchCities();
+            if(inEditingMode.value==EditMode.ADD) {
+                await cityApi.addCity({cityDTO: submitEvent.values});
+                toast.add({
+                    severity: 'success',
+                    summary: t('cities.added'),
+                    life: 3000
+                });
+                await fetchCities();
+            } else if (inEditingMode.value==EditMode.UPDATE){
+                await cityApi.updateCity({cityDTO: submitEvent.values, id: currentCity.value});
+                toast.add({
+                    severity: 'success',
+                    summary: t('cities.added'),
+                    life: 3000
+                });
+                await fetchCities();
+            }
         }
     }
 
-    function toggleInAddingMode() {
-        inAddingMode.value = !inAddingMode.value
-    }
 
 </script>
 
@@ -84,18 +112,20 @@
                 <city-card :city="city"
                            :selected="selectedCities.includes(city.id!)"
                            @checkbox-clicked="select(city)"
+                           @card-clicked="onCardClick(city)"
                 />
             </div>
 
             <div class="flex flex-row justify-between">
                 <Button :label="t('delete')" class="w-3/7" severity="danger" @click="deleteCity"/>
-                <Button :label="t('add')" class="w-3/7" @click="toggleInAddingMode"/>
+                <Button :label="t('add')" class="w-3/7" @click="onAddClick"/>
             </div>
         </div>
-        <div class="lg:w-1/2 w-full flex flex-col justify-start gap-8" v-if="inAddingMode">
-            <h2 class="text-3xl">{{t('cities.add')}}</h2>
+        <div class="lg:w-1/2 w-full flex flex-col justify-start gap-8" v-if="inEditingMode!=EditMode.NONE">
+            <h2 class="text-3xl" v-if="inEditingMode == EditMode.ADD">{{t('cities.add')}}</h2>
+            <h2 class="text-3xl" v-if="inEditingMode == EditMode.UPDATE">{{t('cities.update')}}</h2>
 
-            <Form v-slot="$form" :initialValues="initialValues" :resolver="resolver" @submit="onFormSubmit"
+            <Form :key="formKey" v-slot="$form" :initialValues="initialValues" :resolver="resolver" @submit="onFormSubmit"
                   class="flex flex-col gap-4">
 
                 <div class="flex flex-col gap-1">
@@ -105,7 +135,7 @@
                     </Message>
                 </div>
                 <div class="flex flex-row justify-between">
-                    <Button severity="secondary" class="w-3/7" :label="t('cancel')" @click="toggleInAddingMode"/>
+                    <Button severity="secondary" class="w-3/7" :label="t('cancel')" @click="inEditingMode=EditMode.NONE"/>
                     <Button type="submit" class="w-3/7" severity="primary" :label="t('confirm')"/>
                 </div>
             </Form>

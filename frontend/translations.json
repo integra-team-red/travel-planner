@@ -8,6 +8,8 @@
             "header": "Cities",
             "add": "Add",
             "added": "The city has been added",
+            "update": "Update",
+            "updated": "The city has been updated",
             "download": {
                 "header": "Export existing cities",
                 "prompt": "Download city repository as .JSON file",
@@ -60,6 +62,8 @@
             "header": "Orașe",
             "add": "Adaugă",
             "added": "Orașul a fost adăugat",
+            "update": "Actualizează",
+            "updated": "Orașul a fost actualizat",
             "download": {
                 "header": "Exportă orașele existente",
                 "prompt": "Descarcă repozitoriul de orașe ca fișier .JSON",
