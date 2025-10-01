@@ -27,7 +27,22 @@
         "add": "Add",
         "cancel": "Cancel",
         "close": "Close",
-        "confirm": "Confirm"
+        "confirm": "Confirm",
+        "pois": {
+            "download": {
+                "header": "Export existing points of interest",
+                "prompt": "Download point of interest repository as .JSON file",
+                "success": "Points of interest download succeeded!",
+                "failure": "Points of interest download failed!"
+            },
+            "upload": {
+                "header": "Import points of interest",
+                "prompt": "Select a .JSON file with a list of points of interest to import them",
+                "confirm": "Upload selection",
+                "success": "Points of interest upload succeeded!",
+                "failure": "Points of interest upload failed!"
+            }
+        }
     },
     "ro-RO": {
         "language": {
@@ -57,6 +72,21 @@
         "add": "Adaugă",
         "cancel": "Intrerupe",
         "close": "Inchide",
-        "confirm": "Confirmă"
+        "confirm": "Confirmă",
+        "pois": {
+            "download": {
+                "header": "Exportă punctele de interes existente",
+                "prompt": "Descarcă depozitul de puncte de interes ca fișier .JSON",
+                "success": "Descărcarea punctelor de interes a reușit!",
+                "failure": "Descărcarea punctelor de interes a eșuat!"
+            },
+            "upload": {
+                "header": "Importă puncte de interes",
+                "prompt": "Selectează un fișier .JSON cu o listă de puncte de interes pentru a le importa",
+                "confirm": "Încarcă selecția",
+                "success": "Încărcarea punctelor de interes a reușit!",
+                "failure": "Încărcarea punctelor de interes a eșuat!"
+            }
+        }
     }
 }
