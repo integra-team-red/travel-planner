@@ -32,6 +32,9 @@ public class POIServiceImpl implements POIService {
         DBPOI.setDescription(pointOfInterest.getDescription());
         DBPOI.setCity(pointOfInterest.getCity());
         DBPOI.setPrice(pointOfInterest.getPrice());
+        DBPOI.setType(pointOfInterest.getType());
+
+        repo.save(DBPOI);
 
         return DBPOI;
     }

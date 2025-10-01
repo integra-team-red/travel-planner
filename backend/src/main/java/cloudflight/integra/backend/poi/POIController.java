@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -262,5 +263,24 @@ public class POIController {
         }
         return ResponseEntity.ok(
                 POIMapper.EntityListToDTOList(service.getAllPointsOfInterestSortedByType(pageNumber, pageSize, type)));
+    }
+
+    @Operation(
+            summary = "Get a list of POI types",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Page returned successfully",
+                        content =
+                                @Content(
+                                        mediaType = "application/json",
+                                        array =
+                                                @ArraySchema(
+                                                        schema = @Schema(implementation = PointOfInterestType.class)))),
+                @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+            })
+    @GetMapping(value = "/types")
+    public ResponseEntity<List<PointOfInterestType>> getAllPointsOfInterestTypes() {
+        return ResponseEntity.ok(Arrays.stream(PointOfInterestType.values()).toList());
     }
 }

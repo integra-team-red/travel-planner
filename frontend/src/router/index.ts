@@ -3,6 +3,7 @@ import HomeView from '@/pages/HomeView.vue';
 import CitiesView from '@/pages/CitiesView.vue';
 import RestaurantsView from '@/pages/RestaurantsView.vue';
 import LoginView from '@/pages/LoginView.vue';
+import PointsOfInterestView from "@/pages/PointsOfInterestView.vue";
 import POIImportExport from "@/pages/POIImportExport.vue";
 import CitiesImportExport from "@/pages/CitiesImportExport.vue";
 
@@ -28,6 +29,11 @@ const router = createRouter({
             path: '/cities',
             name: 'cities',
             component: CitiesView
+        },
+        {
+            path: '/points-of-interest',
+            name: 'points-of-interest',
+            component: PointsOfInterestView
         },
         {
             path: '/restaurants',

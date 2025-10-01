@@ -22,6 +22,13 @@
                 "failure": "Cities upload failed!"
             }
         },
+        "poi": {
+            "header": "Points of interest",
+            "add": "Add",
+            "added": "The point of interest has been added",
+            "update": "Update",
+            "updated": "The point of interest has been updated"
+        },
         "field-is-required": "The field is required!",
         "delete": "Delete",
         "add": "Add",
@@ -66,6 +73,13 @@
                 "success": "Încărcarea orașelor a reușit!",
                 "failure": "Încărcarea orașelor a eșuat!"
             }
+        },
+        "poi": {
+            "header": "Puncte de interes",
+            "add": "Adaugă",
+            "added": "Punctul de interes a fost adăugat",
+            "update": "Actualizează",
+            "updated": "Punctul de interes a fost actualizat"
         },
         "field-is-required": "Câmpul este obligatoriu!",
         "delete": "Șterge",
