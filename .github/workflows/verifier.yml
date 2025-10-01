@@ -38,3 +38,6 @@ jobs:
       - name: Run frontend lint 🧶
         working-directory: ./frontend
         run: npm run lint
+
+      - name: Run backend tests 🧪
+        run: ./backend/gradlew -p ./backend/ build
