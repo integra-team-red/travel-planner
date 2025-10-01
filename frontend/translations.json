@@ -7,7 +7,20 @@
         "cities": {
             "header": "Cities",
             "add": "Add",
-            "added": "The city has been added"
+            "added": "The city has been added",
+            "download": {
+                "header": "Export existing cities",
+                "prompt": "Download city repository as .JSON file",
+                "success": "Cities download succeeded!",
+                "failure": "Cities download failed!"
+            },
+            "upload": {
+                "header": "Import cities",
+                "prompt": "Select a .JSON file with a list of cities to import them",
+                "confirm": "Upload selection",
+                "success": "Cities upload succeeded!",
+                "failure": "Cities upload failed!"
+            }
         },
         "field-is-required": "The field is required!",
         "delete": "Delete",
@@ -24,7 +37,20 @@
         "cities": {
             "header": "Orașe",
             "add": "Adaugă",
-            "added": "Orașul a fost adăugat"
+            "added": "Orașul a fost adăugat",
+            "download": {
+                "header": "Exportă orașele existente",
+                "prompt": "Descarcă repozitoriul de orașe ca fișier .JSON",
+                "success": "Descărcarea orașelor a reușit!",
+                "failure": "Descărcarea orașelor a eșuat!"
+            },
+            "upload": {
+                "header": "Importă orașe",
+                "prompt": "Selectează un fișier .JSON cu o listă de orașe pentru a le importa",
+                "confirm": "Încarcă selecția",
+                "success": "Încărcarea orașelor a reușit!",
+                "failure": "Încărcarea orașelor a eșuat!"
+            }
         },
         "field-is-required": "Câmpul este obligatoriu!",
         "delete": "Șterge",
