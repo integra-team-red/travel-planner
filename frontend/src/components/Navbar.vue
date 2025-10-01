@@ -19,6 +19,13 @@
             command: () => {
                 router.push('/cities');
             }
+        },
+        {
+            label: 'Points of interest',
+            icon: 'pi pi-building',
+            command: () => {
+                router.push('/points-of-interest');
+            }
         }
     ]
 </script>

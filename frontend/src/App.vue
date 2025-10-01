@@ -21,6 +21,7 @@
                     <router-view/>
                 </page-layout>
             </div>
+        </div>
     </suspense>
 </template>
 
