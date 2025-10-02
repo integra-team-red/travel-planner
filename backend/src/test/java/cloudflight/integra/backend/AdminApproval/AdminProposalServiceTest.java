@@ -95,6 +95,20 @@ class AdminProposalServiceTest {
     }
 
     @Test
+    void getPendingApprovals_ShouldReturnOnlyPendingProposals() {
+        Proposal approvedProposal = new Proposal();
+        approvedProposal.setId(30L);
+        approvedProposal.setName("Approved One");
+        approvedProposal.setStatus(Status.APPROVED);
+        when(proposalRepository.findByStatus(Status.PENDING))
+                .thenReturn(java.util.List.of(restaurantProposal, poiProposal));
+        var results = service.getPendingApprovals();
+        assertThat(results).hasSize(2);
+        assertThat(results).allMatch(p -> p.getStatus() == Status.PENDING);
+        verify(proposalRepository, times(1)).findByStatus(Status.PENDING);
+    }
+
+    @Test
     void approvePoiProposal_ShouldSavePoi() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(adminUser));
         when(proposalRepository.findById(20L)).thenReturn(Optional.of(poiProposal));

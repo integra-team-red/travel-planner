@@ -85,4 +85,8 @@ public class AdminProposalService {
         proposal.setStatus(Status.REJECTED);
         return proposalRepository.save(proposal);
     }
+
+    public List<Proposal> getPendingApprovals() {
+        return proposalRepository.findByStatus(Status.PENDING);
+    }
 }
