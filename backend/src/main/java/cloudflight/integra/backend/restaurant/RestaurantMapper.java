@@ -8,7 +8,7 @@ public class RestaurantMapper {
         return new RestaurantDTO(
                 restaurant.getId(),
                 restaurant.getName(),
-                restaurant.getCity() != null ? restaurant.getCity().getId() : null,
+                restaurant.getCityId(),
                 restaurant.getAveragePrice(),
                 restaurant.getCuisineType());
     }

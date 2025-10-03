@@ -53,6 +53,30 @@
                 "success": "Points of interest upload succeeded!",
                 "failure": "Points of interest upload failed!"
             }
+        },
+        "restaurants": {
+            "header": "Restaurant",
+            "add": "Add",
+            "added": "The restaurant has been added",
+            "update": "Update",
+            "updated": "The restaurant has been updated",
+            "deleted": "The selected restaurants of interest have been deleted"
+        },
+
+        "restaurant": {
+            "download": {
+                "header": "Export existing restaurants",
+                "prompt": "Download restaurant repository as .JSON file",
+                "success": "Restaurant download succeeded!",
+                "failure": "Restaurant download failed!"
+            },
+            "upload": {
+                "header": "Import restaurants",
+                "prompt": "Select a .JSON file with a list of restaurants to import them",
+                "confirm": "Upload selection",
+                "success": "Restaurant upload succeeded!",
+                "failure": "Restaurant upload failed!"
+            }
         }
     },
     "ro-RO": {
@@ -108,6 +132,29 @@
                 "confirm": "Încarcă selecția",
                 "success": "Încărcarea punctelor de interes a reușit!",
                 "failure": "Încărcarea punctelor de interes a eșuat!"
+            }
+        },
+        "restaurants": {
+            "header": "Restaurante",
+            "add": "Adaugă",
+            "added": "Restaurantul a fost adăugat",
+            "update": "Actualizează",
+            "updated": "Restaurantul a fost actualizat",
+            "deleted": "Restaurantele selectate au fost șterse"
+        },
+        "restaurant": {
+            "download": {
+                "header": "Exportă restaurantele existente",
+                "prompt": "Descarcă depozitul de restaurante ca fișier .JSON",
+                "success": "Descărcarea restaurantelor a reușit!",
+                "failure": "Descărcarea restaurantelor a eșuat!"
+            },
+            "upload": {
+                "header": "Importă restaurante",
+                "prompt": "Selectează un fișier .JSON cu o listă de restaurante pentru a le importa",
+                "confirm": "Încarcă selecția",
+                "success": "Încărcarea restaurantelor a reușit!",
+                "failure": "Încărcarea restaurantelor a eșuat!"
             }
         }
     }

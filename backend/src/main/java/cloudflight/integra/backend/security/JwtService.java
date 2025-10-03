@@ -1,26 +1,23 @@
 package cloudflight.integra.backend.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import java.security.NoSuchAlgorithmException;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Date;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    public static final long TOKEN_VALIDITY = ChronoUnit.DAYS.getDuration()
-            .toMillis();
-    private final SecretKey SECRET = KeyGenerator.getInstance("HmacSHA256")
-            .generateKey();
+    public static final long TOKEN_VALIDITY = ChronoUnit.DAYS.getDuration().toMillis();
+    private final SecretKey SECRET = KeyGenerator.getInstance("HmacSHA256").generateKey();
 
-    public JwtService() throws NoSuchAlgorithmException {
-    }
+    public JwtService() throws NoSuchAlgorithmException {}
 
     public String generateToken(String email, Collection<? extends GrantedAuthority> authorities) {
         var userRole = authorities.stream()
@@ -61,15 +58,10 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) throws JwtException {
-        return Jwts.parser()
-                .verifyWith(SECRET)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        return Jwts.parser().verifyWith(SECRET).build().parseSignedClaims(token).getPayload();
     }
 
     private boolean isTokenExpired(Claims tokenPayload) {
-        return tokenPayload.getExpiration()
-                .before(new Date());
+        return tokenPayload.getExpiration().before(new Date());
     }
 }
