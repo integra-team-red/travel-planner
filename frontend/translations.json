@@ -10,6 +10,7 @@
             "added": "The city has been added",
             "update": "Update",
             "updated": "The city has been updated",
+            "deleted": "The selected cities have been deleted",
             "download": {
                 "header": "Export existing cities",
                 "prompt": "Download city repository as .JSON file",
@@ -29,7 +30,8 @@
             "add": "Add",
             "added": "The point of interest has been added",
             "update": "Update",
-            "updated": "The point of interest has been updated"
+            "updated": "The point of interest has been updated",
+            "deleted": "The selected points of interest have been deleted"
         },
         "field-is-required": "The field is required!",
         "delete": "Delete",
@@ -64,6 +66,7 @@
             "added": "Orașul a fost adăugat",
             "update": "Actualizează",
             "updated": "Orașul a fost actualizat",
+            "deleted": "Orașele selectate au fost șterse!",
             "download": {
                 "header": "Exportă orașele existente",
                 "prompt": "Descarcă repozitoriul de orașe ca fișier .JSON",
@@ -83,13 +86,14 @@
             "add": "Adaugă",
             "added": "Punctul de interes a fost adăugat",
             "update": "Actualizează",
-            "updated": "Punctul de interes a fost actualizat"
+            "updated": "Punctul de interes a fost actualizat",
+            "deleted": "Punctele de interes selectate au fost șterse"
         },
         "field-is-required": "Câmpul este obligatoriu!",
         "delete": "Șterge",
         "add": "Adaugă",
-        "cancel": "Intrerupe",
-        "close": "Inchide",
+        "cancel": "Întrerupe",
+        "close": "Închide",
         "confirm": "Confirmă",
         "pois": {
             "download": {

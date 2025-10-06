@@ -5,6 +5,7 @@
     import PointOfInterestCard from '@/components/PointOfInterestCard.vue';
     import {useI18n} from 'vue-i18n';
     import {useToast} from 'primevue';
+    import {showToast} from '@/utils/toast.utils.ts'
     import type {FormSubmitEvent} from '@primevue/forms';
     import type {FormResolverOptions} from '@primevue/forms/form';
     import type {FormErrors} from '@/types/forms.types.ts';
@@ -66,6 +67,7 @@
         for (const id of selectedPOIs.value) {
             await poiApi.deletePointOfInterest({id});
         }
+        showToast('success', t('poi.deleted'), toast);
         selectedPOIs.value = [];
         await fetchPOIs()
         inEditingMode.value = EditMode.NONE;
@@ -115,21 +117,14 @@
         if (submitEvent.valid) {
             if(inEditingMode.value==EditMode.ADD) {
                 await poiApi.addPointOfInterest({pOIDTO: submitEvent.values});
-                toast.add({
-                    severity: 'success',
-                    summary: t('poi.added'),
-                    life: 3000
-                });
+                showToast('success', t('poi.added'), toast);
                 await fetchPOIs();
             } else if (inEditingMode.value==EditMode.UPDATE){
                 await poiApi.updatePointOfInterest({pOIDTO: submitEvent.values, id: currentPOI.value ?? 0});
-                toast.add({
-                    severity: 'success',
-                    summary: t('poi.updated'),
-                    life: 3000
-                });
+                showToast('success', t('poi.updated'), toast);
                 await fetchPOIs();
             }
+            inEditingMode.value = EditMode.NONE;
         }
     }
 
