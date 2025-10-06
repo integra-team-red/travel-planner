@@ -25,7 +25,7 @@
 
     const formKey = ref<number>(0);
 
-    const initialValues = ref({
+    const initialValues = ref<CityDTO>({
         name: ''
     });
 
@@ -89,7 +89,7 @@
                 });
                 await fetchCities();
             } else if (inEditingMode.value==EditMode.UPDATE){
-                await cityApi.updateCity({cityDTO: submitEvent.values, id: currentCity.value});
+                await cityApi.updateCity({cityDTO: submitEvent.values, id: currentCity.value ?? 0});
                 toast.add({
                     severity: 'success',
                     summary: t('cities.added'),

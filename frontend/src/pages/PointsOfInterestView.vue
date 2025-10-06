@@ -26,15 +26,15 @@
     const selectedPOIs = ref<number[]>([])
     const currentPOI = ref<number>();
 
-    const initialValues = ref({
+    const initialValues = ref<POIDTO>({
         name: '',
         description: '',
-        cityId: '',
-        price: '',
+        cityId: 0,
+        price: 0,
         type: ''
     });
 
-    const types = ref<[]>([]);
+    const types = ref<string[]>([]);
     const formKey = ref<number>(0);
 
     await fetchPOIs();
@@ -122,7 +122,7 @@
                 });
                 await fetchPOIs();
             } else if (inEditingMode.value==EditMode.UPDATE){
-                await poiApi.updatePointOfInterest({pOIDTO: submitEvent.values, id: currentPOI.value});
+                await poiApi.updatePointOfInterest({pOIDTO: submitEvent.values, id: currentPOI.value ?? 0});
                 toast.add({
                     severity: 'success',
                     summary: t('poi.updated'),
