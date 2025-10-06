@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import {ref} from 'vue';
-    import type {POIDTO} from '../../typescript-client';
-    import {poiApi} from '@/api.ts';
+    import type {POIDTO, CityDTO} from '../../typescript-client';
+    import {poiApi, cityApi} from '@/api.ts';
     import PointOfInterestCard from '@/components/PointOfInterestCard.vue';
     import {useI18n} from 'vue-i18n';
     import {useToast} from 'primevue';
@@ -22,6 +22,7 @@
     const inEditingMode = ref<EditMode>(EditMode.NONE);
 
     const pois = ref<POIDTO[]>([]);
+    const cities = ref<CityDTO[]>([]);
     const selectedPOIs = ref<number[]>([])
     const currentPOI = ref<number>();
 
@@ -37,10 +38,15 @@
     const formKey = ref<number>(0);
 
     await fetchPOIs();
+    await fetchCities();
     await fetchTypes();
 
     async function fetchPOIs() {
         pois.value = await poiApi.getPointsOfInterest();
+    }
+
+    async function fetchCities() {
+        cities.value = await cityApi.getCities();
     }
 
     async function fetchTypes() {
@@ -163,7 +169,7 @@
                     <Message v-if="$form.description?.invalid" severity="error" size="small" variant="simple">
                         {{$form.description.error?.message}}
                     </Message>
-                    <InputText name="cityId" type="text" placeholder="City ID" fluid/>
+                    <Select name="cityId" :options="cities" optionLabel="name" optionValue="id" placeholder="City" fluid />
                     <Message v-if="$form.cityId?.invalid" severity="error" size="small" variant="simple">
                         {{$form.cityId.error?.message}}
                     </Message>
