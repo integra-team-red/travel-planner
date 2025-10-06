@@ -5,6 +5,7 @@
     import CityCard from '@/components/CityCard.vue';
     import {useI18n} from 'vue-i18n';
     import {useToast} from 'primevue';
+    import {showToast} from '@/utils/toast.utils.ts'
     import type {FormSubmitEvent} from '@primevue/forms';
     import type {FormResolverOptions} from '@primevue/forms/form';
     import type {FormErrors} from '@/types/forms.types.ts';
@@ -48,7 +49,9 @@
         for (const id of selectedCities.value) {
             await cityApi.deleteCity({id});
         }
+        showToast('success', t('cities.deleted'), toast);
         selectedCities.value = [];
+        inEditingMode.value = EditMode.NONE;
         await fetchCities()
     }
 
@@ -82,21 +85,14 @@
         if (submitEvent.valid) {
             if(inEditingMode.value==EditMode.ADD) {
                 await cityApi.addCity({cityDTO: submitEvent.values});
-                toast.add({
-                    severity: 'success',
-                    summary: t('cities.added'),
-                    life: 3000
-                });
+                showToast('success', t('cities.added'), toast);
                 await fetchCities();
             } else if (inEditingMode.value==EditMode.UPDATE){
                 await cityApi.updateCity({cityDTO: submitEvent.values, id: currentCity.value ?? 0});
-                toast.add({
-                    severity: 'success',
-                    summary: t('cities.added'),
-                    life: 3000
-                });
+                showToast('success', t('cities.updated'), toast);
                 await fetchCities();
             }
+            inEditingMode.value = EditMode.NONE;
         }
     }
 
