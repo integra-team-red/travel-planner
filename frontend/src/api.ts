@@ -8,9 +8,7 @@ import {
 } from '../typescript-client';
 
 function getToken() {
-    const token = localStorage.getItem('jwt') || '';
-    console.log(">>>>>>>>> token: ", token)
-    return token;
+    return localStorage.getItem('jwt') || '';
 }
 
 const config = new Configuration({

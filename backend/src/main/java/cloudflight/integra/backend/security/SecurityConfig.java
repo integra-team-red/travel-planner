@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,24 +41,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // TODO(MC): Research if CSRF should be enabled / disabled
         http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/testAuth/1")
+                .requestMatchers("/testAuth/login")
                 .permitAll()
-                .requestMatchers(HttpMethod.POST, "/testAuth/login")
+                .requestMatchers("/v3/api-docs.yaml")
                 .permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/proposals/**")
-                .permitAll()
-                .requestMatchers(HttpMethod.POST, "/admin/proposals/*/approve")
-                .hasRole("admin")
-                .requestMatchers(HttpMethod.POST, "/admin/proposals/*/reject")
-                .hasRole("admin")
-                .requestMatchers(HttpMethod.GET, "/testAuth/2")
-                .authenticated()
-                .requestMatchers(HttpMethod.POST, "/testAuth/3")
-                .permitAll()
-                .requestMatchers(HttpMethod.GET, "/testAuth/3")
+                .requestMatchers("/admin/proposals/**")
                 .hasRole("admin")
                 .anyRequest()
-                .permitAll());
+                .authenticated());
 
         // Making session management stateless so as to adhere to REST principles
         http.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
