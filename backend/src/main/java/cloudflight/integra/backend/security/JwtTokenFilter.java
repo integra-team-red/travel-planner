@@ -1,6 +1,6 @@
 package cloudflight.integra.backend.security;
 
-import cloudflight.integra.backend.user.UserRepository;
+import cloudflight.integra.backend.user.*;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +19,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserRepository userRepository;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public JwtTokenFilter(JwtService jwtService, UserRepository userRepository) {
+    public JwtTokenFilter(JwtService jwtService, UserServiceImpl userService) {
         this.jwtService = jwtService;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        UserDetails userDetails = userRepository.findUserByEmail(jwtService.extractEmailFromToken(token));
+        UserDetails userDetails = userService.loadUserByUsername(jwtService.extractEmailFromToken(token));
 
         var authentication = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails == null ? List.of() : userDetails.getAuthorities());
