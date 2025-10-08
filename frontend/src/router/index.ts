@@ -7,6 +7,7 @@ import PointsOfInterestView from "@/pages/PointsOfInterestView.vue";
 import POIImportExport from "@/pages/POIImportExport.vue";
 import CitiesImportExport from "@/pages/CitiesImportExport.vue";
 import TripsView from '@/pages/TripsView.vue';
+import '@/interceptor/interceptor.ts'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),

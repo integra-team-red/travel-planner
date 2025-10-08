@@ -1,24 +1,25 @@
 package cloudflight.integra.backend.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
 import java.security.NoSuchAlgorithmException;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Date;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    private final SecretKey SECRET;
+    public static final long TOKEN_VALIDITY = ChronoUnit.DAYS.getDuration()
+            .toMillis();
+    private final SecretKey SECRET = KeyGenerator.getInstance("HmacSHA256")
+            .generateKey();
 
-    // TODO(MC): Maybe update this to use asymmetric keys and get the key from
-    // env.properties
     public JwtService() throws NoSuchAlgorithmException {
-        SECRET = KeyGenerator.getInstance("HmacSHA256").generateKey();
     }
 
     public String generateToken(String email, Collection<? extends GrantedAuthority> authorities) {
@@ -28,14 +29,18 @@ public class JwtService {
                 .findFirst()
                 .orElse("ROLE_user");
 
-        int validStateDurationInMillis = 30 * 60 * 1000;
+        Date now = new Date(System.currentTimeMillis());
         return Jwts.builder()
                 .claim("role", userRole.substring("ROLE_".length()))
                 .subject(email)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + validStateDurationInMillis))
+                .issuedAt(now)
+                .expiration(getExpiration(now))
                 .signWith(SECRET)
                 .compact();
+    }
+
+    private static Date getExpiration(Date now) {
+        return new Date(now.getTime() + TOKEN_VALIDITY);
     }
 
     public boolean isTokenValid(String token) {
@@ -56,10 +61,15 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) throws JwtException {
-        return Jwts.parser().verifyWith(SECRET).build().parseSignedClaims(token).getPayload();
+        return Jwts.parser()
+                .verifyWith(SECRET)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private boolean isTokenExpired(Claims tokenPayload) {
-        return tokenPayload.getExpiration().before(new Date());
+        return tokenPayload.getExpiration()
+                .before(new Date());
     }
 }

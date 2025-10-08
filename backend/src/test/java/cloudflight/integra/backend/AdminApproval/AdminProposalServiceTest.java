@@ -52,8 +52,8 @@ class AdminProposalServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        adminUser = new User(1L, "admin@example.com", "pw", Role.ROLE_ADMIN);
-        regularUser = new User(2L, "user@example.com", "pw", Role.ROLE_USER);
+        adminUser = new User(1L, "admin@example.com", "pw", Role.ADMIN);
+        regularUser = new User(2L, "user@example.com", "pw", Role.USER);
 
         // create a City entity
         City rome = new City().setId(1L).setName("Rome");

@@ -38,7 +38,7 @@ public class AdminProposalService {
         User user = userRepository
                 .findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("user hasn't been found"));
-        if (user.getRole() != Role.ROLE_ADMIN) {
+        if (user.getRole() != Role.ADMIN) {
             throw new SecurityException("user must be an admin!!");
         }
         Proposal proposal = proposalRepository
