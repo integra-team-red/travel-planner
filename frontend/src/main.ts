@@ -11,6 +11,7 @@ import './style.css'
 import {createI18n} from "vue-i18n";
 import translations from "../translations.json"
 import {ToastService} from 'primevue';
+import ConfirmationService from 'primevue/confirmationservice';
 
 const app = createApp(App)
 
@@ -34,3 +35,4 @@ app.use(PrimeVue, {
 
 app.mount('#app')
 app.use(ToastService);
+app.use(ConfirmationService);
