@@ -25,7 +25,6 @@ public class ProposalServiceImpl implements ProposalService {
                 .findById(proposal.getId())
                 .orElseThrow(() -> new RuntimeException("Proposal not found: " + proposal.getId()));
         p.setName(proposal.getName());
-        p.setStatus(proposal.getStatus());
         p.setType(proposal.getType());
         p.setCity(proposal.getCity());
         p.setCuisineType(proposal.getCuisineType());
