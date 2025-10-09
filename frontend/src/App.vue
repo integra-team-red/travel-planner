@@ -15,6 +15,7 @@
                 <ProgressSpinner/>
             </div>
             <div v-else>
+                <ConfirmDialog/>
                 <Toast/>
                 <PageLayout>
                     <router-view/>
