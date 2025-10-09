@@ -11,10 +11,16 @@ import UserProfileView from '@/pages/UserProfileView.vue';
 import SignUpView from '@/pages/SignUpView.vue';
 
 import '@/interceptor/interceptor.ts'
+import ProposalReviewView from "@/pages/ProposalReviewView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        {
+            path: '/proposals/review',
+            name: 'proposalsReview',
+            component: ProposalReviewView
+        },
         {
             path: '/poiImportExport',
             name: 'poiImportExport',
