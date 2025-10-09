@@ -4,6 +4,12 @@
             "english": "english",
             "romanian": "romanian"
         },
+        "restaurants": {
+            "header": "Restaurants"
+        },
+        "trips": {
+            "header": "Trips"
+        },
         "cities": {
             "header": "Cities",
             "add": "Add",
@@ -33,8 +39,7 @@
             "updated": "The point of interest has been updated",
             "deleted": "The selected points of interest have been deleted"
         },
-        "field-is-required": "The field is required!",
-        "delete": "Delete",
+        "home": "Home",
         "add": "Add",
         "cancel": "Cancel",
         "close": "Close",
@@ -52,13 +57,23 @@
                 "confirm": "Upload selection",
                 "success": "Points of interest upload succeeded!",
                 "failure": "Points of interest upload failed!"
-            }
+            },
+            "header": "Points of Interest"
+        },
+        "proposals": {
+            "header": "Proposals"
         }
     },
     "ro-RO": {
         "language": {
             "english": "engleză",
             "romanian": "română"
+        },
+        "restaurants": {
+            "header": "Restaurante"
+        },
+        "trips": {
+            "header": "Călătorii"
         },
         "cities": {
             "header": "Orașe",
@@ -89,8 +104,7 @@
             "updated": "Punctul de interes a fost actualizat",
             "deleted": "Punctele de interes selectate au fost șterse"
         },
-        "field-is-required": "Câmpul este obligatoriu!",
-        "delete": "Șterge",
+        "home": "Acasă",
         "add": "Adaugă",
         "cancel": "Întrerupe",
         "close": "Închide",
@@ -108,7 +122,11 @@
                 "confirm": "Încarcă selecția",
                 "success": "Încărcarea punctelor de interes a reușit!",
                 "failure": "Încărcarea punctelor de interes a eșuat!"
-            }
+            },
+            "proposals": {
+                "header": "Proposals"
+            },
+            "header": "Puncte de Interes"
         }
     }
 }
