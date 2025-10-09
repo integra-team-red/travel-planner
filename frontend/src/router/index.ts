@@ -9,13 +9,18 @@ import CitiesImportExport from "@/pages/CitiesImportExport.vue";
 import TripsView from '@/pages/TripsView.vue';
 import UserProfileView from '@/pages/UserProfileView.vue';
 import SignUpView from '@/pages/SignUpView.vue';
-
-import '@/interceptor/interceptor.ts'
 import ProposalReviewView from "@/pages/ProposalReviewView.vue";
+import ProposalsView from "@/pages/ProposalsView.vue";
+import '@/interceptor/interceptor.ts'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        {
+            path: '/proposals',
+            name: 'proposals',
+            component: ProposalsView
+        },
         {
             path: '/proposals/review',
             name: 'proposalsReview',
