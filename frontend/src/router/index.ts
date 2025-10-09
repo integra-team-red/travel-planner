@@ -7,6 +7,9 @@ import PointsOfInterestView from "@/pages/PointsOfInterestView.vue";
 import POIImportExport from "@/pages/POIImportExport.vue";
 import CitiesImportExport from "@/pages/CitiesImportExport.vue";
 import TripsView from '@/pages/TripsView.vue';
+import UserProfileView from '@/pages/UserProfileView.vue';
+import SignUpView from '@/pages/SignUpView.vue';
+
 import '@/interceptor/interceptor.ts'
 
 const router = createRouter({
@@ -51,7 +54,19 @@ const router = createRouter({
             path: '/trips',
             name: 'trips',
             component: TripsView
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: UserProfileView
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: SignUpView
         }
+
+
     ],
 })
 

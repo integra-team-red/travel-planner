@@ -4,13 +4,17 @@
     import ProgressSpinner from 'primevue/progressspinner';
     import Navbar from '@/components/Navbar.vue';
     import PageLayout from '@/components/PageLayout.vue';
+    import {useUserStore} from "@/stores/user.ts";
+
     const isLoading = computed(() => useSpinnerStore().isLoading);
+    const userStore = useUserStore()
+
 </script>
 
 <template>
     <suspense>
         <div>
-            <Navbar/>
+            <Navbar v-if="userStore.isLoggedIn"/>
             <div v-if="isLoading" id="spinner">
                 <ProgressSpinner/>
             </div>
