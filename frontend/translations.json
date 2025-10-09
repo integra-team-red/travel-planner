@@ -33,12 +33,22 @@
             "updated": "The point of interest has been updated",
             "deleted": "The selected points of interest have been deleted"
         },
-        "field-is-required": "The field is required!",
-        "delete": "Delete",
+        "formFieldError": {
+            "fieldRequired": "The field is required!",
+            "fieldType": "Field must be a {type}!",
+            "fieldLength": {
+                "min": "Field must contain at least {lowerBound} characters!"
+            }
+        },
+        "home": "Home",
+        "number": "number",
+        "string": "string of characters",
+        "delete": "Delete Selected",
         "add": "Add",
         "cancel": "Cancel",
         "close": "Close",
         "confirm": "Confirm",
+        "clear": "Clear Selection",
         "pois": {
             "download": {
                 "header": "Export existing points of interest",
@@ -55,16 +65,28 @@
             }
         },
         "proposals": {
-            "review": {
-                "header": "Selected Proposal",
-                "approve": {
-                    "success": "Proposal successfully approved!",
-                    "failure": "Proposal approval failed!"
-                },
-                "reject": {
-                    "success": "Proposal successfully rejected!",
-                    "failure": "Proposal rejection failed!"
+            "delete": {
+                "success": "Proposal successfully deleted!",
+                "failure": {
+                    "generic": "Proposal deletion failed!",
+                    "disallowApproved": "Cannot delete approved proposals."
                 }
+            },
+            "update": {
+                "success": "Proposal successfully updated!",
+                "failure": {
+                    "generic": "Proposal update failed!",
+                    "disallowNonPending": "Cannot update processed proposals."
+                }
+            },
+            "add": {
+                "success": "Proposal successfully submitted!",
+                "failure": "Proposal submission failed!"
+            },
+            "header": "Proposals",
+            "crudHeader": {
+                "add": "Submit a New Proposal",
+                "update": "Edit Proposal"
             }
         }
     },
@@ -102,12 +124,22 @@
             "updated": "Punctul de interes a fost actualizat",
             "deleted": "Punctele de interes selectate au fost șterse"
         },
-        "field-is-required": "Câmpul este obligatoriu!",
-        "delete": "Șterge",
+        "formFieldError": {
+            "fieldRequired": "Câmpul este obligatoriu!",
+            "fieldType": "Câmpul trebuie să fie un {type}!",
+            "fieldLength": {
+                "min": "Câmpul trebuie să conțină cel puțin {lowerBound} caractere!"
+            }
+        },
+        "home": "Acasă",
+        "number": "număr",
+        "string": "șir de caractere",
+        "delete": "Șterge Selecția",
         "add": "Adaugă",
         "cancel": "Întrerupe",
         "close": "Închide",
         "confirm": "Confirmă",
+        "clear": "Golește Selecția",
         "pois": {
             "download": {
                 "header": "Exportă punctele de interes existente",
@@ -124,16 +156,28 @@
             }
         },
         "proposals": {
-            "review": {
-                "header": "Propunerea Selectată",
-                "approve": {
-                    "success": "Propunerea a fost aprobată cu succes!",
-                    "failure": "Aprobarea propunerii a eșuat!"
-                },
-                "reject": {
-                    "success": "Propunerea a fost respinsă cu succes!",
-                    "failure": "Respingerea propunerii a eșuat!"
+            "delete": {
+                "success": "Propunerea a fost ștearsă cu succes!",
+                "failure": {
+                    "generic": "Ștergerea propunerii a eșuat!",
+                    "disallowApproved": "Nu se pot șterge propunerile aprobate."
                 }
+            },
+            "update": {
+                "success": "Propunerea a fost actualizată cu succes!",
+                "failure": {
+                    "generic": "Actualizarea propunerii a eșuat!",
+                    "disallowNonPending": "Nu se pot actualiza propunerile procesate."
+                }
+            },
+            "add": {
+                "success": "Propunerea a fost trimisă cu succes!",
+                "failure": "Trimiterea propunerii a eșuat!"
+            },
+            "header": "Propuneri",
+            "crudHeader": {
+                "add": "Trimite o Propunere Nouă",
+                "update": "Editează Propunerea"
             }
         }
     }
