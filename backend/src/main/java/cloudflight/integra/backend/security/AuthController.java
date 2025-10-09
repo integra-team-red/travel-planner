@@ -1,13 +1,14 @@
 package cloudflight.integra.backend.security;
 
-import cloudflight.integra.backend.user.User;
-import io.jsonwebtoken.JwtException;
+import cloudflight.integra.backend.user.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
@@ -75,20 +78,30 @@ public class AuthController {
         }
     }
 
+    @Operation(
+            summary = "get the authenticated user",
+            description = "returns info about the user based on the jwt token",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "user's info successfully returned",
+                        content =
+                                @Content(
+                                        mediaType = "application/json",
+                                        schema = @Schema(implementation = UserDTO.class))),
+                @ApiResponse(
+                        responseCode = "401",
+                        description = "invalid or missing token",
+                        content = @Content(schema = @Schema(example = "invalid token")))
+            })
     @GetMapping("/me")
-    public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader("Authorization");
-
-        if (authorizationHeader == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-        }
-
-        String token = authorizationHeader.substring(7);
-        try {
-            String email = jwtService.extractEmailFromToken(token);
-            return ResponseEntity.ok(email);
-        } catch (JwtException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-        }
+    public ResponseEntity<UserDTO> getCurrentUser(HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDTO user = new UserDTO(
+                authentication.getName(),
+                authentication.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()));
+        return ResponseEntity.ok(user);
     }
 }
