@@ -53,7 +53,7 @@
 <template>
     <Menubar :model="items" class="lg:max-w-6xl mx-auto mt-2">
         <template #start>
-            <img src="/images/logo.png" alt="Logo" class="h-10 w-10" />
+            <img src="/images/logo.png" alt="Logo" class="h-10 w-10" @click="router.push('/')" />
         </template>
         <template #item="{ item, props, hasSubmenu, root }">
             <a v-ripple class="flex items-center" v-bind="props.action" :class="{'bg-gray-400 text-white': item.path === '/' ? route.path === '/' : route.path.startsWith(item.path)}">
