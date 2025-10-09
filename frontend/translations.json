@@ -76,6 +76,17 @@
             "header": "Points of Interest"
         },
         "proposals": {
+            "review": {
+                "header": "Selected Proposal",
+                "approve": {
+                    "success": "Proposal successfully approved!",
+                    "failure": "Proposal approval failed!"
+                },
+                "reject": {
+                    "success": "Proposal successfully rejected!",
+                    "failure": "Proposal rejection failed!"
+                }
+            },
             "header": "Proposals"
         },
         "restaurant": {
@@ -171,6 +182,17 @@
             "header": "Puncte de Interes"
         },
         "proposals": {
+            "review": {
+                "header": "Propunerea Selectată",
+                "approve": {
+                    "success": "Propunerea a fost aprobată cu succes!",
+                    "failure": "Aprobarea propunerii a eșuat!"
+                },
+                "reject": {
+                    "success": "Propunerea a fost respinsă cu succes!",
+                    "failure": "Respingerea propunerii a eșuat!"
+                }
+            },
             "header": "Proposals"
         },
         "restaurant": {
