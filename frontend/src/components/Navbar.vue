@@ -2,12 +2,16 @@
     import type {MenuItem} from 'primevue/menuitem';
     import {useRouter, useRoute} from 'vue-router';
     import LanguageSelectBox from '@/components/LanguageSelectBox.vue';
+    import {useI18n} from "vue-i18n";
+    import {computed} from "vue";
 
+    const { t } = useI18n();
     const router = useRouter();
     const route = useRoute();
-    const items: (MenuItem & { path: string })[] = [
+
+    const items = computed<(MenuItem & { path: string })[]>(() => [
         {
-            label: 'Home',
+            label: t('home'),
             icon: 'pi pi-link',
             path: '/',
             command: () => {
@@ -15,7 +19,7 @@
             }
         },
         {
-            label: 'Cities',
+            label: t('cities.header'),
             icon: 'pi pi-building',
             path: '/cities',
             command: () => {
@@ -23,7 +27,7 @@
             }
         },
         {
-            label: 'Trips',
+            label: t('trips.header'),
             icon: 'pi pi-briefcase',
             path: '/trips',
             command: () => {
@@ -31,7 +35,7 @@
             }
         },
         {
-            label: 'Restaurants',
+            label: t('restaurants.header'),
             icon: 'pi pi-link',
             path: '/restaurants',
             command: () => {
@@ -39,14 +43,22 @@
             }
         },
         {
-            label: 'Points of Interest',
+            label: t('pois.header'),
             icon: 'pi pi-link',
             path: '/points-of-interest',
             command: () => {
                 router.push('/points-of-interest');
             }
+        },
+        {
+            label: t('proposals.header'),
+            icon: 'pi pi-send',
+            path: '/proposals',
+            command: () => {
+                router.push('/proposals');
+            }
         }
-    ]
+    ])
 </script>
 
 <template>
