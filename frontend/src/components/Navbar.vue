@@ -5,7 +5,6 @@
 
     const router = useRouter();
     const route = useRoute();
-
     const items: (MenuItem & { path: string })[] = [
         {
             label: 'Home',
@@ -72,7 +71,9 @@
                 <language-select-box class="mr-2"/>
                 <div class="flex items-center gap-2">
                     <InputText placeholder="Search" type="text" class="w-32 sm:w-auto"/>
-                    <Avatar image="/img.png" shape="circle"/>
+                    <RouterLink to="/profile">
+                        <Avatar image="/img.png" shape="circle" />
+                    </RouterLink>
                 </div>
             </div>
         </template>

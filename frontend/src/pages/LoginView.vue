@@ -15,9 +15,8 @@
     const router = useRouter();
 
     async function login() {
-        const user = {email: email.value, password: password.value};
-        const res = await authApi.loginRaw({user})
-
+        const user = { email: email.value, password: password.value };
+        const res = await authApi.loginRaw({ user });
 
         if (res.raw.ok) {
             const token = res.raw.headers.get("Authorization");
@@ -57,8 +56,7 @@
                     <div class="text-center w-full">
                         <span
                             class="text-surface-700 dark:text-surface-200 leading-normal">Don't have an account?</span>
-                        <a class="text-primary font-medium ml-1 cursor-pointer hover:text-primary-emphasis">Create
-                            today!</a>
+                        <a class="text-primary font-medium ml-1 cursor-pointer hover:text-primary-emphasis" @click="router.push('/register')">Create today!</a>
                     </div>
                 </div>
             </div>
