@@ -53,6 +53,19 @@
                 "success": "Points of interest upload succeeded!",
                 "failure": "Points of interest upload failed!"
             }
+        },
+        "proposals": {
+            "review": {
+                "header": "Selected Proposal",
+                "approve": {
+                    "success": "Proposal successfully approved!",
+                    "failure": "Proposal approval failed!"
+                },
+                "reject": {
+                    "success": "Proposal successfully rejected!",
+                    "failure": "Proposal rejection failed!"
+                }
+            }
         }
     },
     "ro-RO": {
@@ -108,6 +121,19 @@
                 "confirm": "Încarcă selecția",
                 "success": "Încărcarea punctelor de interes a reușit!",
                 "failure": "Încărcarea punctelor de interes a eșuat!"
+            }
+        },
+        "proposals": {
+            "review": {
+                "header": "Propunerea Selectată",
+                "approve": {
+                    "success": "Propunerea a fost aprobată cu succes!",
+                    "failure": "Aprobarea propunerii a eșuat!"
+                },
+                "reject": {
+                    "success": "Propunerea a fost respinsă cu succes!",
+                    "failure": "Respingerea propunerii a eșuat!"
+                }
             }
         }
     }

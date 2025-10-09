@@ -1,4 +1,5 @@
 import {
+    AdminProposalControllerApi,
     AuthControllerApi,
     CityControllerApi,
     Configuration,
@@ -16,10 +17,11 @@ const config = new Configuration({
     basePath: '/api'
 });
 
+const proposalReviewApi = new AdminProposalControllerApi(config);
 const authApi = new AuthControllerApi(config);
 const proposalApi = new ProposalControllerApi(config);
 const poiApi = new PoiControllerApi(config);
 const cityApi = new CityControllerApi(config);
 const restaurantApi = new RestaurantControllerApi(config);
 
-export {authApi, proposalApi, poiApi, cityApi, restaurantApi};
+export {proposalReviewApi, authApi, proposalApi, poiApi, cityApi, restaurantApi};
