@@ -8,10 +8,16 @@ import POIImportExport from "@/pages/POIImportExport.vue";
 import CitiesImportExport from "@/pages/CitiesImportExport.vue";
 import TripsView from '@/pages/TripsView.vue';
 import '@/interceptor/interceptor.ts'
+import ProposalReviewView from "@/pages/ProposalReviewView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        {
+            path: '/proposals/review',
+            name: 'proposalsReview',
+            component: ProposalReviewView
+        },
         {
             path: '/poiImportExport',
             name: 'poiImportExport',
