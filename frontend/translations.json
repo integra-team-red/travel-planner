@@ -4,6 +4,17 @@
             "english": "english",
             "romanian": "romanian"
         },
+        "restaurants": {
+            "header": "Restaurants",
+            "add": "Add",
+            "added": "The restaurant has been added",
+            "update": "Update",
+            "updated": "The restaurant has been updated",
+            "deleted": "The selected restaurants of interest have been deleted"
+        },
+        "trips": {
+            "header": "Trips"
+        },
         "cities": {
             "header": "Cities",
             "add": "Add",
@@ -35,6 +46,7 @@
         },
         "field-is-required": "The field is required!",
         "delete": "Delete",
+        "home": "Home",
         "add": "Add",
         "cancel": "Cancel",
         "close": "Close",
@@ -60,17 +72,12 @@
                 "confirm": "Upload selection",
                 "success": "Points of interest upload succeeded!",
                 "failure": "Points of interest upload failed!"
-            }
+            },
+            "header": "Points of Interest"
         },
-        "restaurants": {
-            "header": "Restaurant",
-            "add": "Add",
-            "added": "The restaurant has been added",
-            "update": "Update",
-            "updated": "The restaurant has been updated",
-            "deleted": "The selected restaurants of interest have been deleted"
+        "proposals": {
+            "header": "Proposals"
         },
-
         "restaurant": {
             "download": {
                 "header": "Export existing restaurants",
@@ -91,6 +98,17 @@
         "language": {
             "english": "engleză",
             "romanian": "română"
+        },
+        "restaurants": {
+            "header": "Restaurante",
+            "add": "Adaugă",
+            "added": "Restaurantul a fost adăugat",
+            "update": "Actualizează",
+            "updated": "Restaurantul a fost actualizat",
+            "deleted": "Restaurantele selectate au fost șterse"
+        },
+        "trips": {
+            "header": "Călătorii"
         },
         "cities": {
             "header": "Orașe",
@@ -123,6 +141,7 @@
         },
         "field-is-required": "Câmpul este obligatoriu!",
         "delete": "Șterge",
+        "home": "Acasă",
         "add": "Adaugă",
         "cancel": "Întrerupe",
         "close": "Închide",
@@ -148,15 +167,11 @@
                 "confirm": "Încarcă selecția",
                 "success": "Încărcarea punctelor de interes a reușit!",
                 "failure": "Încărcarea punctelor de interes a eșuat!"
-            }
+            },
+            "header": "Puncte de Interes"
         },
-        "restaurants": {
-            "header": "Restaurante",
-            "add": "Adaugă",
-            "added": "Restaurantul a fost adăugat",
-            "update": "Actualizează",
-            "updated": "Restaurantul a fost actualizat",
-            "deleted": "Restaurantele selectate au fost șterse"
+        "proposals": {
+            "header": "Proposals"
         },
         "restaurant": {
             "download": {
