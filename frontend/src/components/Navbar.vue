@@ -5,7 +5,6 @@
 
     const router = useRouter();
     const route = useRoute();
-
     const items: (MenuItem & { path: string })[] = [
         {
             label: 'Home',
@@ -48,6 +47,9 @@
             }
         }
     ]
+    function goToProfile() {
+        router.push('/profile');
+    }
 </script>
 
 <template>
@@ -72,7 +74,7 @@
                 <language-select-box class="mr-2"/>
                 <div class="flex items-center gap-2">
                     <InputText placeholder="Search" type="text" class="w-32 sm:w-auto"/>
-                    <Avatar image="/img.png" shape="circle"/>
+                    <Avatar image="/img.png" shape="circle" class="cursor-pointer hover:scale-105 transition-transform" @click="goToProfile"/>
                 </div>
             </div>
         </template>
