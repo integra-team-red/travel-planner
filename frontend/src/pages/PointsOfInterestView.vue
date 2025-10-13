@@ -156,26 +156,27 @@
                   class="flex flex-col gap-4">
 
                 <div class="flex flex-col gap-1">
-                    <InputText name="name" type="text" placeholder="Name" fluid/>
+                    <InputText name="name" type="text" :placeholder="t('fields.name')" fluid/>
                     <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">
                         {{$form.name.error?.message}}
                     </Message>
-                    <InputText name="description" type="text" placeholder="Description" fluid/>
+                    <InputText name="description" type="text" :placeholder="t('fields.description')" fluid/>
                     <Message v-if="$form.description?.invalid" severity="error" size="small" variant="simple">
                         {{$form.description.error?.message}}
                     </Message>
-                    <Select name="cityId" :options="cities" optionLabel="name" optionValue="id" placeholder="City" fluid />
+                    <Select name="cityId" :options="cities" optionLabel="name" optionValue="id" :placeholder="t('fields.city')" fluid />
                     <Message v-if="$form.cityId?.invalid" severity="error" size="small" variant="simple">
                         {{$form.cityId.error?.message}}
                     </Message>
-                    <InputText name="price" type="text" placeholder="Price" fluid/>
+                    <InputText name="price" type="text" :placeholder="t('fields.price')" fluid/>
                     <Message v-if="$form.price?.invalid" severity="error" size="small" variant="simple">
                         {{$form.price.error?.message}}
                     </Message>
-                    <Select name="type" :options="types" placeholder="Type" fluid />
+                    <Select name="type" :options="types" :placeholder="t('fields.type')" fluid />
                     <Message v-if="$form.type?.invalid" severity="error" size="small" variant="simple">
                         {{$form.type.error?.message}}
                     </Message>
+                    <InputText name="image" type="text" :placeholder="t('fields.image-url')" fluid/>
                 </div>
                 <div class="flex flex-row justify-between">
                     <Button severity="secondary" class="w-3/7" :label="t('cancel')" @click="inEditingMode=EditMode.NONE"/>
