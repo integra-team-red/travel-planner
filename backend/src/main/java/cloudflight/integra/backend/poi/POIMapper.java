@@ -11,7 +11,8 @@ public class POIMapper {
                 poi.getDescription(),
                 poi.getCityId(),
                 poi.getPrice(),
-                poi.getType() != null ? poi.getType().name() : null);
+                poi.getType() != null ? poi.getType().name() : null,
+                poi.getImage());
     }
 
     public static PointOfInterest POIToEntity(POIDTO poi_dto, City city) {
@@ -22,6 +23,7 @@ public class POIMapper {
         poi.setCity(city);
         poi.setPrice(poi_dto.price());
         poi.setType(poi_dto.type() != null ? PointOfInterestType.valueOf(poi_dto.type()) : null);
+        poi.setImage(poi_dto.image());
         return poi;
     }
 

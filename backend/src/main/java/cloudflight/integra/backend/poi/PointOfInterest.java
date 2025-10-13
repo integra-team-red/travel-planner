@@ -25,6 +25,8 @@ public class PointOfInterest {
     @Enumerated(EnumType.STRING)
     PointOfInterestType type;
 
+    String image;
+
     public PointOfInterest() {}
 
     public PointOfInterest(
@@ -68,10 +70,6 @@ public class PointOfInterest {
         return city.getId();
     }
 
-    public String getCityName() {
-        return city.getName();
-    }
-
     public City getCity() {
         return city;
     }
@@ -97,5 +95,13 @@ public class PointOfInterest {
     public PointOfInterest setType(PointOfInterestType type) {
         this.type = type;
         return this;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

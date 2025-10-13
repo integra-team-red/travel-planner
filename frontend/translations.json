@@ -39,6 +39,14 @@
         "cancel": "Cancel",
         "close": "Close",
         "confirm": "Confirm",
+        "fields": {
+            "name": "Name",
+            "description": "Description",
+            "city": "City",
+            "price": "Price",
+            "type": "Type",
+            "image-url": "Image URL"
+        },
         "pois": {
             "download": {
                 "header": "Export existing points of interest",
@@ -119,6 +127,14 @@
         "cancel": "Întrerupe",
         "close": "Închide",
         "confirm": "Confirmă",
+        "fields": {
+            "name": "Nume",
+            "description": "Descriere",
+            "city": "Oraș",
+            "price": "Preț",
+            "type": "Tip",
+            "image-url": "URL Imagine"
+        },
         "pois": {
             "download": {
                 "header": "Exportă punctele de interes existente",
