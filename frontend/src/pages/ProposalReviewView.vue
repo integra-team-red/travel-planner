@@ -16,7 +16,7 @@ const toast = useToast();
 const fields = ref<string[]>();
 const selectedProposal = ref<ProposalDTO>();
 const proposals = ref<ProposalDTO[]>(await proposalReviewApi.getPendingApprovals());
-const CITIES: CityDTO[] = await cityApi.getCities();
+const cities: CityDTO[] = await cityApi.getCities();
 const fieldsRenderedAsDropdownsInCamelCase = ['pointOfInterestType', 'type', 'cityId'];
 const fieldsRenderedAsTextboxesInCamelCase = ['description'];
 
@@ -67,9 +67,9 @@ function approveProposal() {
 <template>
     <div class="flex flex-col sm:flex-row gap-8">
         <div class="w-full sm:w-1/2 flex flex-col gap-4">
-            <proposal-card v-for="proposal in proposals" :proposal="proposal"
+            <proposal-card v-for="proposal in proposals" :key="proposal.id" :proposal="proposal"
                            :isSelected="selectedProposal?.id == proposal.id"
-                           :cityName="CITIES.find(city => city.id == proposal.cityId)!.name!"
+                           :cityName="cities.find(city => city.id == proposal.cityId)!.name!"
                            @card-clicked="onCardClick(proposal)"/>
         </div>
         <div class="w-full sm:w-1/2 flex flex-col pl-8 border-l-2 gap-4">
@@ -77,7 +77,7 @@ function approveProposal() {
                 {{t('proposals.review.header')}}
             </h2>
             <div class="flex flex-col gap-4">
-                <div v-for="fieldName in fields">
+                <div v-for="fieldName in fields" :key="fieldName">
                     <Textarea disabled v-if="fieldsRenderedAsTextboxesInCamelCase.includes(toCamelCase(fieldName))"
                               :name="toCamelCase(fieldName)"
                               :placeholder="selectedProposal![fieldName as keyof ProposalDTO]?.toString()"
