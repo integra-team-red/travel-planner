@@ -8,7 +8,7 @@ import {
     ProposalDTOTypeEnum
 } from "../../typescript-client";
 import type {FormResolverOptions} from "@primevue/forms/form";
-import type {FormFieldResolverOptions, FormSubmitEvent} from "@primevue/forms";
+import type {FormSubmitEvent} from "@primevue/forms";
 import type {FormErrors} from "@/types/forms.types.ts";
 import {useConfirm} from "primevue";
 import {promptConfirm} from "@/utils/confirm.utils.ts";
@@ -17,31 +17,21 @@ import {useToast} from "primevue";
 import ProposalCard from "@/components/ProposalCard.vue";
 import {toCamelCase, toCapitalCaseFromAllCaps} from "@/utils/text.utils.ts";
 import {useI18n} from "vue-i18n";
+import {type FormField, FormFieldBuilder} from "@/utils/form.utils.ts";
 
 const { t } = useI18n();
 const confirm = useConfirm();
 const toast = useToast();
 const initialValues = reactive({});
-const selectedType = ref<LOCATION_TYPES>();
+const selectedType = ref<ProposalDTOPoiTypeEnum>();
 const formKey = ref<number>(0);
-const additionalFields = ref<Field[]>([]);
+const additionalFields = ref<FormField[]>([]);
 const selectedProposals = ref<ProposalDTO[]>([]);
 const CITIES: CityDTO[] = await cityApi.getCities();
 const PROPOSAL_TYPES: string[] = Object.values(ProposalDTOTypeEnum);
 const POI_TYPES: string[] = Object.values(ProposalDTOPoiTypeEnum);
 const proposals = ref<ProposalDTO[]>();
 fetchProposals();
-
-// NOTE(MC): Leaving this here for readability
-enum LOCATION_TYPES {
-    RESTAURANT = 'RESTAURANT',
-    POI = 'POINT_OF_INTEREST'
-}
-
-interface Field {
-    name: string,
-    resolver: ({value}: FormFieldResolverOptions) => { value: {}, errors: {} };
-}
 
 async function fetchProposals() {
     proposals.value = await proposalApi.getAllProposals();
@@ -63,99 +53,66 @@ function formResolver({values}: FormResolverOptions) {
     return {values, errors};
 }
 
+function sendProposalCreationRequest(proposal: ProposalDTO) {
+    proposalApi.createProposal({proposalDTO: proposal})
+        .then(() => {
+            showToast("success", t('proposals.add.success'), toast);
+            fetchProposals();
+        })
+        .catch(() => {
+            showToast("error", t('proposals.add.failure'), toast);
+        });
+}
+
+function sendProposalUpdateRequest(proposal: ProposalDTO, updatedProposal: ProposalDTO) {
+    proposalApi.updateProposal({id: updatedProposal.id!, proposalDTO: proposal})
+        .then(() => {
+            showToast("success", t('proposals.update.success'), toast);
+            fetchProposals();
+            clearSelection();
+        })
+        .catch(() => {
+            showToast("error", t('proposals.update.failure.generic'), toast);
+        });
+}
+
 function onFormSubmit({values, valid}: FormSubmitEvent) {
-    if (valid) {
-        values.type = selectedType.value;
-        const proposal: ProposalDTO = {cityId: values.city.id, poiType: values.pointOfInterestType, ...values};
-        if (!getLastSelectedPendingProposal()) {
-            proposalApi.createProposal({proposalDTO: proposal})
-                .then(() => {
-                    showToast("success", t('proposals.add.success'), toast);
-                    fetchProposals();
-                })
-                .catch(() => {
-                    showToast("error", t('proposals.add.failure'), toast);
-                });
-        }
-        else {
-            proposalApi.updateProposal({id: getLastSelectedPendingProposal()!.id!, proposalDTO: proposal})
-                .then(() => {
-                    showToast("success", t('proposals.update.success'), toast);
-                    fetchProposals();
-                    clearSelection();
-                })
-                .catch(() => {
-                    showToast("error", t('proposals.update.failure.generic'), toast);
-                })
-        }
+    if (!valid) {
+        return;
+    }
+    values.type = selectedType.value;
+    const proposal: ProposalDTO = {cityId: values.city.id, poiType: values.pointOfInterestType, ...values};
+    const lastPendingProposal: ProposalDTO | undefined = getLastSelectedPendingProposal();
+    if (lastPendingProposal) {
+        sendProposalUpdateRequest(proposal, lastPendingProposal)
+    }
+    else {
+        sendProposalCreationRequest(proposal);
     }
 }
 
-// NOTE(MC): To get rid of these ugly field getters, start using resolvers like zod
 function getRestaurantFields() {
     return [
-        {
-            name: 'Average Price',
-            resolver: ({value}: FormFieldResolverOptions) => {
-                const errors: FormErrors = {};
-                if (!value || isNaN(Number(value))) {
-                    errors.averagePrice = [{message: t('formFieldError.fieldType', {type: t('number')})}];
-                }
-                return {value, errors};
-            }
-        },
-        {
-            name: 'Cuisine Type',
-            resolver: ({value}: FormFieldResolverOptions) => {
-                const errors: FormErrors = {};
-                if (!value || value.trim().length < 2) {
-                    errors.cuisineType = [{message: t('formFieldError.fieldLength.min', {lowerBound: 2})}];
-                }
-                return {value, errors};
-            }
-        }
+        new FormFieldBuilder('Average Price').isNaturalNumber(t('formFieldError.fieldType')).build(),
+        new FormFieldBuilder('Cuisine Type').minLength(2, t('formFieldError.fieldLength.min')).build()
     ];
 }
 
 function getPoiFields() {
     return [
-        {
-            name: 'Price',
-            resolver: ({value}: FormFieldResolverOptions) => {
-                const errors: FormErrors = {};
-                if (!value || isNaN(Number(value))) {
-                    errors.price = [{message: t('formFieldError.fieldType', {type: t('number')})}];
-                }
-                return {value, errors};
-            }
-        },
-        {
-            name: 'Point of Interest Type',
-            resolver: ({value}: FormFieldResolverOptions) => {
-                const errors: FormErrors = {};
-                if (!value) {
-                    errors.pointOfInterestType = [{message: t('formFieldError.fieldRequired')}];
-                }
-                return {value, errors};
-            }
-        },
-        {
-            name: 'Description',
-            resolver: ({value}: FormFieldResolverOptions) => {
-                return {value, errors: {}}
-            }
-        }
+        new FormFieldBuilder('Price').isNaturalNumber(t('formFieldError.fieldType')).build(),
+        new FormFieldBuilder('Point Of Interest Type').required(t('formFieldError.fieldRequired')).build(),
+        new FormFieldBuilder('Image URL').build(),
+        new FormFieldBuilder('Description').build()
     ];
 }
 
-// NOTE(MC): Maybe find a better way to do this; I didn't know how to iterate through type keys at runtime.
 function changeAdditionalFields(value?: string) {
-    debugger;
     switch (value) {
-        case LOCATION_TYPES.RESTAURANT: {
+        case 'RESTAURANT': {
             additionalFields.value = getRestaurantFields();
         } break;
-        case LOCATION_TYPES.POI: {
+        case 'POINT_OF_INTEREST': {
             additionalFields.value = getPoiFields();
         } break;
         default: {
@@ -167,7 +124,7 @@ function changeAdditionalFields(value?: string) {
 
 function getLastSelectedPendingProposal(): ProposalDTO | undefined {
     for (let i = selectedProposals.value.length - 1; i >= 0; --i) {
-        let proposal = selectedProposals.value[i];
+        const proposal = selectedProposals.value[i];
         if (proposal!.status == 'PENDING') {
             return proposal;
         }
@@ -185,21 +142,26 @@ function overwriteFormData(proposal: ProposalDTO) {
     changeAdditionalFields(proposal.type);
     initialValues.name = proposal.name;
     initialValues.type = proposal.type;
-    selectedType.value = proposal.type as LOCATION_TYPES;
+    selectedType.value = proposal.type as ProposalDTOPoiTypeEnum;
     initialValues.city = CITIES.find(city => city.id == proposal.cityId)!;
-    for (let field of additionalFields.value) {
-        let camelCasedFieldName = toCamelCase(field.name);
+    for (const field of additionalFields.value) {
+        const camelCasedFieldName = toCamelCase(field.name);
         initialValues[camelCasedFieldName] = proposal[camelCasedFieldName == 'pointOfInterestType' ? 'poiType' : camelCasedFieldName as keyof ProposalDTO];
     }
 }
 
 function onCardClick(proposal: ProposalDTO) {
-    let proposalIndex = selectedProposals.value.findIndex(prop => prop.id == proposal.id);
+    const proposalIndex = selectedProposals.value.findIndex(prop => prop.id == proposal.id);
     if (proposalIndex >= 0) {
         selectedProposals.value.splice(proposalIndex, 1);
         if (proposalIndex == selectedProposals.value.length) {
-            let lastProposal = getLastSelectedPendingProposal();
-            lastProposal ? overwriteFormData(lastProposal) : resetForm();
+            const lastProposal = getLastSelectedPendingProposal();
+            if (lastProposal) {
+                overwriteFormData(lastProposal);
+            }
+            else {
+                resetForm();
+            }
         }
     }
     else {
@@ -216,7 +178,7 @@ function clearSelection() {
 }
 
 async function deleteSelection() {
-    for (let proposal of selectedProposals.value) {
+    for (const proposal of selectedProposals.value) {
         if (proposal.status == 'APPROVED') {
             showToast("error", t('proposals.delete.failure.generic') + t('proposals.delete.failure.disallowApproved'), toast);
             return;
@@ -224,7 +186,7 @@ async function deleteSelection() {
 
     }
     let errorOccurred = false;
-    for (let proposal of selectedProposals.value) {
+    for (const proposal of selectedProposals.value) {
         await proposalApi.deleteProposal({id: proposal.id!})
             .catch(() => errorOccurred = true);
         if (errorOccurred) {
@@ -242,7 +204,7 @@ async function deleteSelection() {
 <template>
     <div class="flex flex-col sm:flex-row gap-8">
         <div class="w-full sm:w-1/2 flex flex-col gap-4">
-            <proposal-card v-for="proposal in proposals" :proposal="proposal" :isSelected="!!selectedProposals.find(prop => prop.id == proposal.id)"
+            <proposal-card v-for="proposal in proposals" :key="proposal.id" :proposal="proposal" :isSelected="!!selectedProposals.find(prop => prop.id == proposal.id)"
                            :cityName="CITIES.find(city => city.id == proposal.cityId)!.name!"
                            @card-clicked="onCardClick(proposal)"/>
             <div class="flex flex-row justify-between">
@@ -258,34 +220,24 @@ async function deleteSelection() {
                 {{t('proposals.crudHeader.update')}}
             </h2>
             <Form :initialValues :key="formKey" v-slot="$form" :resolver="formResolver" @submit="onFormSubmit" class="flex flex-col gap-4">
-                <InputText placeholder="Name" name="name" maxlength="30" fluid />
+                <InputText :placeholder="t('fields.name')" name="name" maxlength="30" fluid />
                 <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">
                     {{ $form.name.error.message }}
                 </Message>
-                <Select placeholder="Type" v-model="selectedType" name="type" :optionLabel="(entry) => toCapitalCaseFromAllCaps(entry)" :options="PROPOSAL_TYPES" @update:model-value="changeAdditionalFields" fluid />
+                <Select :placeholder="t('fields.type')" v-model="selectedType" name="type" :optionLabel="(entry) => toCapitalCaseFromAllCaps(entry)" :options="PROPOSAL_TYPES" @update:model-value="changeAdditionalFields" fluid />
                 <Message v-if="$form.type?.invalid" severity="error" size="small" variant="simple">
                     {{ $form.type.error.message }}
                 </Message>
-                <Select placeholder="City" name="city" optionLabel="name" :options="CITIES" fluid />
+                <Select :placeholder="t('fields.city')" name="city" optionLabel="name" :options="CITIES" fluid />
                 <Message v-if="$form.city?.invalid" severity="error" size="small" variant="simple">
                     {{ $form.city.error.message }}
                 </Message>
                 <!-- NOTE(MC): Maybe instead of if else if branching, do this all generically? Good luck to the one up to that -->
                 <div v-for="{ name, resolver } in additionalFields" :key="name">
-                    <FormField v-slot="$field" :resolver="resolver" class="flex flex-col" v-if="toCamelCase(name) == 'description'">
-                        <Textarea :placeholder="name" :name="toCamelCase(name)" rows="5" maxlength="250" />
-                        <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">
-                            {{ $field.error?.message }}
-                        </Message>
-                    </FormField>
-                    <FormField v-slot="$field" :resolver="resolver" v-else-if="toCamelCase(name) == 'pointOfInterestType'">
-                        <Select :placeholder="name" :id="name" :name="toCamelCase(name)" :options="POI_TYPES" fluid />
-                        <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">
-                            {{ $field.error?.message }}
-                        </Message>
-                    </FormField>
-                    <FormField v-slot="$field" :resolver="resolver" v-else>
-                        <InputText :placeholder="name" :name="toCamelCase(name)" :id="name" maxlength="30" fluid />
+                    <FormField v-slot="$field" :resolver="resolver" class="flex flex-col">
+                        <Textarea v-if="toCamelCase(name) == 'description'" :placeholder="t('fields.' + toCamelCase(name))" :name="toCamelCase(name)" rows="5" maxlength="250" />
+                        <Select v-else-if="toCamelCase(name) == 'pointOfInterestType'" :placeholder="t('fields.' + toCamelCase(name))" :id="name" :name="toCamelCase(name)" :options="POI_TYPES" fluid />
+                        <InputText v-else :placeholder="t('fields.' + toCamelCase(name))" :name="toCamelCase(name)" :id="name" maxlength="30" fluid />
                         <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">
                             {{ $field.error?.message }}
                         </Message>

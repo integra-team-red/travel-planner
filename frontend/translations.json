@@ -67,7 +67,10 @@
             "city": "City",
             "price": "Price",
             "type": "Type",
-            "image-url": "Image URL"
+            "imageURL": "Image URL",
+            "cuisineType": "Cuisine Type",
+            "averagePrice": "Average Price",
+            "pointOfInterestType": "Point Of Interest Type"
         },
         "pois": {
             "download": {
@@ -205,7 +208,10 @@
             "city": "Oraș",
             "price": "Preț",
             "type": "Tip",
-            "image-url": "URL Imagine"
+            "imageURL": "URL Imagine",
+            "cuisineType": "Specific Culinar",
+            "averagePrice": "Preț Mediu",
+            "pointOfInterestType": "Tipul Punctului De Interes"
         },
         "pois": {
             "download": {
