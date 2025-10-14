@@ -7,24 +7,24 @@ defineProps<{
     cityName: string
     isSelected: boolean;
 }>();
+
 const emits = defineEmits(["card-clicked"]);
 
-const CARD_COLORS = {
-    'PENDING': '!bg-[#EDF7FC]',
-    'APPROVED': '!bg-[#DDEDE3]',
-    'REJECTED': '!bg-[#FAE3E3]'
-};
-const CARD_BORDER_COLORS = {
-    'PENDING': '!border-[#ADCDE2]',
-    'APPROVED': '!border-[#22C55E]',
-    'REJECTED': '!border-[#EF4444]'
+function getCardClasses(proposal: ProposalDTO, isSelected: boolean) {
+    return [
+        {
+            pending: proposal.status === 'PENDING',
+            approved: proposal.status === 'APPROVED',
+            rejected: proposal.status === 'REJECTED',
+        },
+        isSelected ? 'border-2' : '!border-none',
+    ];
 }
-
 </script>
 
 <template>
     <!-- NOTE(MC): If you find a way to add shadows to cards then please do so. Overriding pt:root:class, :class has been previously attempted -->
-    <Card :class="CARD_COLORS[proposal.status!] + ' border-2 ' + (isSelected ? CARD_BORDER_COLORS[proposal.status!] : '!border-none')" @click="emits('card-clicked')" pt:content:class="!flex !flex-row justify-between">
+    <Card :class="getCardClasses(proposal, isSelected)" @click="emits('card-clicked')" pt:content:class="!flex !flex-row justify-between">
         <template #title>{{proposal.name}}</template>
         <template #content>
             <p>{{ cityName }}, {{ toCapitalCaseFromAllCaps(proposal.type!) }}</p>
@@ -39,5 +39,16 @@ const CARD_BORDER_COLORS = {
 </template>
 
 <style scoped>
-
+.pending {
+    background-color: #EDF7FC!important;
+    border-color: #ADCDE2!important;
+}
+.approved {
+    background-color: #DDEDE3!important;
+    border-color: #22C55E!important;
+}
+.rejected {
+    background-color: #FAE3E3!important;
+    border-color: #EF4444!important;
+}
 </style>
