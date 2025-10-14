@@ -58,6 +58,15 @@
             }
         },
         {
+            label: t('logout') ,
+            icon: 'pi pi-sign-out',
+            path: '/login',
+            command: () => {
+                localStorage.removeItem("jwt");
+                router.push('/login');
+            }
+        },
+        {
             label: t('proposals.header'),
             icon: 'pi pi-send',
             path: '/proposals',

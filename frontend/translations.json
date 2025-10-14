@@ -4,6 +4,7 @@
             "english": "english",
             "romanian": "romanian"
         },
+        "logout": "Logout",
         "restaurants": {
             "header": "Restaurants",
             "add": "Add",
@@ -146,6 +147,7 @@
             "english": "engleză",
             "romanian": "română"
         },
+        "logout": "Deconectare",
         "restaurants": {
             "header": "Restaurante",
             "add": "Adaugă",
