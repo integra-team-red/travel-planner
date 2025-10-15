@@ -64,6 +64,7 @@
         "fields": {
             "name": "Name",
             "description": "Description",
+            "address": "Address",
             "city": "City",
             "price": "Price",
             "type": "Type",
@@ -205,6 +206,7 @@
         "fields": {
             "name": "Nume",
             "description": "Descriere",
+            "address": "Adresă",
             "city": "Oraș",
             "price": "Preț",
             "type": "Tip",

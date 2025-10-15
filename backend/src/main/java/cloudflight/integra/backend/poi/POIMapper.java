@@ -9,6 +9,7 @@ public class POIMapper {
                 poi.getId(),
                 poi.getName(),
                 poi.getDescription(),
+                poi.getAddress(),
                 poi.getCityId(),
                 poi.getPrice(),
                 poi.getType() != null ? poi.getType().name() : null,
@@ -20,6 +21,7 @@ public class POIMapper {
         poi.setId(null);
         poi.setName(poi_dto.name());
         poi.setDescription(poi_dto.description());
+        poi.setAddress(poi_dto.address());
         poi.setCity(city);
         poi.setPrice(poi_dto.price());
         poi.setType(poi_dto.type() != null ? PointOfInterestType.valueOf(poi_dto.type()) : null);

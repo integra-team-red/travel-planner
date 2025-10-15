@@ -14,6 +14,7 @@ public class PointOfInterest {
 
     String name;
     String description;
+    String address;
 
     // @Column(columnDefinition = "serial")
     @ManyToOne
@@ -64,6 +65,14 @@ public class PointOfInterest {
     public PointOfInterest setDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Long getCityId() {

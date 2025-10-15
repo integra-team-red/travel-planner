@@ -1,6 +1,5 @@
 package cloudflight.integra.backend.poi;
 
-import cloudflight.integra.backend.city.DBCityRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -11,12 +10,10 @@ import org.springframework.stereotype.Service;
 public class POIServiceImpl implements POIService {
 
     private final DBPOIRepository repo;
-    private final DBCityRepository cityRepo;
 
     @Autowired
-    public POIServiceImpl(DBPOIRepository repo, DBCityRepository cityRepo) {
+    public POIServiceImpl(DBPOIRepository repo) {
         this.repo = repo;
-        this.cityRepo = cityRepo;
     }
 
     @Override
@@ -30,6 +27,7 @@ public class POIServiceImpl implements POIService {
 
         DBPOI.setName(pointOfInterest.getName());
         DBPOI.setDescription(pointOfInterest.getDescription());
+        DBPOI.setAddress(pointOfInterest.getAddress());
         DBPOI.setCity(pointOfInterest.getCity());
         DBPOI.setPrice(pointOfInterest.getPrice());
         DBPOI.setType(pointOfInterest.getType());
