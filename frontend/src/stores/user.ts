@@ -1,16 +1,12 @@
 import {computed, ref} from "vue";
 import {defineStore} from "pinia";
+import type {UserDTO} from '../../typescript-client';
 
-
-type User = {
-    email: string
-    roles: string[]
-}
 
 export const useUserStore = defineStore('user', () => {
-    const user = ref<User | null>(null)
+    const user = ref<UserDTO | null>(null)
 
-    function set(newUser: User): void {
+    function set(newUser: UserDTO | null): void {
         user.value = newUser
     }
 
