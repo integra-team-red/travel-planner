@@ -11,7 +11,7 @@
 </script>
 
 <template>
-    <Card class="w-full my-8" @click="emits('card-clicked')">
+    <Card class="w-full my-8 overflow-hidden" @click="emits('card-clicked')">
         <template #header>
             <img alt="" :src="poi.image ?? PLACEHOLDER_IMAGE" class="card-img h-32 w-full object-cover bg-linear-to-w" />
         </template>
