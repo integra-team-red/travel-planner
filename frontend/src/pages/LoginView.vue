@@ -7,21 +7,24 @@
     import {ref} from 'vue';
     import {authApi} from '@/api.ts';
     import {useRouter} from 'vue-router';
+    import {useUserStore} from '@/stores/user.ts';
 
     const email = ref('');
     const password = ref('');
     const checked1 = ref(true);
 
     const router = useRouter();
+    const userStore = useUserStore();
 
     async function login() {
-        const user = { email: email.value, password: password.value };
-        const res = await authApi.loginRaw({ user });
+        const user = {email: email.value, password: password.value};
+        const res = await authApi.loginRaw({user});
 
         if (res.raw.ok) {
             const token = res.raw.headers.get("Authorization");
             if (token) {
                 localStorage.setItem("jwt", token);
+                authApi.getCurrentUser().then(user => userStore.set(user));
                 await router.push('/');
             } else {
                 alert("No token received from server");
@@ -56,7 +59,8 @@
                     <div class="text-center w-full">
                         <span
                             class="text-surface-700 dark:text-surface-200 leading-normal">Don't have an account?</span>
-                        <a class="text-primary font-medium ml-1 cursor-pointer hover:text-primary-emphasis" @click="router.push('/register')">Create today!</a>
+                        <a class="text-primary font-medium ml-1 cursor-pointer hover:text-primary-emphasis"
+                           @click="router.push('/register')">Create today!</a>
                     </div>
                 </div>
             </div>

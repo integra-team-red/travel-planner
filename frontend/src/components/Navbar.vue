@@ -1,13 +1,18 @@
 <script setup lang="ts">
     import type {MenuItem} from 'primevue/menuitem';
-    import {useRouter, useRoute} from 'vue-router';
+    import {useRoute, useRouter} from 'vue-router';
     import LanguageSelectBox from '@/components/LanguageSelectBox.vue';
     import {useI18n} from "vue-i18n";
     import {computed} from "vue";
+    import {useUserStore} from '@/stores/user.ts';
+    import {authApi} from '@/api.ts';
 
-    const { t } = useI18n();
+    const {t} = useI18n();
     const router = useRouter();
     const route = useRoute();
+
+    const userStore = useUserStore()
+    authApi.getCurrentUser().then(user => userStore.set(user));
 
     const items = computed<(MenuItem & { path: string })[]>(() => [
         {
@@ -62,12 +67,13 @@
 </script>
 
 <template>
-    <Menubar :model="items" class="lg:max-w-6xl mx-auto mt-2">
+    <Menubar v-if="userStore.isLoggedIn" :model="items" class="lg:max-w-6xl mx-auto mt-2">
         <template #start>
-            <img src="/images/logo.png" alt="Logo" class="h-10 w-10" @click="router.push('/')" />
+            <img src="/images/logo.png" alt="Logo" class="h-10 w-10" @click="router.push('/')"/>
         </template>
         <template #item="{ item, props, hasSubmenu, root }">
-            <a v-ripple class="flex items-center" v-bind="props.action" :class="{'bg-gray-400 text-white': item.path === '/' ? route.path === '/' : route.path.startsWith(item.path)}">
+            <a v-ripple class="flex items-center" v-bind="props.action"
+               :class="{'bg-gray-400 text-white': item.path === '/' ? route.path === '/' : route.path.startsWith(item.path)}">
                 <span>{{item.label}}</span>
                 <Badge v-if="item.badge" :class="{ 'ml-auto': !root, 'ml-2': root }" :value="item.badge"/>
                 <span v-if="item.shortcut"
@@ -84,7 +90,7 @@
                 <div class="flex items-center gap-2">
                     <InputText placeholder="Search" type="text" class="w-32 sm:w-auto"/>
                     <RouterLink to="/profile">
-                        <Avatar image="/img.png" shape="circle" />
+                        <Avatar image="/img.png" shape="circle"/>
                     </RouterLink>
                 </div>
             </div>
