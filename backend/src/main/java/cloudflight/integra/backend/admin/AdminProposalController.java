@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/proposals")
+@RequestMapping("/api/admin/proposals")
 @SecurityRequirement(name = "bearerAuth")
 public class AdminProposalController {
     private final AdminProposalService adminProposalService;
