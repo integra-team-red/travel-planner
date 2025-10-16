@@ -3,19 +3,23 @@ package cloudflight.integra.backend.poi;
 import java.util.List;
 
 public interface POIService {
-    PointOfInterest addPointOfInterest(PointOfInterest pointOfInterest);
+    POI addPointOfInterest(POI pointOfInterest);
 
-    PointOfInterest updatePointOfInterest(Long id, PointOfInterest pointOfInterest);
+    List<POI> addPointsOfInterest(List<POI> pois);
+
+    POI updatePointOfInterest(Long id, POI pointOfInterest);
 
     void deletePointOfInterest(Long id);
 
-    List<PointOfInterest> getAllPointsOfInterest();
+    List<POI> getAllPointsOfInterest();
 
-    List<PointOfInterest> getPointsOfInterestByCity(Long id, String name);
+    POI getPointOfInterest(Long id);
 
-    List<PointOfInterest> getAllPointsOfInterestSortedByName(int pageNumber, int pageSize, boolean isDescending);
+    List<POI> getPointsOfInterestByCity(Long id, String name);
 
-    List<PointOfInterest> getAllPointsOfInterestSortedByPrice(int pageNumber, int pageSize, boolean isDescending);
+    List<POI> getAllPointsOfInterestSortedByName(int pageNumber, int pageSize, boolean isDescending);
 
-    List<PointOfInterest> getAllPointsOfInterestSortedByType(int pageNumber, int pageSize, String type);
+    List<POI> getAllPointsOfInterestSortedByPrice(int pageNumber, int pageSize, boolean isDescending);
+
+    List<POI> getAllPointsOfInterestSortedByType(int pageNumber, int pageSize, String type);
 }

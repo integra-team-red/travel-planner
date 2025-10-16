@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/proposal")
 @SecurityRequirement(name = "bearerAuth")
 public class ProposalController {
-    private ProposalServiceImpl proposalService;
+    private final ProposalService service;
 
     @Autowired
-    private void setProposalService(ProposalServiceImpl serviceProposal) {
-        this.proposalService = serviceProposal;
+    public ProposalController(ProposalService service) {
+        this.service = service;
     }
 
     @Operation(
@@ -33,11 +34,11 @@ public class ProposalController {
                                 @Content(
                                         mediaType = "application/json",
                                         schema = @Schema(implementation = ProposalDTO.class))),
-                @ApiResponse(responseCode = "5xx", description = "Invalid proposal supplied", content = @Content)
+                @ApiResponse(responseCode = "422", description = "Invalid proposal supplied", content = @Content)
             })
     @PostMapping
-    public ResponseEntity<ProposalDTO> createProposal(@RequestBody ProposalDTO proposalDTO) {
-        Proposal savedProposal = proposalService.save(ProposalMapper.ProposalToEntity(proposalDTO));
+    public ResponseEntity<ProposalDTO> addProposal(@RequestBody ProposalDTO proposalDTO) {
+        Proposal savedProposal = service.addProposal(ProposalMapper.ProposalToEntity(proposalDTO));
         return ResponseEntity.ok(ProposalMapper.ProposalToDTO(savedProposal));
     }
 
@@ -53,8 +54,8 @@ public class ProposalController {
                                         array = @ArraySchema(schema = @Schema(implementation = ProposalDTO.class)))),
             })
     @GetMapping
-    public ResponseEntity<List<ProposalDTO>> getAllProposals() {
-        List<ProposalDTO> proposals = proposalService.findAll().stream()
+    public ResponseEntity<List<ProposalDTO>> getProposals() {
+        List<ProposalDTO> proposals = service.getAllProposals().stream()
                 .map(ProposalMapper::ProposalToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(proposals);
@@ -70,14 +71,11 @@ public class ProposalController {
                                 @Content(
                                         mediaType = "application/json",
                                         schema = @Schema(implementation = ProposalDTO.class))),
-                @ApiResponse(responseCode = "5xx", description = "Proposal not found", content = @Content)
+                @ApiResponse(responseCode = "404", description = "Proposal ID not found", content = @Content)
             })
     @GetMapping("/{id}")
     public ResponseEntity<ProposalDTO> getProposalById(@PathVariable("id") Long id) {
-        Proposal proposal =
-                proposalService.findById(id).orElseThrow(() -> new RuntimeException("Proposal not found: " + id));
-
-        return ResponseEntity.ok(ProposalMapper.ProposalToDTO(proposal));
+        return ResponseEntity.ok(ProposalMapper.ProposalToDTO(service.getProposal(id)));
     }
 
     @Operation(
@@ -90,17 +88,12 @@ public class ProposalController {
                                 @Content(
                                         mediaType = "application/json",
                                         schema = @Schema(implementation = ProposalDTO.class))),
-                @ApiResponse(
-                        responseCode = "5xx",
-                        description = "Invalid proposal supplied / Proposal not found",
-                        content = @Content),
+                @ApiResponse(responseCode = "422", description = "Invalid proposal supplied", content = @Content),
+                @ApiResponse(responseCode = "404", description = "Proposal ID not found", content = @Content)
             })
     @PutMapping("/{id}")
-    public ResponseEntity<ProposalDTO> updateProposal(
-            @PathVariable("id") Long id, @RequestBody ProposalDTO newProposalDTO) {
-        Proposal proposalToUpdate = ProposalMapper.ProposalToEntity(newProposalDTO);
-        proposalToUpdate.setId(id);
-        Proposal updatedProposal = proposalService.update(proposalToUpdate);
+    public ResponseEntity<ProposalDTO> updateProposal(@PathVariable Long id, @RequestBody ProposalDTO newProposalDTO) {
+        Proposal updatedProposal = service.updateProposal(id, ProposalMapper.ProposalToEntity(newProposalDTO));
         return ResponseEntity.ok(ProposalMapper.ProposalToDTO(updatedProposal));
     }
 
@@ -116,8 +109,8 @@ public class ProposalController {
                                         schema = @Schema(implementation = ProposalDTO.class)))
             })
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProposalDTO> deleteProposal(@PathVariable("id") Long id) {
-        Proposal deletedProposal = proposalService.deleteById(id);
-        return ResponseEntity.ok(ProposalMapper.ProposalToDTO(deletedProposal));
+    public ResponseEntity<ProposalDTO> deleteProposal(@PathVariable Long id) {
+        service.deleteProposal(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

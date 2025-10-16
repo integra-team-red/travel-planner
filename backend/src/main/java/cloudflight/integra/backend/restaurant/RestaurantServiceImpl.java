@@ -1,6 +1,9 @@
 package cloudflight.integra.backend.restaurant;
 
+import cloudflight.integra.backend.validation.GenericConstraintValidator;
+import cloudflight.integra.backend.validation.PageRequestValidator;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -10,21 +13,41 @@ import org.springframework.stereotype.Service;
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     private final DBRestaurantRepository repository;
+    private final GenericConstraintValidator<Restaurant> validator;
 
     @Autowired
-    public RestaurantServiceImpl(DBRestaurantRepository repository) {
+    public RestaurantServiceImpl(DBRestaurantRepository repository, GenericConstraintValidator<Restaurant> validator) {
+        this.validator = validator;
         this.repository = repository;
     }
 
     @Override
     public Restaurant addRestaurant(Restaurant restaurant) {
-
+        validator.validate(restaurant);
         return repository.save(restaurant);
     }
 
+    public List<Restaurant> addRestaurants(List<Restaurant> restaurants) {
+        try {
+            restaurants.forEach(validator::validate);
+        } catch (ConstraintViolationException err) {
+            throw new ConstraintViolationException(
+                    "One or more restaurants were invalid:\n" + err.getMessage(), err.getConstraintViolations());
+        }
+        return repository.saveAll(restaurants);
+    }
+
     @Override
-    public List<Restaurant> getAllRestaurants() {
-        return repository.findAll();
+    public Restaurant updateRestaurant(Long id, Restaurant newRestaurant) {
+        validator.validate(newRestaurant);
+        var dbRestaurant = getRestaurant(id);
+
+        dbRestaurant.setName(newRestaurant.getName());
+        dbRestaurant.setCity(newRestaurant.getCity());
+        dbRestaurant.setAveragePrice(newRestaurant.getAveragePrice());
+        dbRestaurant.setCuisineType(newRestaurant.getCuisineType());
+
+        return repository.save(dbRestaurant);
     }
 
     @Override
@@ -33,19 +56,25 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Restaurant updateRestaurant(Long id, Restaurant newRestaurant) {
-        Restaurant restaurant = repository
-                .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Restaurant with id " + id + " not found"));
-        restaurant.setName(newRestaurant.getName());
-        restaurant.setCity(newRestaurant.getCity());
-        restaurant.setAveragePrice(newRestaurant.getAveragePrice());
-        restaurant.setCuisineType(newRestaurant.getCuisineType());
-        return repository.save(restaurant);
+    public Restaurant getRestaurant(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("No restaurant id provided");
+        }
+        var restaurantWrapper = repository.findById(id);
+        if (restaurantWrapper.isEmpty()) {
+            throw new EntityNotFoundException("Restaurant with the provided id not found");
+        }
+        return restaurantWrapper.get();
+    }
+
+    @Override
+    public List<Restaurant> getAllRestaurants() {
+        return repository.findAll();
     }
 
     @Override
     public List<Restaurant> getAllRestaurantsSortedByName(int pageNumber, int pageSize, boolean isDescending) {
+        PageRequestValidator.validate(pageNumber, pageSize);
         var sortingDirection = isDescending ? Sort.Direction.DESC : Sort.Direction.ASC;
         return repository
                 .findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortingDirection, "name")))
@@ -54,6 +83,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<Restaurant> getAllRestaurantsSortedByAveragePrice(int pageNumber, int pageSize, boolean isDescending) {
+        PageRequestValidator.validate(pageNumber, pageSize);
         var sortingDirection = isDescending ? Sort.Direction.DESC : Sort.Direction.ASC;
         return repository
                 .findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortingDirection, "average_price")))
@@ -62,6 +92,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<Restaurant> getAllRestaurantsByCuisine(int pageNumber, int pageSize, String cuisineType) {
+        PageRequestValidator.validate(pageNumber, pageSize);
         return repository
                 .findAllByCuisine(cuisineType, PageRequest.of(pageNumber, pageSize))
                 .toList();

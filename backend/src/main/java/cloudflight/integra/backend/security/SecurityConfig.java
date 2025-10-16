@@ -50,6 +50,10 @@ public class SecurityConfig {
                 .hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated());
+        // NOTE(MC): This is the easiest way to implement an 'access denied' page, otherwise add something
+        // in the request body (you can do that by implementing an AccessDeniedHandler and passing that object
+        // to customizer.accessDeniedHandler()
+        // .exceptionHandling(customizer -> customizer.accessDeniedPage());
 
         // Making session management stateless so as to adhere to REST principles
         http.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

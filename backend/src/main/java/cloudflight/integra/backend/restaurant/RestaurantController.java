@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/restaurant")
 @SecurityRequirement(name = "bearerAuth")
 public class RestaurantController {
-    private final RestaurantService restaurantService;
+    private final RestaurantService service;
     private final CityService cityService;
 
     @Autowired
-    public RestaurantController(RestaurantService restaurantService, CityService cityService) {
-        this.restaurantService = restaurantService;
+    public RestaurantController(RestaurantService service, CityService cityService) {
+        this.service = service;
         this.cityService = cityService;
     }
 
@@ -42,7 +42,7 @@ public class RestaurantController {
             })
     @GetMapping
     public ResponseEntity<List<RestaurantDTO>> getRestaurants() {
-        List<RestaurantDTO> restaurants = restaurantService.getAllRestaurants().stream()
+        List<RestaurantDTO> restaurants = service.getAllRestaurants().stream()
                 .map(RestaurantMapper::RestaurantToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(restaurants);
@@ -58,13 +58,13 @@ public class RestaurantController {
                                 @Content(
                                         mediaType = "application/json",
                                         schema = @Schema(implementation = RestaurantDTO.class))),
-                @ApiResponse(responseCode = "5xx", description = "Invalid restaurant supplied", content = @Content)
+                @ApiResponse(responseCode = "422", description = "Invalid restaurant supplied", content = @Content),
+                @ApiResponse(responseCode = "404", description = "City ID of the restaurant", content = @Content)
             })
     @PostMapping
     public ResponseEntity<RestaurantDTO> addRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
         City city = cityService.getCity(restaurantDTO.cityId());
-        Restaurant savedRestaurant =
-                restaurantService.addRestaurant(RestaurantMapper.RestaurantToEntity(restaurantDTO, city));
+        Restaurant savedRestaurant = service.addRestaurant(RestaurantMapper.RestaurantToEntity(restaurantDTO, city));
         return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(savedRestaurant));
     }
 
@@ -75,7 +75,7 @@ public class RestaurantController {
             })
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<RestaurantDTO> deleteRestaurant(@PathVariable Long id) {
-        restaurantService.deleteRestaurant(id);
+        service.deleteRestaurant(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -89,17 +89,19 @@ public class RestaurantController {
                                 @Content(
                                         mediaType = "application/json",
                                         schema = @Schema(implementation = RestaurantDTO.class))),
-                @ApiResponse(responseCode = "404", description = "Restaurant to update not found", content = @Content)
+                @ApiResponse(responseCode = "404", description = "Restaurant to update not found", content = @Content),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "City id of the restaurant not found",
+                        content = @Content),
+                @ApiResponse(responseCode = "422", description = "Invalid restaurant supplied", content = @Content)
             })
     @PutMapping(value = "/{id}")
     public ResponseEntity<RestaurantDTO> updateRestaurant(
             @PathVariable Long id, @RequestBody RestaurantDTO newRestaurantDTO) {
         City city = cityService.getCity(newRestaurantDTO.cityId());
         Restaurant updatedRestaurant =
-                restaurantService.updateRestaurant(id, RestaurantMapper.RestaurantToEntity(newRestaurantDTO, city));
-        if (updatedRestaurant == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+                service.updateRestaurant(id, RestaurantMapper.RestaurantToEntity(newRestaurantDTO, city));
         return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(updatedRestaurant));
     }
 
@@ -114,19 +116,15 @@ public class RestaurantController {
                                 @Content(
                                         mediaType = "application/json",
                                         array = @ArraySchema(schema = @Schema(implementation = RestaurantDTO.class)))),
-                @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+                @ApiResponse(responseCode = "406", description = "Invalid page requested", content = @Content)
             })
     @GetMapping(value = "/sortedByName")
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByName(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        pageNumber -= 1;
-        if (pageSize <= 0 || pageNumber <= 0) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         return ResponseEntity.ok(RestaurantMapper.EntityListToDTOList(
                 isDescending.isPresent()
-                        ? restaurantService.getAllRestaurantsSortedByName(pageNumber, pageSize, isDescending.get())
-                        : restaurantService.getAllRestaurantsSortedByName(pageNumber, pageSize, false)));
+                        ? service.getAllRestaurantsSortedByName(pageNumber, pageSize, isDescending.get())
+                        : service.getAllRestaurantsSortedByName(pageNumber, pageSize, false)));
     }
 
     @Operation(
@@ -140,19 +138,15 @@ public class RestaurantController {
                                 @Content(
                                         mediaType = "application/json",
                                         array = @ArraySchema(schema = @Schema(implementation = RestaurantDTO.class)))),
-                @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+                @ApiResponse(responseCode = "406", description = "Invalid page requested", content = @Content)
             })
     @GetMapping(value = "/sortedByPrice")
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByAveragePrice(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        if (pageSize <= 0 || pageNumber < 0) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         return ResponseEntity.ok(RestaurantMapper.EntityListToDTOList(
                 isDescending.isPresent()
-                        ? restaurantService.getAllRestaurantsSortedByAveragePrice(
-                                pageNumber, pageSize, isDescending.get())
-                        : restaurantService.getAllRestaurantsSortedByAveragePrice(pageNumber, pageSize, false)));
+                        ? service.getAllRestaurantsSortedByAveragePrice(pageNumber, pageSize, isDescending.get())
+                        : service.getAllRestaurantsSortedByAveragePrice(pageNumber, pageSize, false)));
     }
 
     @Operation(
@@ -165,15 +159,12 @@ public class RestaurantController {
                                 @Content(
                                         mediaType = "application/json",
                                         array = @ArraySchema(schema = @Schema(implementation = RestaurantDTO.class)))),
-                @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+                @ApiResponse(responseCode = "406", description = "Invalid page requested", content = @Content)
             })
     @GetMapping(value = "/sortedByCuisine")
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByCuisineType(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam String cuisineType) {
-        if (pageSize <= 0 || pageNumber < 0) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         return ResponseEntity.ok(RestaurantMapper.EntityListToDTOList(
-                restaurantService.getAllRestaurantsByCuisine(pageNumber, pageSize, cuisineType)));
+                service.getAllRestaurantsByCuisine(pageNumber, pageSize, cuisineType)));
     }
 }

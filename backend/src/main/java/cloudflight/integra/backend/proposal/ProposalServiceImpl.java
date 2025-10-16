@@ -1,67 +1,66 @@
 package cloudflight.integra.backend.proposal;
 
-import cloudflight.integra.backend.proposal.validation.ProposalValidator;
+import cloudflight.integra.backend.validation.GenericConstraintValidator;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProposalServiceImpl implements ProposalService {
 
-    private final ProposalRepository proposalRepository;
-    private final ProposalValidator proposalValidator;
+    private final DBProposalRepository repository;
+    private final GenericConstraintValidator<Proposal> validator;
 
     @Autowired
-    public ProposalServiceImpl(ProposalRepository proposalRepository, ProposalValidator proposalValidator) {
-        this.proposalRepository = proposalRepository;
-        this.proposalValidator = proposalValidator;
+    public ProposalServiceImpl(DBProposalRepository repository, GenericConstraintValidator<Proposal> validator) {
+        this.repository = repository;
+        this.validator = validator;
     }
 
     @Override
-    public Proposal update(Proposal proposal) {
-        proposalValidator.validate(proposal);
-        Proposal p = proposalRepository
-                .findById(proposal.getId())
-                .orElseThrow(() -> new RuntimeException("Proposal not found: " + proposal.getId()));
-        p.setName(proposal.getName());
-        p.setType(proposal.getType());
-        p.setCity(proposal.getCity());
-        p.setCuisineType(proposal.getCuisineType());
-        p.setDescription(proposal.getDescription());
-        p.setAveragePrice(proposal.getAveragePrice());
-        p.setPoiType(proposal.getPoiType());
-        p.setPrice(proposal.getPrice());
-        return proposalRepository.save(p);
-    }
-
-    @Override
-    public Proposal deleteById(Long id) {
-        Proposal p =
-                proposalRepository.findById(id).orElseThrow(() -> new RuntimeException("Proposal not found: " + id));
-        proposalRepository.delete(p);
-        return p;
-    }
-
-    @Override
-    public Optional<Proposal> findById(Long id) {
-        return proposalRepository.findById(id);
-    }
-
-    @Override
-    public List<Proposal> findAll() {
-        return proposalRepository.findAll();
-    }
-
-    @Override
-    public Proposal save(Proposal proposal) {
+    public Proposal addProposal(Proposal proposal) {
         proposal.setStatus(Status.PENDING);
-        proposalValidator.validate(proposal);
-        return proposalRepository.save(proposal);
+        validator.validate(proposal);
+        return repository.save(proposal);
     }
 
     @Override
-    public List<Proposal> findByStatus(Status status) {
-        return proposalRepository.findByStatus(status);
+    public Proposal updateProposal(Long id, Proposal proposal) {
+        validator.validate(proposal);
+        var dbProposal = getProposal(id);
+
+        dbProposal.setName(proposal.getName());
+        dbProposal.setType(proposal.getType());
+        dbProposal.setCity(proposal.getCity());
+        dbProposal.setCuisineType(proposal.getCuisineType());
+        dbProposal.setDescription(proposal.getDescription());
+        dbProposal.setAveragePrice(proposal.getAveragePrice());
+        dbProposal.setPoiType(proposal.getPoiType());
+        dbProposal.setPrice(proposal.getPrice());
+
+        return repository.save(dbProposal);
+    }
+
+    @Override
+    public void deleteProposal(Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Proposal getProposal(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("No proposal id provided");
+        }
+        var proposalWrapper = repository.findById(id);
+        if (proposalWrapper.isEmpty()) {
+            throw new EntityNotFoundException("Proposal with the provided id not found");
+        }
+        return proposalWrapper.get();
+    }
+
+    @Override
+    public List<Proposal> getAllProposals() {
+        return repository.findAll();
     }
 }

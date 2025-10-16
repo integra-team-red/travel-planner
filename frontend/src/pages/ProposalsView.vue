@@ -34,7 +34,7 @@ const proposals = ref<ProposalDTO[]>();
 fetchProposals();
 
 async function fetchProposals() {
-    proposals.value = await proposalApi.getAllProposals();
+    proposals.value = await proposalApi.getProposals();
 }
 
 function formResolver({values}: FormResolverOptions) {
@@ -54,7 +54,7 @@ function formResolver({values}: FormResolverOptions) {
 }
 
 function sendProposalCreationRequest(proposal: ProposalDTO) {
-    proposalApi.createProposal({proposalDTO: proposal})
+    proposalApi.addProposal({proposalDTO: proposal})
         .then(() => {
             showToast("success", t('proposals.add.success'), toast);
             fetchProposals();
