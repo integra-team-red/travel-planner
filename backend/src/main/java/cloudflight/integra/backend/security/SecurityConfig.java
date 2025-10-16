@@ -42,6 +42,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // TODO(MC): Research if CSRF should be enabled / disabled
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/**")
+                .permitAll()
                 .requestMatchers("/testAuth/login")
                 .permitAll()
                 .requestMatchers("/v3/api-docs.yaml")
