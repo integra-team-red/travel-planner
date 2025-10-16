@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProposalRepository extends JpaRepository<Proposal, Long> {
+public interface DBProposalRepository extends JpaRepository<Proposal, Long> {
     List<Proposal> findByStatus(Status status);
 }

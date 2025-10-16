@@ -2,18 +2,22 @@ package cloudflight.integra.backend.poi;
 
 import cloudflight.integra.backend.city.City;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "point_of_interest")
-public class PointOfInterest {
-
+public class POI {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "serial")
     Long id;
 
+    @NotNull
     String name;
+
     String description;
+
+    @NotNull
     String address;
 
     // @Column(columnDefinition = "serial")
@@ -21,6 +25,7 @@ public class PointOfInterest {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
+    @NotNull
     Double price;
 
     @Enumerated(EnumType.STRING)
@@ -28,10 +33,9 @@ public class PointOfInterest {
 
     String image;
 
-    public PointOfInterest() {}
+    public POI() {}
 
-    public PointOfInterest(
-            Long id, String name, String description, City city, Double price, PointOfInterestType type) {
+    public POI(Long id, String name, String description, City city, Double price, PointOfInterestType type) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -44,7 +48,7 @@ public class PointOfInterest {
         return id;
     }
 
-    public PointOfInterest setId(Long id) {
+    public POI setId(Long id) {
         this.id = id;
         return this;
     }
@@ -53,7 +57,7 @@ public class PointOfInterest {
         return name;
     }
 
-    public PointOfInterest setName(String name) {
+    public POI setName(String name) {
         this.name = name;
         return this;
     }
@@ -62,7 +66,7 @@ public class PointOfInterest {
         return description;
     }
 
-    public PointOfInterest setDescription(String description) {
+    public POI setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -83,7 +87,7 @@ public class PointOfInterest {
         return city;
     }
 
-    public PointOfInterest setCity(City city) {
+    public POI setCity(City city) {
         this.city = city;
         return this;
     }
@@ -92,7 +96,7 @@ public class PointOfInterest {
         return price;
     }
 
-    public PointOfInterest setPrice(Double price) {
+    public POI setPrice(Double price) {
         this.price = price;
         return this;
     }
@@ -101,7 +105,7 @@ public class PointOfInterest {
         return type;
     }
 
-    public PointOfInterest setType(PointOfInterestType type) {
+    public POI setType(PointOfInterestType type) {
         this.type = type;
         return this;
     }

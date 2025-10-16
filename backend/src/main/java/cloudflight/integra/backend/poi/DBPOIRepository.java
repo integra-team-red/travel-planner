@@ -9,11 +9,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DBPOIRepository extends JpaRepository<PointOfInterest, Long> {
-    List<PointOfInterest> findByCity_Id(Long cityId);
+public interface DBPOIRepository extends JpaRepository<POI, Long> {
+    List<POI> findByCity_Id(Long cityId);
 
-    List<PointOfInterest> findByCity_Name(String cityName);
+    List<POI> findByCity_Name(String cityName);
 
-    @Query("SELECT p FROM PointOfInterest p WHERE LOWER(p.type) = LOWER(:type)")
-    Page<PointOfInterest> findAllByType(@Param("type") String type, Pageable pageable);
+    @Query("SELECT p FROM POI p WHERE LOWER(p.type) = LOWER(:type)")
+    Page<POI> findAllByType(@Param("type") String type, Pageable pageable);
 }

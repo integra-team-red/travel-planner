@@ -1,7 +1,8 @@
 GET http://localhost:8080/api/testAuth/1
 ###
 
-POST http://localhost:8080/api/testAuth/login
+POST http://localhost:8080/api/testAuth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInN1YiI6InVzZXIiLCJpYXQiOjE3NjA3MzM2MDQsImV4cCI6MTc2MDgyMDAwNH0.7o9lT-NehJinDVHBFqMMfDGxWapdmnwyWVZ6ErMwO98
 Content-Type: application/json
 
 {
@@ -14,7 +15,7 @@ Content-Type: application/json
 
 {
   "email": "user",
-  "password": "userwrong"
+  "password": "user"
 }
 ###
 GET http://localhost:8080/api/testAuth/2

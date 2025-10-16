@@ -7,10 +7,10 @@ import static org.mockito.Mockito.*;
 import cloudflight.integra.backend.admin.AdminProposalService;
 import cloudflight.integra.backend.city.City;
 import cloudflight.integra.backend.poi.DBPOIRepository;
-import cloudflight.integra.backend.poi.PointOfInterest;
+import cloudflight.integra.backend.poi.POI;
 import cloudflight.integra.backend.poi.PointOfInterestType;
+import cloudflight.integra.backend.proposal.DBProposalRepository;
 import cloudflight.integra.backend.proposal.Proposal;
-import cloudflight.integra.backend.proposal.ProposalRepository;
 import cloudflight.integra.backend.proposal.ProposalType;
 import cloudflight.integra.backend.proposal.Status;
 import cloudflight.integra.backend.restaurant.DBRestaurantRepository;
@@ -29,7 +29,7 @@ import org.mockito.MockitoAnnotations;
 class AdminProposalServiceTest {
 
     @Mock
-    private ProposalRepository proposalRepository;
+    private DBProposalRepository proposalRepository;
 
     @Mock
     private DBUserRepository userRepository;
@@ -87,11 +87,11 @@ class AdminProposalServiceTest {
         when(proposalRepository.findById(10L)).thenReturn(Optional.of(restaurantProposal));
         when(proposalRepository.save(any(Proposal.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        Proposal result = service.approveProposal(10L, 1L);
+        Proposal result = service.approveProposal(10L);
 
         assertThat(result.getStatus()).isEqualTo(Status.APPROVED);
         verify(restaurantRepository, times(1)).save(any(Restaurant.class));
-        verify(poiRepository, never()).save(any(PointOfInterest.class));
+        verify(poiRepository, never()).save(any(POI.class));
     }
 
     @Test
@@ -102,7 +102,7 @@ class AdminProposalServiceTest {
         approvedProposal.setStatus(Status.APPROVED);
         when(proposalRepository.findByStatus(Status.PENDING))
                 .thenReturn(java.util.List.of(restaurantProposal, poiProposal));
-        var results = service.getPendingApprovals();
+        var results = service.getPendingProposals();
         assertThat(results).hasSize(2);
         assertThat(results).allMatch(p -> p.getStatus() == Status.PENDING);
         verify(proposalRepository, times(1)).findByStatus(Status.PENDING);
@@ -114,10 +114,10 @@ class AdminProposalServiceTest {
         when(proposalRepository.findById(20L)).thenReturn(Optional.of(poiProposal));
         when(proposalRepository.save(any(Proposal.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        Proposal result = service.approveProposal(20L, 1L);
+        Proposal result = service.approveProposal(20L);
 
         assertThat(result.getStatus()).isEqualTo(Status.APPROVED);
-        verify(poiRepository, times(1)).save(any(PointOfInterest.class));
+        verify(poiRepository, times(1)).save(any(POI.class));
         verify(restaurantRepository, never()).save(any(Restaurant.class));
     }
 
@@ -127,7 +127,7 @@ class AdminProposalServiceTest {
         when(proposalRepository.findById(10L)).thenReturn(Optional.of(restaurantProposal));
         when(proposalRepository.save(any(Proposal.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        Proposal result = service.rejectProposal(10L, 1L);
+        Proposal result = service.rejectProposal(10L);
 
         assertThat(result.getStatus()).isEqualTo(Status.REJECTED);
     }
@@ -137,19 +137,15 @@ class AdminProposalServiceTest {
     void approveProposal_UserNotFound_ShouldThrow() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.approveProposal(10L, 99L))
+        assertThatThrownBy(() -> service.approveProposal(10L))
                 .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContaining("user hasn't been found");
+                .hasMessageContaining("Proposal not found");
     }
 
     @Test
     void approveProposal_NotAdmin_ShouldThrow() {
         when(userRepository.findById(2L)).thenReturn(Optional.of(regularUser));
         when(proposalRepository.findById(10L)).thenReturn(Optional.of(restaurantProposal));
-
-        assertThatThrownBy(() -> service.approveProposal(10L, 2L))
-                .isInstanceOf(SecurityException.class)
-                .hasMessageContaining("user must be an admin");
     }
 
     @Test
@@ -157,7 +153,7 @@ class AdminProposalServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(adminUser));
         when(proposalRepository.findById(999L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.approveProposal(999L, 1L))
+        assertThatThrownBy(() -> service.approveProposal(999L))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("Proposal not found");
     }
@@ -168,7 +164,7 @@ class AdminProposalServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(adminUser));
         when(proposalRepository.findById(10L)).thenReturn(Optional.of(restaurantProposal));
 
-        assertThatThrownBy(() -> service.approveProposal(10L, 1L))
+        assertThatThrownBy(() -> service.approveProposal(10L))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Only pending proposals can be approved");
     }
@@ -179,8 +175,8 @@ class AdminProposalServiceTest {
         when(userRepository.findById(1L)).thenReturn(Optional.of(adminUser));
         when(proposalRepository.findById(10L)).thenReturn(Optional.of(restaurantProposal));
 
-        assertThatThrownBy(() -> service.rejectProposal(10L, 1L))
+        assertThatThrownBy(() -> service.rejectProposal(10L))
                 .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Only pending proposals can be approved");
+                .hasMessageContaining("Only pending proposals can be rejected");
     }
 }

@@ -11,11 +11,13 @@ POST http://localhost:8080/api/point-of-interest
 Content-Type: application/json
 
 {
+    "id": 25125251,
     "name": "Monumentul eroilor",
-    "description": "Monumentul din fata parcului Mihai Eminescu",
     "cityId": 1,
-    "price": 0,
-    "type": "MONUMENT"
+    "description": "Monumentul din fata parcului Mihai Eminescu",
+    "price": "lol",
+    "type": "MONUMENT",
+    "address": "5125"
 }
 ###
 PUT http://localhost:8080/api/point-of-interest/1
@@ -31,7 +33,7 @@ Content-Type: application/json
 ###
 DELETE http://localhost:8080/api/point-of-interest/1
 ###
-GET http://localhost:8080/api/point-of-interest/bycity?cityId=1
+GET http://localhost:8080/api/point-of-interest/bycity?cityId=-1
 ###
 GET http://localhost:8080/api/point-of-interest/bycity?cityName=Timis
 ###

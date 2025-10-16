@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Arrays;
@@ -31,7 +32,7 @@ public class POIController {
     private final CityService cityService;
 
     @Autowired
-    public POIController(final POIService poiService, final CityService cityService) {
+    public POIController(POIService poiService, CityService cityService) {
         this.service = poiService;
         this.cityService = cityService;
     }
@@ -65,17 +66,13 @@ public class POIController {
                                 @Content(
                                         mediaType = "application/json",
                                         schema = @Schema(implementation = POIDTO.class))),
-                @ApiResponse(responseCode = "5xx", description = "Invalid POI supplied", content = @Content)
+                @ApiResponse(responseCode = "422", description = "Invalid POI supplied", content = @Content),
+                @ApiResponse(responseCode = "404", description = "City id of the POI not found", content = @Content)
             })
     @PostMapping
     public ResponseEntity<POIDTO> addPointOfInterest(@RequestBody POIDTO poiDTO) {
-
-        if (poiDTO.id() != null && poiDTO.id() != 0) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-        }
-        // TODO: cityId validation
         City city = cityService.getCity(poiDTO.cityId());
-        PointOfInterest savedPoi = service.addPointOfInterest(POIMapper.POIToEntity(poiDTO, city));
+        POI savedPoi = service.addPointOfInterest(POIMapper.POIToEntity(poiDTO, city));
         return ResponseEntity.ok(POIMapper.POIToDTO(savedPoi));
     }
 
@@ -100,21 +97,15 @@ public class POIController {
                                 @Content(
                                         mediaType = "application/json",
                                         schema = @Schema(implementation = POIDTO.class))),
-                @ApiResponse(responseCode = "404", description = "POI to update not found", content = @Content)
+                @ApiResponse(responseCode = "404", description = "POI to update not found", content = @Content),
+                @ApiResponse(responseCode = "404", description = "City id of the POI not found", content = @Content),
+                @ApiResponse(responseCode = "422", description = "Invalid POI supplied", content = @Content)
             })
     @PutMapping(value = "/{id}")
     public ResponseEntity<POIDTO> updatePointOfInterest(
             @PathVariable Long id, @RequestBody POIDTO newPointOfInterestDTO) {
-
-        if (newPointOfInterestDTO.id() != null && newPointOfInterestDTO.id() != 0) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-        }
         City city = cityService.getCity(newPointOfInterestDTO.cityId());
-        PointOfInterest updatedPOI =
-                service.updatePointOfInterest(id, POIMapper.POIToEntity(newPointOfInterestDTO, city));
-        if (updatedPOI == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        POI updatedPOI = service.updatePointOfInterest(id, POIMapper.POIToEntity(newPointOfInterestDTO, city));
         return ResponseEntity.ok(POIMapper.POIToDTO(updatedPOI));
     }
 
@@ -130,7 +121,7 @@ public class POIController {
                                         array = @ArraySchema(schema = @Schema(implementation = POIDTO.class)))),
             })
     @GetMapping("/bycity")
-    public List<PointOfInterest> getPointsOfInterestByCity(
+    public List<POI> getPointsOfInterestByCity(
             @RequestParam(required = false) Long cityId, @RequestParam(required = false) String cityName) {
         return service.getPointsOfInterestByCity(cityId, cityName);
     }
@@ -156,8 +147,7 @@ public class POIController {
         final var jsonMapper = new ObjectMapper();
         final var outputStream = new StringWriter();
 
-        // TODO(MC): Maybe find a **clean** way to remove the "id" field here or get
-        // mixins to work
+        // TODO(MC): Maybe find a **clean** way to remove the "id" field here or get mixins to work
         jsonMapper.writeValue(outputStream, POIMapper.EntityListToDTOList(service.getAllPointsOfInterest()));
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Disposition", "attachment; filename=\"ApprovedPOIs.json\"")
@@ -176,19 +166,23 @@ public class POIController {
                                 @Content(
                                         mediaType = "application/json",
                                         array = @ArraySchema(schema = @Schema(implementation = CityDTO.class)))),
+                @ApiResponse(responseCode = "422", description = "One or more POIs were invalid", content = @Content),
                 @ApiResponse(
-                        responseCode = "422",
-                        description = "One or more POIs were invalid / already exist in the repository",
+                        responseCode = "404",
+                        description = "One or more POIs' city IDs were not found",
                         content = @Content)
             })
     @PostMapping(value = "/upload")
-    public ResponseEntity<List<POIDTO>> importApprovedPOIsFromJson(@RequestBody List<POIDTO> poiDtos) {
+    public ResponseEntity<List<POIDTO>> importApprovedPOIsFromJson(@RequestBody List<POIDTO> pois) {
+        List<POI> poiEntities;
         try {
-            poiDtos.forEach(poiDto ->
-                    service.addPointOfInterest(POIMapper.POIToEntity(poiDto, cityService.getCity(poiDto.cityId()))));
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+            poiEntities = pois.stream()
+                    .map(poidto -> POIMapper.POIToEntity(poidto, cityService.getCity(poidto.cityId())))
+                    .toList();
+        } catch (EntityNotFoundException err) {
+            throw new EntityNotFoundException("One or more POIs' city IDs were not found");
         }
+        service.addPointsOfInterest(poiEntities);
         return ResponseEntity.ok(POIMapper.EntityListToDTOList(service.getAllPointsOfInterest()));
     }
 
@@ -202,15 +196,11 @@ public class POIController {
                                 @Content(
                                         mediaType = "application/json",
                                         array = @ArraySchema(schema = @Schema(implementation = POIDTO.class)))),
-                @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+                @ApiResponse(responseCode = "406", description = "Invalid page requested", content = @Content)
             })
     @GetMapping(value = "/sortedByName")
     public ResponseEntity<List<POIDTO>> getAllPointsOfInterestSortedByName(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        pageNumber -= 1;
-        if (pageSize <= 0 || pageNumber < 0) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         return ResponseEntity.ok(POIMapper.EntityListToDTOList(
                 isDescending.isPresent()
                         ? service.getAllPointsOfInterestSortedByName(pageNumber, pageSize, isDescending.get())
@@ -227,15 +217,11 @@ public class POIController {
                                 @Content(
                                         mediaType = "application/json",
                                         array = @ArraySchema(schema = @Schema(implementation = POIDTO.class)))),
-                @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+                @ApiResponse(responseCode = "406", description = "Invalid page requested", content = @Content)
             })
     @GetMapping(value = "/sortedByPrice")
     public ResponseEntity<List<POIDTO>> getAllPointsOfInterestSortedByPrice(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        pageNumber -= 1;
-        if (pageSize <= 0 || pageNumber < 0) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         return ResponseEntity.ok(POIMapper.EntityListToDTOList(
                 isDescending.isPresent()
                         ? service.getAllPointsOfInterestSortedByPrice(pageNumber, pageSize, isDescending.get())
@@ -252,15 +238,11 @@ public class POIController {
                                 @Content(
                                         mediaType = "application/json",
                                         array = @ArraySchema(schema = @Schema(implementation = POIDTO.class)))),
-                @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
+                @ApiResponse(responseCode = "406", description = "Invalid page requested", content = @Content)
             })
     @GetMapping(value = "/sortedByType")
     public ResponseEntity<List<POIDTO>> getAllPointsOfInterestSortedByType(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam String type) {
-        pageNumber -= 1;
-        if (pageSize <= 0 || pageNumber < 0) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         return ResponseEntity.ok(
                 POIMapper.EntityListToDTOList(service.getAllPointsOfInterestSortedByType(pageNumber, pageSize, type)));
     }
@@ -277,7 +259,6 @@ public class POIController {
                                         array =
                                                 @ArraySchema(
                                                         schema = @Schema(implementation = PointOfInterestType.class)))),
-                @ApiResponse(responseCode = "403", description = "Invalid page requested", content = @Content)
             })
     @GetMapping(value = "/types")
     public ResponseEntity<List<PointOfInterestType>> getAllPointsOfInterestTypes() {
