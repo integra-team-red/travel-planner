@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8080/api/restaurant/3
+DELETE http://localhost:8080/api/restaurant/2
 ### GET BY CUISINE
 GET http://localhost:8080/api/restaurant/sortedByCuisine?pageSize=3&pageNumber=1&cuisineType=Romanian
 ### GET BY NAME

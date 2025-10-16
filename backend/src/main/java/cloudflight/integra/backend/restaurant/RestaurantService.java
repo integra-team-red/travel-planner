@@ -5,11 +5,15 @@ import java.util.List;
 public interface RestaurantService {
     Restaurant addRestaurant(Restaurant restaurant);
 
-    List<Restaurant> getAllRestaurants();
+    List<Restaurant> addRestaurants(List<Restaurant> restaurants);
+
+    Restaurant updateRestaurant(Long id, Restaurant restaurant);
 
     void deleteRestaurant(Long id);
 
-    Restaurant updateRestaurant(Long id, Restaurant restaurant);
+    Restaurant getRestaurant(Long id);
+
+    List<Restaurant> getAllRestaurants();
 
     List<Restaurant> getAllRestaurantsSortedByName(int pageNumber, int pageSize, boolean isDescending);
 

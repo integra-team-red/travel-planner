@@ -2,6 +2,7 @@ package cloudflight.integra.backend.restaurant;
 
 import cloudflight.integra.backend.city.City;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "restaurant")
@@ -12,13 +13,17 @@ public class Restaurant {
     @Column(columnDefinition = "serial")
     private Long id;
 
+    @NotNull
     private String name;
 
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
+    @NotNull
     private Double averagePrice;
+
+    @NotNull
     private String cuisineType;
 
     public Long getId() {

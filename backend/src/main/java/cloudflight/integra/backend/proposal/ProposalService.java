@@ -1,18 +1,15 @@
 package cloudflight.integra.backend.proposal;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProposalService {
-    Proposal save(Proposal proposal);
+    Proposal addProposal(Proposal proposal);
 
-    List<Proposal> findAll();
+    Proposal updateProposal(Long id, Proposal proposal);
 
-    Optional<Proposal> findById(Long id);
+    void deleteProposal(Long id);
 
-    Proposal deleteById(Long id);
+    Proposal getProposal(Long id);
 
-    Proposal update(Proposal proposal);
-
-    List<Proposal> findByStatus(Status status);
+    List<Proposal> getAllProposals();
 }
