@@ -1,5 +1,6 @@
 ###
 GET http://localhost:8080/api/proposal
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzYwNzMzODM1LCJleHAiOjE3NjA4MjAyMzV9.RLYbDXumwlQraJS1RoYyQuH042Mzl19cqraS6loVo3s
 ###
 GET http://localhost:8080/api/proposal/6
 ###

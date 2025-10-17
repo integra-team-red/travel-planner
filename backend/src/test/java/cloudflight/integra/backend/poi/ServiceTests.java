@@ -24,18 +24,17 @@ public class ServiceTests {
     void getAllPointsOfInterestSortedByNameTest() {
         City city = new City();
         city.setName("Viena");
-        PointOfInterest poi1 =
-                new PointOfInterest(1L, "Museum of Science", "Desc", city, 10.0, PointOfInterestType.MUSEUM);
-        PointOfInterest poi2 = new PointOfInterest(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterestType.PARK);
-        PointOfInterest poi3 = new PointOfInterest(3L, "Zalha", "Desc", city, 20.0, PointOfInterestType.MONUMENT);
+        POI poi1 = new POI(1L, "Museum of Science", "Desc", city, 10.0, PointOfInterestType.MUSEUM);
+        POI poi2 = new POI(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterestType.PARK);
+        POI poi3 = new POI(3L, "Zalha", "Desc", city, 20.0, PointOfInterestType.MONUMENT);
 
-        Page<PointOfInterest> pageAsc = new PageImpl<>(List.of(poi2, poi1, poi3));
-        Page<PointOfInterest> pageDesc = new PageImpl<>(List.of(poi3, poi1, poi2));
+        Page<POI> pageAsc = new PageImpl<>(List.of(poi2, poi1, poi3));
+        Page<POI> pageDesc = new PageImpl<>(List.of(poi3, poi1, poi2));
 
         when(repo.findAll(PageRequest.of(0, 3, Sort.by(Sort.Direction.ASC, "name"))))
                 .thenReturn(pageAsc);
 
-        List<PointOfInterest> resultAsc = service.getAllPointsOfInterestSortedByName(0, 3, false);
+        List<POI> resultAsc = service.getAllPointsOfInterestSortedByName(0, 3, false);
         assertThat(resultAsc.get(0).getName()).isEqualTo("Belvedere Park");
         assertThat(resultAsc.get(1).getName()).isEqualTo("Museum of Science");
         assertThat(resultAsc.get(2).getName()).isEqualTo("Zalha");
@@ -43,7 +42,7 @@ public class ServiceTests {
         when(repo.findAll(PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "name"))))
                 .thenReturn(pageDesc);
 
-        List<PointOfInterest> resultDesc = service.getAllPointsOfInterestSortedByName(0, 3, true);
+        List<POI> resultDesc = service.getAllPointsOfInterestSortedByName(0, 3, true);
         assertThat(resultDesc.get(0).getName()).isEqualTo("Zalha");
         assertThat(resultDesc.get(1).getName()).isEqualTo("Museum of Science");
         assertThat(resultDesc.get(2).getName()).isEqualTo("Belvedere Park");
@@ -54,18 +53,17 @@ public class ServiceTests {
         City city = new City();
         city.setName("Viena");
 
-        PointOfInterest poi1 =
-                new PointOfInterest(1L, "Museum of Science", "Desc", city, 10.0, PointOfInterestType.MUSEUM);
-        PointOfInterest poi2 = new PointOfInterest(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterestType.PARK);
-        PointOfInterest poi3 = new PointOfInterest(3L, "Zalha", "Desc", city, 20.0, PointOfInterestType.MONUMENT);
+        POI poi1 = new POI(1L, "Museum of Science", "Desc", city, 10.0, PointOfInterestType.MUSEUM);
+        POI poi2 = new POI(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterestType.PARK);
+        POI poi3 = new POI(3L, "Zalha", "Desc", city, 20.0, PointOfInterestType.MONUMENT);
 
-        Page<PointOfInterest> pageAsc = new PageImpl<>(List.of(poi1, poi2, poi3));
-        Page<PointOfInterest> pageDesc = new PageImpl<>(List.of(poi3, poi2, poi1));
+        Page<POI> pageAsc = new PageImpl<>(List.of(poi1, poi2, poi3));
+        Page<POI> pageDesc = new PageImpl<>(List.of(poi3, poi2, poi1));
 
         when(repo.findAll(PageRequest.of(0, 3, Sort.by(Sort.Direction.ASC, "price"))))
                 .thenReturn(pageAsc);
 
-        List<PointOfInterest> resultAsc = service.getAllPointsOfInterestSortedByPrice(0, 3, false);
+        List<POI> resultAsc = service.getAllPointsOfInterestSortedByPrice(0, 3, false);
         assertThat(resultAsc.get(0).getPrice()).isEqualTo(10.0);
         assertThat(resultAsc.get(1).getPrice()).isEqualTo(15.0);
         assertThat(resultAsc.get(2).getPrice()).isEqualTo(20.0);
@@ -73,7 +71,7 @@ public class ServiceTests {
         when(repo.findAll(PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "price"))))
                 .thenReturn(pageDesc);
 
-        List<PointOfInterest> resultDesc = service.getAllPointsOfInterestSortedByPrice(0, 3, true);
+        List<POI> resultDesc = service.getAllPointsOfInterestSortedByPrice(0, 3, true);
         assertThat(resultDesc.get(0).getPrice()).isEqualTo(20.0);
         assertThat(resultDesc.get(1).getPrice()).isEqualTo(15.0);
         assertThat(resultDesc.get(2).getPrice()).isEqualTo(10.0);
@@ -84,15 +82,14 @@ public class ServiceTests {
         City city = new City();
         city.setName("Viena");
 
-        PointOfInterest poi1 =
-                new PointOfInterest(1L, "Museum of Science", "Desc", city, 10.0, PointOfInterestType.MUSEUM);
-        PointOfInterest poi2 = new PointOfInterest(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterestType.PARK);
-        PointOfInterest poi3 = new PointOfInterest(3L, "Art Museum", "Desc", city, 20.0, PointOfInterestType.MUSEUM);
+        POI poi1 = new POI(1L, "Museum of Science", "Desc", city, 10.0, PointOfInterestType.MUSEUM);
+        POI poi2 = new POI(2L, "Belvedere Park", "Desc", city, 15.0, PointOfInterestType.PARK);
+        POI poi3 = new POI(3L, "Art Museum", "Desc", city, 20.0, PointOfInterestType.MUSEUM);
 
-        Page<PointOfInterest> pageMuseum = new PageImpl<>(List.of(poi1, poi3));
+        Page<POI> pageMuseum = new PageImpl<>(List.of(poi1, poi3));
         when(repo.findAllByType("MUSEUM", PageRequest.of(0, 3))).thenReturn(pageMuseum);
 
-        List<PointOfInterest> result = service.getAllPointsOfInterestSortedByType(0, 3, "MUSEUM");
+        List<POI> result = service.getAllPointsOfInterestSortedByType(0, 3, "MUSEUM");
 
         assertThat(result.size()).isEqualTo(2);
         assertThat(result.get(0).getType().name()).isEqualTo("MUSEUM");

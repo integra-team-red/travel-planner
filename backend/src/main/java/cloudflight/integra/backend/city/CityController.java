@@ -57,17 +57,10 @@ public class CityController {
                                 @Content(
                                         mediaType = "application/json",
                                         schema = @Schema(implementation = CityDTO.class))),
-                @ApiResponse(responseCode = "406", description = "Invalid city supplied", content = @Content)
+                @ApiResponse(responseCode = "422", description = "Invalid city supplied", content = @Content)
             })
     @PostMapping()
     public ResponseEntity<CityDTO> addCity(@RequestBody CityDTO cityDTO) {
-
-        if (cityDTO.id() != null && cityDTO.id() != 0) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-        }
-        if (!isValidName(cityDTO.name())) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-        }
         City savedCity = service.addCity(CityMapper.CityToEntity(cityDTO));
         return ResponseEntity.ok(CityMapper.CityToDTO(savedCity));
     }
@@ -93,19 +86,12 @@ public class CityController {
                                 @Content(
                                         mediaType = "application/json",
                                         schema = @Schema(implementation = CityDTO.class))),
-                @ApiResponse(responseCode = "406", description = "Invalid city supplied", content = @Content),
+                @ApiResponse(responseCode = "422", description = "Invalid city supplied", content = @Content),
                 @ApiResponse(responseCode = "404", description = "City to update not found", content = @Content)
             })
     @PutMapping(value = "/{id}")
     public ResponseEntity<CityDTO> updateCity(@PathVariable Long id, @RequestBody CityDTO newCityDTO) {
-
-        if (newCityDTO.id() != null && newCityDTO.id() != 0) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-        }
         City updatedCity = service.updateCity(id, CityMapper.CityToEntity(newCityDTO));
-        if (updatedCity == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
         return ResponseEntity.ok(CityMapper.CityToDTO(updatedCity));
     }
 
@@ -150,22 +136,12 @@ public class CityController {
                                         array = @ArraySchema(schema = @Schema(implementation = CityDTO.class)))),
                 @ApiResponse(
                         responseCode = "422",
-                        description = "One or more cities were invalid / already exist in the repository",
+                        description = "One or more of the provided cities were invalid",
                         content = @Content)
             })
     @PostMapping(value = "/upload")
     public ResponseEntity<List<CityDTO>> importApprovedCitiesFromJson(@RequestBody List<CityDTO> cities) {
-        try {
-            cities.forEach(cityDto -> service.addCity(CityMapper.CityToEntity(cityDto)));
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-        }
+        service.addCities(cities.stream().map(CityMapper::CityToEntity).toList());
         return ResponseEntity.ok(CityMapper.EntityListToDTOList(service.getAllCities()));
-    }
-
-    private boolean isValidName(String cityName) {
-        int nameLength = cityName.length();
-
-        return 2 < nameLength && nameLength < 32 && cityName.matches("^([A-Za-z]+(-|\\s))*[A-Za-z]+$");
     }
 }

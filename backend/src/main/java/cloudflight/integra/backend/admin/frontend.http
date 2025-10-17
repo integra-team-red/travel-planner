@@ -1,0 +1,26 @@
+POST http://localhost:8080/api/testAuth/login
+Content-Type: application/json
+
+{
+  "email": "user",
+  "password": "user"
+}
+###
+POST http://localhost:8080/api/testAuth/login
+Content-Type: application/json
+
+{
+"email": "admin",
+"password": "admin"
+}
+###
+GET http://localhost:8080/api/admin/proposals/pending
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInN1YiI6InVzZXIiLCJpYXQiOjE3NjA3MzM0NDUsImV4cCI6MTc2MDgxOTg0NX0.KXmC1h-StmwUjvMRnz9CTSVprYSb3jlhwuMlpbi6yFQ
+
+###
+POST http://localhost:8080/api/admin/proposals/34/approve
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzYwNjA0MTIzLCJleHAiOjE3NjA2OTA1MjN9.SMEtoZ6SwPU_xDikrePz9PnJmczgcH8K_RvljRfZFvg
+
+###
+POST http://localhost:8080/api/admin/proposals/34/reject
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInN1YiI6ImFkbWluIiwiaWF0IjoxNzYwNjA0MTIzLCJleHAiOjE3NjA2OTA1MjN9.SMEtoZ6SwPU_xDikrePz9PnJmczgcH8K_RvljRfZFvg
