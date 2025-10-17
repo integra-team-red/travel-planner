@@ -1,7 +1,6 @@
 services:
   backend:
-    build:
-      context: .
+    image: integra/travel-planner
     ports:
       - "8080:8080"
     depends_on:

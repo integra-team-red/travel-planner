@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/proposal")
+@RequestMapping("/api/proposal")
 @SecurityRequirement(name = "bearerAuth")
 public class ProposalController {
     private ProposalServiceImpl proposalService;
