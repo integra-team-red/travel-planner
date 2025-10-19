@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SpaForwardingController {
 
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = {"/{path:[^\\.]*}", "/**/{path:[^\\.]*}"})
+    @RequestMapping(method = RequestMethod.GET, value = "/{path:[^\\.]*}")
     public String forward() {
         return "forward:/index.html";
     }

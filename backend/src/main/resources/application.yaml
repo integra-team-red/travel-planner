@@ -23,10 +23,6 @@ spring:
     resources:
       static-locations: classpath:/static/
 
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-
 logging:
   level:
     org.flywaydb: INFO

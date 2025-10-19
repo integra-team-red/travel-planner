@@ -14,7 +14,7 @@ function getToken() {
 
 const config = new Configuration({
     accessToken: getToken,
-    basePath: '/api'
+    basePath: ''
 });
 
 const proposalReviewApi = new AdminProposalControllerApi(config);

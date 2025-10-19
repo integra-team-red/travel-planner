@@ -17,7 +17,7 @@ public class OpenApiExportTest {
 
     @Test
     void exportOpenApi() throws Exception {
-        String spec = restTemplate.getForObject("/v3/api-docs.yaml", String.class);
+        String spec = restTemplate.getForObject("/v3/api-docs", String.class);
         Files.write(Paths.get("openapi.yaml"), spec.getBytes(StandardCharsets.UTF_8));
     }
 }

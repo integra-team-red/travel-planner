@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {reactive, ref} from "vue";
+import {ref} from "vue";
 import {cityApi, proposalApi} from "@/api.ts";
 import {
     type CityDTO,
@@ -22,7 +22,7 @@ import {type FormField, FormFieldBuilder} from "@/utils/form.utils.ts";
 const { t } = useI18n();
 const confirm = useConfirm();
 const toast = useToast();
-const initialValues = reactive({});
+const initialValues = ref<Record<string, unknown>>({});
 const selectedType = ref<ProposalDTOPoiTypeEnum>();
 const formKey = ref<number>(0);
 const additionalFields = ref<FormField[]>([]);
@@ -132,7 +132,7 @@ function getLastSelectedPendingProposal(): ProposalDTO | undefined {
 }
 
 function resetForm() {
-    Object.keys(initialValues).forEach(key => delete initialValues[key]);
+    Object.keys(initialValues).forEach((key: string) => delete initialValues.value[key]);
     selectedType.value = undefined;
     changeAdditionalFields();
 }
@@ -140,12 +140,13 @@ function resetForm() {
 function overwriteFormData(proposal: ProposalDTO) {
     resetForm();
     changeAdditionalFields(proposal.type);
-    initialValues.name = proposal.name;
-    initialValues.type = proposal.type;
+    initialValues.value.name = proposal.name;
+    initialValues.value.type = proposal.type;
     selectedType.value = proposal.type as ProposalDTOPoiTypeEnum;
-    initialValues.city = CITIES.find(city => city.id == proposal.cityId)!;
+    initialValues.value.city = CITIES.find(city => city.id == proposal.cityId)!;
     for (const field of additionalFields.value) {
         const camelCasedFieldName = toCamelCase(field.name);
+        // @ts-expect-error -- might just be anything here
         initialValues[camelCasedFieldName] = proposal[camelCasedFieldName == 'pointOfInterestType' ? 'poiType' : camelCasedFieldName as keyof ProposalDTO];
     }
 }
