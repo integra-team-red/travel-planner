@@ -4,7 +4,12 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.diffplug.spotless' version "7.2.1"
     id "org.openapi.generator" version "7.15.0"
+    id "com.github.node-gradle.node" version "7.1.0"
 }
+
+def frontendPath = "$projectDir/../frontend"
+def backendStaticPath = "$projectDir/src/main/resources/static"
+def frontendDistPath = "$frontendPath/dist"
 
 group = 'cloudflight.integra'
 version = '0.0.1-SNAPSHOT'
@@ -14,6 +19,13 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(24)
     }
+}
+
+node {
+    version = '22.17.1'
+    npmVersion = '10.9.2'
+    download = true
+    nodeProjectDir = file(frontendPath)
 }
 
 repositories {
@@ -38,10 +50,16 @@ dependencies {
     testImplementation 'com.h2database:h2'
 }
 
+tasks.named('clean') {
+    delete "$buildDir"
+    delete "$backendStaticPath/*"
+    delete frontendDistPath
+}
+
 openApiGenerate {
-    generatorName = "typescript-fetch" //
+    generatorName = "typescript-fetch"
     inputSpec = "${rootDir}/openapi.yaml"
-    outputDir = "${rootDir}/../frontend/typescript-client"
+    outputDir = "$frontendPath/typescript-client"
     apiPackage = "api"
     modelPackage = "model"
 }
@@ -52,10 +70,29 @@ tasks.register('generateOpenApiDocs', Test) {
 }
 
 tasks.named('openApiGenerate') {
-    dependsOn 'generateOpenApiDocs'
+    dependsOn tasks.named('generateOpenApiDocs')
 }
 
-assemble.dependsOn tasks.named('openApiGenerate')
+tasks.register('buildFrontend', NpmTask) {
+    dependsOn npmInstall
+    dependsOn tasks.named('openApiGenerate')
+    workingDir = file(frontendPath)
+    args = ['run', 'build']
+    onlyIf {
+        gradle.taskGraph.hasTask(':bootJar') || gradle.taskGraph.hasTask(':build') || gradle.taskGraph.hasTask(':assemble')
+    }
+
+    doLast{
+        copy {
+            from frontendDistPath
+            into backendStaticPath
+        }
+    }
+}
+
+bootJar {
+    dependsOn buildFrontend
+}
 
 tasks.named('test') {
     useJUnitPlatform()
