@@ -1,0 +1,55 @@
+GET http://localhost:8080/api/event
+###
+POST http://localhost:8080/api/city
+Content-Type: application/json
+
+{
+  "name": "Botosani"
+}
+###
+POST http://localhost:8080/api/event
+Content-Type: application/json
+
+{
+    "id": 25125251,
+    "name": "vizionare",
+    "poiId": 1,
+    "description": "pica",
+    "price": "lol",
+    "audience": "FAMILIES",
+    "startTime": "2025-02-10T14:30:00",
+    "endTime": "2025-02-10T16:30:00"
+}
+###
+POST http://localhost:8080/api/event
+Content-Type: application/json
+
+{
+  "name": "vizionare",
+  "poiId": 6,
+  "description": "nu pica",
+  "price": 10,
+  "audience": "FAMILIES",
+  "startTime": "2025-02-10T14:30:00",
+  "endTime": "2025-02-10T16:30:00"
+}
+###
+PUT http://localhost:8080/api/event/1
+Content-Type: application/json
+
+{
+  "name": "vizionare",
+  "poiId": 10,
+  "description": "nu pica",
+  "price": 10,
+  "audience": "FAMILIES",
+  "startTime": "2025-02-10T14:30:00",
+  "endTime": "2025-02-10T16:30:00"
+}
+###
+DELETE http://localhost:8080/api/event/1
+###
+GET http://localhost:8080/api/event/bypoi?poiId=-1
+###
+GET http://localhost:8080/api/event/bypoi?poiName=Parc
+###
