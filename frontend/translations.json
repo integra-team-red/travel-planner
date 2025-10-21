@@ -49,8 +49,10 @@
             "fieldRequired": "The field is required!",
             "fieldType": "Field must be a {type}!",
             "fieldLength": {
-                "min": "Field must contain at least {lowerBound} characters!"
-            }
+                "min": "Field must contain at least {lowerBound} characters!",
+                "max": "Field cannot contain more than {upperBound} characters!"
+            },
+            "improperFormat": "Field does not conform to the given format"
         },
         "field-is-required": "The field is required!",
         "home": "Home",
@@ -72,7 +74,11 @@
             "imageURL": "Image URL",
             "cuisineType": "Cuisine Type",
             "averagePrice": "Average Price",
-            "pointOfInterestType": "Point Of Interest Type"
+            "pointOfInterestType": "Point Of Interest Type",
+            "priceLowerBound": "Minimum Price",
+            "priceUpperBound": "Maximum Price",
+            "schedule": "Schedule [XX:XX]",
+            "rating": "Rating"
         },
         "pois": {
             "download": {
@@ -89,6 +95,25 @@
                 "failure": "Points of interest upload failed!"
             },
             "header": "Points of Interest"
+        },
+        "spas": {
+            "delete": {
+                "success": "Spa successfully deleted!",
+                "failure": "Spa deletion failed!"
+            },
+            "update": {
+                "success": "Spa successfully updated!",
+                "failure": "Spa update failed!"
+            },
+            "add": {
+                "success": "Spa successfully created!",
+                "failure": "Spa creation failed!"
+            },
+            "header": "Spas",
+            "crudHeader": {
+                "add": "Submit a New Spa",
+                "update": "Edit Spa"
+            }
         },
         "proposals": {
             "review": {
@@ -192,8 +217,10 @@
             "fieldRequired": "Câmpul este obligatoriu!",
             "fieldType": "Câmpul trebuie să fie un {type}!",
             "fieldLength": {
-                "min": "Câmpul trebuie să conțină cel puțin {lowerBound} caractere!"
-            }
+                "min": "Câmpul trebuie să conțină cel puțin {lowerBound} caractere!",
+                "max": "Câmpul nu poate să conțină mai mult de {upperBound} caractere!"
+            },
+            "improperFormat": "Câmpul nu respectă formatul specificat"
         },
         "field-is-required": "Câmpul este obligatoriu!",
         "home": "Acasă",
@@ -215,7 +242,11 @@
             "imageURL": "URL Imagine",
             "cuisineType": "Specific Culinar",
             "averagePrice": "Preț Mediu",
-            "pointOfInterestType": "Tipul Punctului De Interes"
+            "pointOfInterestType": "Tipul Punctului De Interes",
+            "priceLowerBound": "Preț minim",
+            "priceUpperBound": "Preț maxim",
+            "schedule": "Program [XX:XX]",
+            "rating": "Notă"
         },
         "pois": {
             "download": {
@@ -232,6 +263,25 @@
                 "failure": "Încărcarea punctelor de interes a eșuat!"
             },
             "header": "Puncte de Interes"
+        },
+        "spas": {
+            "delete": {
+                "success": "Spa-ul a fost șters cu succes!",
+                "failure": "Ștergerea spa-ului a eșuat!"
+            },
+            "update": {
+                "success": "Spa-ul a fost actualizat cu succes!",
+                "failure": "Actualizarea spa-ului a eșuat!"
+            },
+            "add": {
+                "success": "Spa-ul a fost creat cu succes!",
+                "failure": "Crearea spa-ului a eșuat!"
+            },
+            "header": "Spa-uri",
+            "crudHeader": {
+                "add": "Adaugă un Spa Nou",
+                "update": "Editează Spa-ul"
+            }
         },
         "proposals": {
             "review": {

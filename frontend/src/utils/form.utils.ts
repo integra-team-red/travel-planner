@@ -26,14 +26,28 @@ export class FormFieldBuilder {
     }
     public isNaturalNumber(errorMessage: string): FormFieldBuilder {
         this.validations.push(({value}: FormFieldResolverOptions): boolean => {
-            return value && !isNaN(Number(value)) && Number(value) >= 0;
+            return !isNaN(Number(value)) && Number(value) >= 0;
+        });
+        this.errorMessages.push(errorMessage);
+        return this;
+    }
+    public lessThan(other: number | (() => number), errorMessage: string): FormFieldBuilder {
+        this.validations.push(({value}: FormFieldResolverOptions): boolean => {
+            return value < (typeof other != 'number' ? other() : other);
+        });
+        this.errorMessages.push(errorMessage);
+        return this;
+    }
+    public matches(pattern: string, errorMessage: string): FormFieldBuilder {
+        this.validations.push(({value}: FormFieldResolverOptions): boolean => {
+            return new RegExp(pattern).test(value);
         });
         this.errorMessages.push(errorMessage);
         return this;
     }
     public required(errorMessage: string): FormFieldBuilder {
         this.validations.push(({value}: FormFieldResolverOptions): boolean => {
-            return value !== undefined && value.trim() != '';
+            return typeof value != 'undefined' && value.toString().trim() != '';
         });
         this.errorMessages.push(errorMessage);
         return this;

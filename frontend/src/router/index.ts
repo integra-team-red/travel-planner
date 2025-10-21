@@ -11,10 +11,16 @@ import SignUpView from '@/pages/SignUpView.vue';
 import ProposalReviewView from "@/pages/ProposalReviewView.vue";
 import ProposalsView from "@/pages/ProposalsView.vue";
 import '@/interceptor/interceptor.ts'
+import SpasView from "@/pages/SpasView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        {
+            path: '/spas',
+            name: 'spas',
+            component: SpasView
+        },
         {
             path: '/proposals',
             name: 'proposals',
