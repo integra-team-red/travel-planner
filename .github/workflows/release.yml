@@ -21,7 +21,7 @@ jobs:
         with:
           registry: https://ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.PROJECT_PAT  }}
+          password: ${{ secrets.PROJECT_PAT_ALL_SCOPES  }}
 
       - name: 'Build Image'
         run: |
