@@ -58,7 +58,7 @@ tasks.named('clean') {
 
 openApiGenerate {
     generatorName = "typescript-fetch"
-    inputSpec = "${rootDir}/openapi.yaml"
+    inputSpec = "${projectDir}/openapi.yaml"
     outputDir = "$frontendPath/typescript-client"
     apiPackage = "api"
     modelPackage = "model"
