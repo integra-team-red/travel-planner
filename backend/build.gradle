@@ -51,7 +51,15 @@ dependencies {
 }
 
 tasks.named('clean') {
+    doFirst {
+        println "deleting $buildDir"
+        println "deleting $projectDir/openapi.yaml"
+        println "deleting $backendStaticPath/*"
+        println "deleting $frontendDistPath"
+    }
+
     delete "$buildDir"
+    delete "$buildDir/openapi.yaml"
     delete "$backendStaticPath/*"
     delete frontendDistPath
 }
