@@ -27,7 +27,7 @@ const selectedType = ref<ProposalDTOPoiTypeEnum>();
 const formKey = ref<number>(0);
 const additionalFields = ref<FormField[]>([]);
 const selectedProposals = ref<ProposalDTO[]>([]);
-const CITIES: CityDTO[] = await cityApi.getCities();
+const cities: CityDTO[] = await cityApi.getCities();
 const PROPOSAL_TYPES: string[] = Object.values(ProposalDTOTypeEnum);
 const POI_TYPES: string[] = Object.values(ProposalDTOPoiTypeEnum);
 const proposals = ref<ProposalDTO[]>();
@@ -123,6 +123,8 @@ function changeAdditionalFields(value?: string) {
 }
 
 function getLastSelectedPendingProposal(): ProposalDTO | undefined {
+    // NOTE(MC): Can't use Array.reverse here as it mutates the array and because the array itself is a ref
+    // that mutation will trigger yet another getLastSelectedPendingProposal and the cycle repeats
     for (let i = selectedProposals.value.length - 1; i >= 0; --i) {
         const proposal = selectedProposals.value[i];
         if (proposal!.status == 'PENDING') {
@@ -143,7 +145,7 @@ function overwriteFormData(proposal: ProposalDTO) {
     initialValues.value.name = proposal.name;
     initialValues.value.type = proposal.type;
     selectedType.value = proposal.type as ProposalDTOPoiTypeEnum;
-    initialValues.value.city = CITIES.find(city => city.id == proposal.cityId)!;
+    initialValues.value.city = cities.find(city => city.id == proposal.cityId)!;
     for (const field of additionalFields.value) {
         const camelCasedFieldName = toCamelCase(field.name);
         // @ts-expect-error -- might just be anything here
@@ -206,7 +208,7 @@ async function deleteSelection() {
     <div class="flex flex-col sm:flex-row gap-8">
         <div class="w-full sm:w-1/2 flex flex-col gap-4">
             <proposal-card v-for="proposal in proposals" :key="proposal.id" :proposal="proposal" :isSelected="!!selectedProposals.find(prop => prop.id == proposal.id)"
-                           :cityName="CITIES.find(city => city.id == proposal.cityId)!.name!"
+                           :cityName="cities.find(city => city.id == proposal.cityId)!.name!"
                            @card-clicked="onCardClick(proposal)"/>
             <div class="flex flex-row justify-between">
                 <Button :label="t('delete')" class="w-3/7" severity="danger" @click="promptConfirm(confirm, deleteSelection, undefined)"/>
@@ -229,7 +231,7 @@ async function deleteSelection() {
                 <Message v-if="$form.type?.invalid" severity="error" size="small" variant="simple">
                     {{ $form.type.error.message }}
                 </Message>
-                <Select :placeholder="t('fields.city')" name="city" optionLabel="name" :options="CITIES" fluid />
+                <Select :placeholder="t('fields.city')" name="city" optionLabel="name" :options="cities" fluid />
                 <Message v-if="$form.city?.invalid" severity="error" size="small" variant="simple">
                     {{ $form.city.error.message }}
                 </Message>
