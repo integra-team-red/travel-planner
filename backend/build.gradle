@@ -65,8 +65,17 @@ openApiGenerate {
 }
 
 tasks.register('generateOpenApiDocs', Test) {
+    dependsOn testClasses
     useJUnitPlatform()
-    include '**/OpenApiExportTest.class'
+
+    filter {
+        includeTestsMatching 'cloudflight.integra.backend.OpenApiExportTest'
+    }
+
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+
+    outputs.upToDateWhen { false }
 }
 
 tasks.named('openApiGenerate') {
