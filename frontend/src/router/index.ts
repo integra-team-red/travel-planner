@@ -10,6 +10,7 @@ import UserProfileView from '@/pages/UserProfileView.vue';
 import SignUpView from '@/pages/SignUpView.vue';
 import ProposalReviewView from "@/pages/ProposalReviewView.vue";
 import ProposalsView from "@/pages/ProposalsView.vue";
+import EventsView from "@/pages/EventsView.vue";
 import '@/interceptor/interceptor.ts'
 import SpasView from "@/pages/SpasView.vue";
 
@@ -60,6 +61,11 @@ const router = createRouter({
             path: '/restaurants',
             name: 'restaurants',
             component: RestaurantsView
+        },
+        {
+            path: '/events',
+            name: 'events',
+            component: EventsView
         },
         {
             path: '/login',

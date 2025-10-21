@@ -73,6 +73,14 @@
             command: () => {
                 router.push('/proposals');
             }
+        },
+        {
+            label: t('event.header'),
+            icon: 'pi pi-send',
+            path: '/events',
+            command: () => {
+                router.push('/events');
+            }
         }
     ])
 </script>

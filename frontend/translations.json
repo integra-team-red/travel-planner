@@ -45,6 +45,14 @@
             "updated": "The point of interest has been updated",
             "deleted": "The selected points of interest have been deleted"
         },
+        "event": {
+            "header": "Events",
+            "add": "Add",
+            "added": "The event has been added",
+            "update": "Update",
+            "updated": "The event has been updated",
+            "deleted": "The selected events have been deleted"
+        },
         "formFieldError": {
             "fieldRequired": "The field is required!",
             "fieldType": "Field must be a {type}!",
@@ -52,7 +60,8 @@
                 "min": "Field must contain at least {lowerBound} characters!",
                 "max": "Field cannot contain more than {upperBound} characters!"
             },
-            "improperFormat": "Field does not conform to the given format"
+            "fieldOrder": "Field \"{high}\"'s value must be higher than \"{low}\"'s!",
+            "improperFormat": "Field does not conform to the given format",
         },
         "field-is-required": "The field is required!",
         "home": "Home",
@@ -72,6 +81,10 @@
             "price": "Price",
             "type": "Type",
             "imageURL": "Image URL",
+            "poi": "Point of Interest",
+            "startTime": "Start Time",
+            "endTime": "End Time",
+            "audience": "Audience",
             "cuisineType": "Cuisine Type",
             "averagePrice": "Average Price",
             "pointOfInterestType": "Point Of Interest Type",
@@ -213,6 +226,14 @@
             "updated": "Punctul de interes a fost actualizat",
             "deleted": "Punctele de interes selectate au fost șterse"
         },
+        "event": {
+            "header": "Evenimente",
+            "add": "Adaugă",
+            "added": "Evenimentul a fost adăugat",
+            "update": "Actualizează",
+            "updated": "Evenimentul a fost actualizat",
+            "deleted": "Evenimentele selectate au fost șterse"
+        },
         "formFieldError": {
             "fieldRequired": "Câmpul este obligatoriu!",
             "fieldType": "Câmpul trebuie să fie un {type}!",
@@ -220,6 +241,7 @@
                 "min": "Câmpul trebuie să conțină cel puțin {lowerBound} caractere!",
                 "max": "Câmpul nu poate să conțină mai mult de {upperBound} caractere!"
             },
+            "fieldOrder": "Câmpul \"{high}\" necesită o valoare mai mare decât cea a câmpului \"{low}\"!",
             "improperFormat": "Câmpul nu respectă formatul specificat"
         },
         "field-is-required": "Câmpul este obligatoriu!",
@@ -240,6 +262,10 @@
             "price": "Preț",
             "type": "Tip",
             "imageURL": "URL Imagine",
+            "poi": "Punct de Interes",
+            "startTime": "Timp Începere",
+            "endTime": "Timp Sfârșire",
+            "audience": "Audiență",
             "cuisineType": "Specific Culinar",
             "averagePrice": "Preț Mediu",
             "pointOfInterestType": "Tipul Punctului De Interes",
