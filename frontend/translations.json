@@ -11,7 +11,15 @@
             "added": "The restaurant has been added",
             "update": "Update",
             "updated": "The restaurant has been updated",
-            "deleted": "The selected restaurants of interest have been deleted"
+            "deleted": "The selected restaurants have been deleted"
+        },
+        "coffee-shops": {
+            "header": "Coffee Shops",
+            "add": "Add",
+            "added": "The coffee shop has been added",
+            "update": "Update",
+            "updated": "The coffee shop has been updated",
+            "deleted": "The selected coffee shops have been deleted"
         },
         "trips": {
             "header": "Trips"
@@ -91,7 +99,8 @@
             "priceLowerBound": "Minimum Price",
             "priceUpperBound": "Maximum Price",
             "schedule": "Schedule [XX:XX]",
-            "rating": "Rating"
+            "rating": "Rating",
+            "openingHours": "Opening Hours"
         },
         "pois": {
             "download": {
@@ -194,6 +203,14 @@
             "updated": "Restaurantul a fost actualizat",
             "deleted": "Restaurantele selectate au fost șterse"
         },
+        "coffee-shops": {
+            "header": "Cafenele",
+            "add": "Adaugă",
+            "added": "Cafeneaua a fost adăugată",
+            "update": "Actualizează",
+            "updated": "Cafeneaua a fost actualizată",
+            "deleted": "Cafenelele selectate au fost șterse"
+        },
         "trips": {
             "header": "Călătorii"
         },
@@ -272,7 +289,8 @@
             "priceLowerBound": "Preț minim",
             "priceUpperBound": "Preț maxim",
             "schedule": "Program [XX:XX]",
-            "rating": "Notă"
+            "rating": "Notă",
+            "openingHours": "Program"
         },
         "pois": {
             "download": {
