@@ -13,6 +13,7 @@ import ProposalsView from "@/pages/ProposalsView.vue";
 import EventsView from "@/pages/EventsView.vue";
 import '@/interceptor/interceptor.ts'
 import SpasView from "@/pages/SpasView.vue";
+import CoffeeShopView from "@/pages/CoffeeShopView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -81,6 +82,11 @@ const router = createRouter({
             path: '/register',
             name: 'register',
             component: SignUpView
+        },
+        {
+            path: '/coffee-shops',
+            name: 'coffee-shops',
+            component: CoffeeShopView
         }
 
 
