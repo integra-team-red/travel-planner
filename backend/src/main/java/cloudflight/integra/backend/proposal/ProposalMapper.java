@@ -11,10 +11,12 @@ public class ProposalMapper {
                 proposal.getStatus(),
                 proposal.getCity() != null ? proposal.getCity().getId() : null,
                 proposal.getDescription(),
+                proposal.getAddress(),
                 proposal.getPrice(),
                 proposal.getAveragePrice(),
                 proposal.getCuisineType(),
-                proposal.getPoiType());
+                proposal.getPoiType(),
+                proposal.getImage());
     }
 
     public static Proposal ProposalToEntity(ProposalDTO dto) {
@@ -24,10 +26,12 @@ public class ProposalMapper {
         proposal.setType(dto.type());
         proposal.setStatus(dto.status());
         proposal.setDescription(dto.description());
+        proposal.setAddress(dto.address());
         proposal.setPrice(dto.price());
         proposal.setAveragePrice(dto.averagePrice());
         proposal.setCuisineType(dto.cuisineType());
         proposal.setPoiType(dto.poiType());
+        proposal.setImage(dto.image());
 
         if (dto.cityId() != null) {
             City city = new City();
