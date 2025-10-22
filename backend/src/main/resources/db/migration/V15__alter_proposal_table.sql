@@ -1,0 +1,7 @@
+ALTER TABLE proposals
+    ADD COLUMN image VARCHAR(500),
+    ADD COLUMN address VARCHAR(100);
+
+ALTER TABLE point_of_interest
+    ALTER COLUMN image TYPE VARCHAR(500),
+    ALTER COLUMN address TYPE VARCHAR(100);
