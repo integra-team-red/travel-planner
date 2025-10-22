@@ -40,20 +40,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // TODO(MC): Research if CSRF should be enabled / disabled
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/**")
+                .requestMatchers("/api/login", "/api/register")
                 .permitAll()
-                .requestMatchers("/testAuth/login")
-                .permitAll()
-                .requestMatchers("/v3/api-docs.yaml")
-                .permitAll()
-                .requestMatchers("/admin/proposals/**")
+                .requestMatchers("/api/admin/proposals/**")
                 .hasAuthority("ADMIN")
+                .requestMatchers("/api/**")
+                .authenticated()
                 .anyRequest()
-                .authenticated());
+                .permitAll());
 
-        // Making session management stateless so as to adhere to REST principles
         http.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

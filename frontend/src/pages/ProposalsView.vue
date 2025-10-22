@@ -210,7 +210,7 @@ async function deleteSelection() {
                            @card-clicked="onCardClick(proposal)"/>
             <div class="flex flex-row justify-between">
                 <Button :label="t('delete')" class="w-3/7" severity="danger" @click="promptConfirm(confirm, deleteSelection, undefined)"/>
-                <Button :label="t('clear')" class="w-3/7" severity="info" @click="clearSelection()"/>
+                <Button :label="t('clear')" class="w-3/7" severity="secondary" @click="clearSelection()"/>
             </div>
         </div>
         <div class="w-full sm:w-1/2 flex flex-col pl-8 border-l-2 gap-4">

@@ -1,4 +1,4 @@
-POST http://localhost:8080/api/testAuth/login
+POST http://localhost:8080/api/login
 Content-Type: application/json
 
 {
@@ -6,7 +6,7 @@ Content-Type: application/json
   "password": "user"
 }
 ###
-POST http://localhost:8080/api/testAuth/login
+POST http://localhost:8080/api/login
 Content-Type: application/json
 
 {

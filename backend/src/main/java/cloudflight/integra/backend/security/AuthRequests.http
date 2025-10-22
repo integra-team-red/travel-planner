@@ -1,7 +1,7 @@
-GET http://localhost:8080/api/testAuth/1
+GET http://localhost:8080/api/1
 ###
 
-POST http://localhost:8080/api/testAuth/me
+POST http://localhost:8080/api/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInN1YiI6InVzZXIiLCJpYXQiOjE3NjA3MzM2MDQsImV4cCI6MTc2MDgyMDAwNH0.7o9lT-NehJinDVHBFqMMfDGxWapdmnwyWVZ6ErMwO98
 Content-Type: application/json
 
@@ -10,7 +10,7 @@ Content-Type: application/json
   "password": "user"
 }
 ###
-POST http://localhost:8080/api/testAuth/login
+POST http://localhost:8080/api/login
 Content-Type: application/json
 
 {
@@ -18,11 +18,11 @@ Content-Type: application/json
   "password": "user"
 }
 ###
-GET http://localhost:8080/api/testAuth/2
+GET http://localhost:8080/api/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInN1YiI6InVzZXIiLCJpYXQiOjE3NTc2NjU0NjIsImV4cCI6MTc1NzY2NzI2Mn0.hHodsICl1M9Vfla8K2YMbOeHmPnNdT69r1EK4AOEr0w
 ###
 
-POST http://localhost:8080/api/testAuth/login
+POST http://localhost:8080/api/login
 Content-Type: application/json
 
 {
