@@ -57,13 +57,13 @@ tasks.named('clean') {
         println "========================================"
         println "  Deleting build directory: $buildDir"
         println "  Deleting openapi.yaml: $projectDir/openapi.yaml"
-        println "  Deleting backend static: $backendStaticPath/*"
+        println "  Deleting backend static: $backendStaticPath"
         println "  Deleting frontend dist: $frontendDistPath"
     }
 
     delete "$buildDir"
     delete "$projectDir/openapi.yaml"
-    delete "$backendStaticPath/*"
+    delete backendStaticPath
     delete frontendDistPath
 
     doLast {
@@ -144,19 +144,6 @@ tasks.register('buildFrontend', NpmTask) {
         println "========================================"
         println "  Working dir: $frontendPath"
         println "  Command: npm run build"
-        println "  Task graph has bootJar: ${gradle.taskGraph.hasTask(':bootJar')}"
-        println "  Task graph has build: ${gradle.taskGraph.hasTask(':build')}"
-        println "  Task graph has assemble: ${gradle.taskGraph.hasTask(':assemble')}"
-    }
-
-    onlyIf {
-        def shouldRun = gradle.taskGraph.hasTask(':bootJar') ||
-                       gradle.taskGraph.hasTask(':build') ||
-                       gradle.taskGraph.hasTask(':assemble')
-        if (!shouldRun) {
-            println "FRONTEND: Skipping - not in task graph"
-        }
-        return shouldRun
     }
 
     doLast {
@@ -164,44 +151,44 @@ tasks.register('buildFrontend', NpmTask) {
         println "========================================"
 
         def distDir = file(frontendDistPath)
-        if (distDir.exists() && distDir.isDirectory()) {
-            def files = distDir.listFiles()
-            println "FRONTEND: dist directory contents (${files?.length ?: 0} files):"
-            files?.each { f ->
-                println "  - ${f.name} (${f.length()} bytes)"
+        if (!distDir.exists()) {
+            throw new GradleException("Frontend dist directory does not exist: $frontendDistPath")
+        }
+
+        println "FRONTEND: dist directory contents:"
+        distDir.eachFileRecurse { f ->
+            if (f.isFile()) {
+                println "  - ${f.path.substring(distDir.path.length())} (${f.length()} bytes)"
             }
-        } else {
-            println "WARNING: Frontend dist directory does NOT exist at $frontendDistPath"
         }
         println "========================================\n"
 
         println "========================================"
-        println "FRONTEND: Copying to backend static resources"
+        println "FRONTEND: Copying to build output directory"
         println "========================================"
-        println "  From: $frontendDistPath"
-        println "  To: $backendStaticPath"
 
-        copy {
+        def buildStaticPath = "${buildDir}/resources/main/static"
+        println "  From: $frontendDistPath"
+        println "  To: $buildStaticPath"
+
+        project.copy {
             from frontendDistPath
-            into backendStaticPath
+            into buildStaticPath
         }
 
-        def staticDir = file(backendStaticPath)
-        if (staticDir.exists() && staticDir.isDirectory()) {
-            def staticFiles = staticDir.listFiles()
-            println "FRONTEND: Backend static directory contents (${staticFiles?.length ?: 0} files):"
-            staticFiles?.each { f ->
-                println "  - ${f.name} (${f.length()} bytes)"
+        println "FRONTEND: Copy complete. Build static directory contents:"
+        def staticDir = file(buildStaticPath)
+        staticDir.eachFileRecurse { f ->
+            if (f.isFile()) {
+                println "  - ${f.path.substring(staticDir.path.length())} (${f.length()} bytes)"
             }
-        } else {
-            println "WARNING: Backend static directory does NOT exist at $backendStaticPath"
         }
         println "========================================\n"
     }
 }
-
 bootJar {
     dependsOn buildFrontend
+    mustRunAfter processResources
 
     doFirst {
         println "========================================"
@@ -209,15 +196,17 @@ bootJar {
         println "========================================"
         println "  Archive name: ${archiveFileName.get()}"
 
-        def staticDir = file(backendStaticPath)
-        if (staticDir.exists() && staticDir.isDirectory()) {
-            def staticFiles = staticDir.listFiles()
-            println "BOOTJAR: Static files to be included (${staticFiles?.length ?: 0} files):"
-            staticFiles?.each { f ->
-                println "  - ${f.name} (${f.length()} bytes)"
+        def buildStaticDir = file("${buildDir}/resources/main/static")
+        if (buildStaticDir.exists() && buildStaticDir.isDirectory()) {
+            println "BOOTJAR: Recursively listing all static files from build:"
+            buildStaticDir.eachFileRecurse { f ->
+                if (f.isFile()) {
+                    def relativePath = f.path.substring(buildStaticDir.path.length())
+                    println "  - ${relativePath} (${f.length()} bytes)"
+                }
             }
         } else {
-            println "WARNING: No static files found at $backendStaticPath"
+            println "WARNING: No static files found in build output"
         }
     }
 
