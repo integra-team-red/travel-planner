@@ -2,6 +2,7 @@ package cloudflight.integra.backend.event;
 
 import cloudflight.integra.backend.poi.POI;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -13,10 +14,19 @@ public class Event {
     @Column(columnDefinition = "serial")
     Long id;
 
+    @NotNull
     String name;
+
+    @NotNull
     String description;
+
+    @NotNull
     Double price;
+
+    @NotNull
     Date startTime;
+
+    @NotNull
     Date endTime;
 
     @ManyToOne
@@ -27,25 +37,6 @@ public class Event {
     EventAudience audience;
 
     public Event() {}
-
-    public Event(
-            Long id,
-            String name,
-            String description,
-            Double price,
-            Date startTime,
-            Date endTime,
-            POI poi,
-            EventAudience audience) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.poi = poi;
-        this.audience = audience;
-    }
 
     public Long getId() {
         return id;

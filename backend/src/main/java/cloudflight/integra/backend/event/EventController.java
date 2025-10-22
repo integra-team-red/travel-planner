@@ -83,7 +83,7 @@ public class EventController {
             responses = {
                 @ApiResponse(
                         responseCode = "200",
-                        description = "POI updated successfully; returns the updated event",
+                        description = "Event updated successfully; returns the updated event",
                         content =
                                 @Content(
                                         mediaType = "application/json",
@@ -111,9 +111,8 @@ public class EventController {
                                         array = @ArraySchema(schema = @Schema(implementation = EventDTO.class)))),
             })
     @GetMapping("/bypoi")
-    public List<Event> getEventsByPoi(
-            @RequestParam(required = false) Long poiId, @RequestParam(required = false) String poiName) {
-        return service.getEventsByPoi(poiId, poiName);
+    public List<Event> getEventsByPoi(@RequestParam(required = false) Long poiId) {
+        return service.getEventsByPoi(poiId);
     }
 
     @Operation(
@@ -170,8 +169,8 @@ public class EventController {
                                         array = @ArraySchema(schema = @Schema(implementation = EventDTO.class)))),
                 @ApiResponse(responseCode = "406", description = "Invalid page requested", content = @Content)
             })
-    @GetMapping(value = "/sortedByType")
-    public ResponseEntity<List<EventDTO>> getAllEventsSortedByType(
+    @GetMapping(value = "/sortedByAudience")
+    public ResponseEntity<List<EventDTO>> getAllEventsSortedByAudience(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam String audience) {
         return ResponseEntity.ok(
                 EventMapper.EntityListToDTOList(service.getAllEventsSortedByAudience(pageNumber, pageSize, audience)));
