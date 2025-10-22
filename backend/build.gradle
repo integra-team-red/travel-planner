@@ -52,16 +52,24 @@ dependencies {
 
 tasks.named('clean') {
     doFirst {
-        println "deleting $buildDir"
-        println "deleting $projectDir/openapi.yaml"
-        println "deleting $backendStaticPath/*"
-        println "deleting $frontendDistPath"
+        println "========================================"
+        println "CLEAN: Starting clean task"
+        println "========================================"
+        println "  Deleting build directory: $buildDir"
+        println "  Deleting openapi.yaml: $projectDir/openapi.yaml"
+        println "  Deleting backend static: $backendStaticPath/*"
+        println "  Deleting frontend dist: $frontendDistPath"
     }
 
     delete "$buildDir"
-    delete "$buildDir/openapi.yaml"
+    delete "$projectDir/openapi.yaml"
     delete "$backendStaticPath/*"
     delete frontendDistPath
+
+    doLast {
+        println "CLEAN: Completed successfully"
+        println "========================================\n"
+    }
 }
 
 openApiGenerate {
@@ -84,10 +92,44 @@ tasks.register('generateOpenApiDocs', Test) {
     classpath = sourceSets.test.runtimeClasspath
 
     outputs.upToDateWhen { false }
+
+    doFirst {
+        println "========================================"
+        println "OPENAPI DOCS: Running OpenApiExportTest"
+        println "========================================"
+    }
+
+    doLast {
+        def openapiFile = file("${projectDir}/openapi.yaml")
+        if (openapiFile.exists()) {
+            println "OPENAPI DOCS: openapi.yaml generated successfully"
+            println "  Location: ${projectDir}/openapi.yaml"
+            println "  Size: ${openapiFile.length()} bytes"
+        } else {
+            println "WARNING: openapi.yaml was NOT generated!"
+        }
+        println "========================================\n"
+    }
 }
 
 tasks.named('openApiGenerate') {
     dependsOn tasks.named('generateOpenApiDocs')
+}
+
+tasks.named('npmInstall') {
+    doFirst {
+        println "========================================"
+        println "NPM: Installing dependencies"
+        println "========================================"
+        println "  Working dir: $frontendPath"
+        println "  Node version: ${node.version.get()}"
+        println "  NPM version: ${node.npmVersion.get()}"
+    }
+
+    doLast {
+        println "NPM: Dependencies installed"
+        println "========================================\n"
+    }
 }
 
 tasks.register('buildFrontend', NpmTask) {
@@ -95,20 +137,96 @@ tasks.register('buildFrontend', NpmTask) {
     dependsOn tasks.named('openApiGenerate')
     workingDir = file(frontendPath)
     args = ['run', 'build']
-    onlyIf {
-        gradle.taskGraph.hasTask(':bootJar') || gradle.taskGraph.hasTask(':build') || gradle.taskGraph.hasTask(':assemble')
+
+    doFirst {
+        println "========================================"
+        println "FRONTEND: Building frontend"
+        println "========================================"
+        println "  Working dir: $frontendPath"
+        println "  Command: npm run build"
+        println "  Task graph has bootJar: ${gradle.taskGraph.hasTask(':bootJar')}"
+        println "  Task graph has build: ${gradle.taskGraph.hasTask(':build')}"
+        println "  Task graph has assemble: ${gradle.taskGraph.hasTask(':assemble')}"
     }
 
-    doLast{
+    onlyIf {
+        def shouldRun = gradle.taskGraph.hasTask(':bootJar') ||
+                       gradle.taskGraph.hasTask(':build') ||
+                       gradle.taskGraph.hasTask(':assemble')
+        if (!shouldRun) {
+            println "FRONTEND: Skipping - not in task graph"
+        }
+        return shouldRun
+    }
+
+    doLast {
+        println "FRONTEND: Build completed"
+        println "========================================"
+
+        def distDir = file(frontendDistPath)
+        if (distDir.exists() && distDir.isDirectory()) {
+            def files = distDir.listFiles()
+            println "FRONTEND: dist directory contents (${files?.length ?: 0} files):"
+            files?.each { f ->
+                println "  - ${f.name} (${f.length()} bytes)"
+            }
+        } else {
+            println "WARNING: Frontend dist directory does NOT exist at $frontendDistPath"
+        }
+        println "========================================\n"
+
+        println "========================================"
+        println "FRONTEND: Copying to backend static resources"
+        println "========================================"
+        println "  From: $frontendDistPath"
+        println "  To: $backendStaticPath"
+
         copy {
             from frontendDistPath
             into backendStaticPath
         }
+
+        def staticDir = file(backendStaticPath)
+        if (staticDir.exists() && staticDir.isDirectory()) {
+            def staticFiles = staticDir.listFiles()
+            println "FRONTEND: Backend static directory contents (${staticFiles?.length ?: 0} files):"
+            staticFiles?.each { f ->
+                println "  - ${f.name} (${f.length()} bytes)"
+            }
+        } else {
+            println "WARNING: Backend static directory does NOT exist at $backendStaticPath"
+        }
+        println "========================================\n"
     }
 }
 
 bootJar {
     dependsOn buildFrontend
+
+    doFirst {
+        println "========================================"
+        println "BOOTJAR: Building Spring Boot JAR"
+        println "========================================"
+        println "  Archive name: ${archiveFileName.get()}"
+
+        def staticDir = file(backendStaticPath)
+        if (staticDir.exists() && staticDir.isDirectory()) {
+            def staticFiles = staticDir.listFiles()
+            println "BOOTJAR: Static files to be included (${staticFiles?.length ?: 0} files):"
+            staticFiles?.each { f ->
+                println "  - ${f.name} (${f.length()} bytes)"
+            }
+        } else {
+            println "WARNING: No static files found at $backendStaticPath"
+        }
+    }
+
+    doLast {
+        println "BOOTJAR: Completed successfully"
+        println "  Output: ${archiveFile.get().asFile}"
+        println "  Size: ${archiveFile.get().asFile.length()} bytes"
+        println "========================================\n"
+    }
 }
 
 tasks.named('test') {
