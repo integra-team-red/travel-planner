@@ -61,7 +61,7 @@
                 "max": "Field cannot contain more than {upperBound} characters!"
             },
             "fieldOrder": "Field \"{high}\"'s value must be higher than \"{low}\"'s!",
-            "improperFormat": "Field does not conform to the given format",
+            "improperFormat": "Field does not conform to the given format"
         },
         "field-is-required": "The field is required!",
         "home": "Home",

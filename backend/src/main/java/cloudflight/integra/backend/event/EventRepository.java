@@ -14,6 +14,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findByPoi_Name(String poiName);
 
-    @Query("SELECT e FROM Event e WHERE LOWER(e.audience) = LOWER(:type)")
+    @Query("SELECT e FROM Event e WHERE LOWER(e.audience) = LOWER(:audience)")
     Page<Event> findAllByAudience(@Param("audience") String audience, Pageable pageable);
 }

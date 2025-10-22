@@ -73,16 +73,14 @@ async function deleteEvent() {
     showToast('success', t('event.deleted'), toast);
     selectedEvents.value = [];
     await fetchEvents()
-    inEditingMode.value = EditMode.NONE;
-    initialValues.value = {};
-    formKey.value++;
+    changeEditingMode(EditMode.NONE);
 }
 
 function changeEditingMode(mode: EditMode, event?: EventDTO) {
     inEditingMode.value = mode;
     if (mode == EditMode.UPDATE && event) {
         initialValues.value = event;
-        currentEvent.value = event.id
+        currentEvent.value = event.id;
     }
     else {
         initialValues.value = {};
@@ -146,7 +144,7 @@ async function onFormSubmit(submitEvent: FormSubmitEvent) {
                 <event-card :event="event"
                             :selected="selectedEvents.includes(event.id!)"
                             @checkbox-clicked="select(event)"
-                            @card-clicked="changeEditingMode(EditMode.ADD, event);"
+                            @card-clicked="changeEditingMode(EditMode.UPDATE, event);"
                 />
             </div>
 

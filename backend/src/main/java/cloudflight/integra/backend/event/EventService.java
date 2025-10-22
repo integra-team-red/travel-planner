@@ -16,7 +16,7 @@ public interface EventService {
 
     Event getEvent(Long id);
 
-    List<Event> getEventsByPoi(Long id, String name);
+    List<Event> getEventsByPoi(Long id);
 
     List<Event> getAllEventsSortedByName(int pageNumber, int pageSize, boolean isDescending);
 

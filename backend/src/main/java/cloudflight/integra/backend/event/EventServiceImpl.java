@@ -77,9 +77,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getEventsByPoi(Long id, String name) {
+    public List<Event> getEventsByPoi(Long id) {
         if (id != null) return repository.findByPoi_Id(id);
-        else if (name != null && !name.isBlank()) return repository.findByPoi_Name(name.trim());
         else return List.of();
     }
 
