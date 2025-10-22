@@ -102,7 +102,8 @@ function getPoiFields() {
     return [
         new FormFieldBuilder('Price').isNaturalNumber(t('formFieldError.fieldType')).build(),
         new FormFieldBuilder('Point Of Interest Type').required(t('formFieldError.fieldRequired')).build(),
-        new FormFieldBuilder('Image URL').build(),
+        new FormFieldBuilder('Image').build(),
+        new FormFieldBuilder('Address').build(),
         new FormFieldBuilder('Description').build()
     ];
 }

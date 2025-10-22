@@ -33,11 +33,13 @@ public class ProposalServiceImpl implements ProposalService {
         dbProposal.setName(proposal.getName());
         dbProposal.setType(proposal.getType());
         dbProposal.setCity(proposal.getCity());
+        dbProposal.setAddress(proposal.getAddress());
         dbProposal.setCuisineType(proposal.getCuisineType());
         dbProposal.setDescription(proposal.getDescription());
         dbProposal.setAveragePrice(proposal.getAveragePrice());
         dbProposal.setPoiType(proposal.getPoiType());
         dbProposal.setPrice(proposal.getPrice());
+        dbProposal.setImage(proposal.getImage());
 
         return repository.save(dbProposal);
     }
