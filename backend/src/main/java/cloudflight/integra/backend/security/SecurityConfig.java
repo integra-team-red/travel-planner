@@ -40,15 +40,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/login", "/api/register")
-                .permitAll()
-                .requestMatchers("/api/admin/proposals/**")
-                .hasAuthority("ADMIN")
-                .requestMatchers("/api/**")
-                .authenticated()
-                .anyRequest()
-                .permitAll());
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/login", "/api/register")
+                        .permitAll()
+                        .requestMatchers("/api/admin/proposals/**")
+                        .hasAuthority("ADMIN")
+                        .requestMatchers("/api/**")
+                        .authenticated()
+                        .anyRequest()
+                        .permitAll());
 
         http.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -58,10 +60,9 @@ public class SecurityConfig {
 
     @Bean
     UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        // TODO(MC): Set up CORS configuration properly
         var configuration = new CorsConfiguration();
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "https://integra.leomihalcea.ro"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));
 
