@@ -54,11 +54,9 @@ public class SpaServiceImpl implements SpaService {
         if (id == null) {
             throw new IllegalArgumentException("No spa id provided");
         }
-        var spaWrapper = repository.findById(id);
-        if (spaWrapper.isEmpty()) {
-            throw new EntityNotFoundException("Spa with the provided id not found");
-        }
-        return spaWrapper.get();
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Spa with the provided id not found"));
     }
 
     @Override
