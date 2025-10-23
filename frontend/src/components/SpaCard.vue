@@ -11,7 +11,7 @@ const emits = defineEmits(["card-clicked"]);
 </script>
 
 <template>
-    <Card :class="'!bg-[#EDF7FC] !border-[#ADCDE2] border-' + (+isSelected * 2)" @click="emits('card-clicked')" pt:content:class="!flex !flex-row justify-between">
+    <Card class="!bg-[#EDF7FC] !border-[#ADCDE2]" :class="{'border-2': isSelected}" @click="emits('card-clicked')" pt:content:class="!flex !flex-row justify-between">
         <template #title>{{spa.name}}</template>
         <template #content>
             <p>{{ cityName }}</p>

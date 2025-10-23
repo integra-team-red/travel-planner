@@ -56,7 +56,6 @@ function sendSpaUpdateRequest(spa: SpaDTO, updatedSpa: SpaDTO) {
 }
 
 function onFormSubmit({values, valid}: FormSubmitEvent) {
-    console.log(priceUpperBound);
     if (!valid) {
         return;
     }

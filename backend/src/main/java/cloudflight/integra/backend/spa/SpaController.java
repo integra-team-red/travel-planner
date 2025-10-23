@@ -41,9 +41,9 @@ public class SpaController {
             })
     @GetMapping
     public ResponseEntity<List<SpaDTO>> getSpas() {
-        List<SpaDTO> Spas =
+        List<SpaDTO> spas =
                 service.getAllSpas().stream().map(SpaMapper::SpaToDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(Spas);
+        return ResponseEntity.ok(spas);
     }
 
     @Operation(
@@ -60,9 +60,9 @@ public class SpaController {
                 @ApiResponse(responseCode = "404", description = "City ID of the spa", content = @Content)
             })
     @PostMapping
-    public ResponseEntity<SpaDTO> addSpa(@RequestBody SpaDTO SpaDTO) {
-        City city = cityService.getCity(SpaDTO.cityId());
-        Spa savedSpa = service.addSpa(SpaMapper.SpaToEntity(SpaDTO, city));
+    public ResponseEntity<SpaDTO> addSpa(@RequestBody SpaDTO spaDTO) {
+        City city = cityService.getCity(spaDTO.cityId());
+        Spa savedSpa = service.addSpa(SpaMapper.SpaToEntity(spaDTO, city));
         return ResponseEntity.ok(SpaMapper.SpaToDTO(savedSpa));
     }
 

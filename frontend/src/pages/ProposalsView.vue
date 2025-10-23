@@ -123,14 +123,7 @@ function changeAdditionalFields(value?: string) {
 }
 
 function getLastSelectedPendingProposal(): ProposalDTO | undefined {
-    // NOTE(MC): Can't use Array.reverse here as it mutates the array and because the array itself is a ref
-    // that mutation will trigger yet another getLastSelectedPendingProposal and the cycle repeats
-    for (let i = selectedProposals.value.length - 1; i >= 0; --i) {
-        const proposal = selectedProposals.value[i];
-        if (proposal!.status == 'PENDING') {
-            return proposal;
-        }
-    }
+    return selectedProposals.value.slice().reverse().find((proposal: ProposalDTO) => proposal.status == 'PENDING');
 }
 
 function resetForm() {
