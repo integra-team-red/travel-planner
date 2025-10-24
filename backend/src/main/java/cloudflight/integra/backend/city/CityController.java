@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
-@RequestMapping("/api/city")
+@RequestMapping("/api/admin/city")
 @SecurityRequirement(name = "bearerAuth")
 public class CityController {
     private final CityService service;

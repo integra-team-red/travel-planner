@@ -16,11 +16,18 @@
         authApi.getCurrentUser().then(user => userStore.set(user));
     }
 
+    function logout() {
+        localStorage.removeItem("jwt");
+        useUserStore().set(null)
+        router.push('/login');
+    }
+
     const items = computed<(MenuItem & { path: string })[]>(() => [
         {
             label: t('home'),
             icon: 'pi pi-link',
             path: '/',
+            visible: userStore.isAdmin,
             command: () => {
                 router.push('/');
             }
@@ -29,6 +36,7 @@
             label: t('cities.header'),
             icon: 'pi pi-building',
             path: '/cities',
+            visible: userStore.isAdmin,
             command: () => {
                 router.push('/cities');
             }
@@ -45,6 +53,7 @@
             label: t('restaurants.header'),
             icon: 'pi pi-link',
             path: '/restaurants',
+            visible: userStore.isAdmin,
             command: () => {
                 router.push('/restaurants');
             }
@@ -53,17 +62,9 @@
             label: t('pois.header'),
             icon: 'pi pi-link',
             path: '/points-of-interest',
+            visible: userStore.isAdmin,
             command: () => {
                 router.push('/points-of-interest');
-            }
-        },
-        {
-            label: t('logout') ,
-            icon: 'pi pi-sign-out',
-            path: '/login',
-            command: () => {
-                localStorage.removeItem("jwt");
-                router.push('/login');
             }
         },
         {
@@ -78,8 +79,18 @@
             label: t('event.header'),
             icon: 'pi pi-send',
             path: '/events',
+            visible: userStore.isAdmin,
             command: () => {
                 router.push('/events');
+            }
+        },
+        {
+            label: t('spas.header'),
+            icon: 'pi pi-send',
+            path: '/spas',
+            visible: userStore.isAdmin,
+            command: () => {
+                router.push('/spas');
             }
         }
     ])
@@ -92,7 +103,7 @@
         </template>
         <template #item="{ item, props, hasSubmenu, root }">
             <a v-ripple class="flex items-center" v-bind="props.action"
-               :class="{'bg-gray-400 text-white': item.path === '/' ? route.path === '/' : route.path.startsWith(item.path)}">
+               :class="{'border-b border-red-500': item.path === '/' ? route.path === '/' : route.path.startsWith(item.path)}">
                 <span>{{item.label}}</span>
                 <Badge v-if="item.badge" :class="{ 'ml-auto': !root, 'ml-2': root }" :value="item.badge"/>
                 <span v-if="item.shortcut"
@@ -106,8 +117,8 @@
         <template #end>
             <div class="flex">
                 <language-select-box class="mr-2"/>
+                <Button icon="pi pi-sign-out" severity="secondary" @click="logout()" class="mr-2"/>
                 <div class="flex items-center gap-2">
-                    <InputText placeholder="Search" type="text" class="w-32 sm:w-auto"/>
                     <RouterLink to="/profile">
                         <Avatar image="/img.png" shape="circle"/>
                     </RouterLink>
