@@ -1,6 +1,6 @@
 import {computed, ref} from "vue";
 import {defineStore} from "pinia";
-import type {UserDTO} from '../../typescript-client';
+import {type UserDTO, UserRoleEnum} from '../../typescript-client';
 
 
 export const useUserStore = defineStore('user', () => {
@@ -14,6 +14,7 @@ export const useUserStore = defineStore('user', () => {
         return user.value !== null
     })
 
+    const isAdmin = computed(() => user.value?.roles?.includes(UserRoleEnum.Admin))
 
-    return {user, set, isLoggedIn}
+    return {user, set, isLoggedIn, isAdmin}
 })

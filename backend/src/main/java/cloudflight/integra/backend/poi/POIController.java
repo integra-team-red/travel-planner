@@ -25,7 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
-@RequestMapping("/api/point-of-interest")
+@RequestMapping("/api/admin/point-of-interest")
 @SecurityRequirement(name = "bearerAuth")
 public class POIController {
     private final POIService service;

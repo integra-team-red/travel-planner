@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/spa")
+@RequestMapping(value = "/api/admin/spa")
 @SecurityRequirement(name = "bearerAuth")
 public class SpaController {
     private final SpaService service;

@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
-@RequestMapping("/api/event")
+@RequestMapping("/api/admin/event")
 @SecurityRequirement(name = "bearerAuth")
 public class EventController {
     private final EventService service;

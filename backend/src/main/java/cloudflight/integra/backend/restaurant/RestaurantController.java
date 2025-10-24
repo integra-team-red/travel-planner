@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/restaurant")
+@RequestMapping("/api/admin/restaurant")
 @SecurityRequirement(name = "bearerAuth")
 public class RestaurantController {
     private final RestaurantService service;
