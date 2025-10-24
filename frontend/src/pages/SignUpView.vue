@@ -3,8 +3,18 @@ import { useRouter } from 'vue-router'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
+import {ref} from "vue";
+import {authApi} from "@/api.ts";
 
 const router = useRouter()
+const email = ref('');
+const password = ref('');
+
+async function register() {
+    const user = {email: email.value, password: password.value};
+    await authApi.registerRaw({user});
+    await router.push('/login');
+}
 </script>
 
 <template>
@@ -14,14 +24,14 @@ const router = useRouter()
             <div class="flex flex-col gap-4">
                 <div>
                     <label for="email" class="font-medium">Email</label>
-                    <InputText id="email" type="email" class="w-full" placeholder="example@email.com" />
+                    <InputText id="email" type="email" class="w-full" v-model="email" placeholder="example@email.com" />
                 </div>
                 <div>
                     <label for="password" class="font-medium">Password</label>
-                    <Password id="password" toggleMask :feedback="false" class="w-full" />
+                    <Password id="password" toggleMask :feedback="false" v-model="password" class="w-full" />
                 </div>
 
-                <Button label="Sign Up" icon="pi pi-user-plus" class="w-full" />
+                <Button label="Sign Up" icon="pi pi-user-plus" @click="register" class="w-full" />
             </div>
 
             <p class="text-center text-gray-500 text-sm">
