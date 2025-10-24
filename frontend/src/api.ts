@@ -8,6 +8,7 @@ import {
     RestaurantControllerApi,
     EventControllerApi,
     SpaControllerApi,
+    CoffeeShopControllerApi
 } from '../typescript-client';
 
 function getToken() {
@@ -27,5 +28,6 @@ const cityApi = new CityControllerApi(config);
 const restaurantApi = new RestaurantControllerApi(config);
 const eventApi = new EventControllerApi(config);
 const spaApi = new SpaControllerApi(config);
+const coffeeApi = new CoffeeShopControllerApi(config);
 
-export {proposalReviewApi, authApi, proposalApi, poiApi, cityApi, restaurantApi, eventApi, spaApi};
+export {proposalReviewApi, authApi, proposalApi, poiApi, cityApi, restaurantApi, eventApi, spaApi, coffeeApi};

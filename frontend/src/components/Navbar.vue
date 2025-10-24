@@ -68,6 +68,14 @@
             }
         },
         {
+            label: t('coffee-shops.header'),
+            icon: 'pi pi-link',
+            path: '/coffee-shops',
+            command: () => {
+                router.push('/coffee-shops');
+            }
+        },
+        {
             label: t('proposals.header'),
             icon: 'pi pi-send',
             path: '/proposals',
