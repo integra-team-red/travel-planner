@@ -26,11 +26,13 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
+    private final UserService userService;
 
     @Autowired
-    public AuthController(JwtService jwtService, AuthenticationManager authManager) {
+    public AuthController(JwtService jwtService, AuthenticationManager authManager, UserService userService) {
         this.jwtService = jwtService;
         this.authManager = authManager;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/1")
@@ -47,6 +49,21 @@ public class AuthController {
     public ResponseEntity<HttpStatus> testAccessAdmin() {
 
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(
+            summary = "Register into the application by providing an email / password combination",
+            responses = {
+                @ApiResponse(responseCode = "201", description = "Successfully created"),
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Invalid email / password combination",
+                        content = @Content)
+            })
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User user) {
+        userService.register(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(
