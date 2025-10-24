@@ -1,3 +1,5 @@
 package cloudflight.integra.backend.user;
 
-public interface UserService {}
+public interface UserService {
+    User register(User user);
+}
