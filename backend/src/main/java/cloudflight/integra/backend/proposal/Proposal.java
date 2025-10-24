@@ -29,9 +29,11 @@ public class Proposal {
     private City city;
 
     private String description;
+    private String address;
     private Double price;
     private Double averagePrice;
     private String cuisineType;
+    private String image;
 
     @Enumerated(EnumType.STRING)
     private PointOfInterestType poiType;
@@ -82,6 +84,24 @@ public class Proposal {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Proposal setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public Proposal setImage(String image) {
+        this.image = image;
+        return this;
     }
 
     public Double getPrice() {

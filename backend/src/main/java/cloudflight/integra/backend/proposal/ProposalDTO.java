@@ -9,7 +9,9 @@ public record ProposalDTO(
         Status status,
         Long cityId,
         String description,
+        String address,
         Double price,
         Double averagePrice,
         String cuisineType,
-        PointOfInterestType poiType) {}
+        PointOfInterestType poiType,
+        String image) {}
