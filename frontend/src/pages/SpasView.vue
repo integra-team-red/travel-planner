@@ -157,7 +157,7 @@ async function deleteSelection() {
                            @card-clicked="onCardClick(spa)"/>
             <div class="flex flex-row justify-between">
                 <Button :label="t('delete')" class="w-3/7" severity="danger" @click="promptConfirm(confirm, deleteSelection, undefined)"/>
-                <Button :label="t('clear')" class="w-3/7" severity="info" @click="clearSelection()"/>
+                <Button :label="t('clear')" class="w-3/7" severity="secondary" @click="clearSelection()"/>
             </div>
         </div>
         <div class="w-full sm:w-1/2 flex flex-col pl-8 border-l-2 gap-4">
@@ -176,9 +176,9 @@ async function deleteSelection() {
                         {{ $field.error?.message }}
                     </Message>
                 </FormField>
-                <div class="flex justify-around">
-                    <Button class="w-4/9" severity="info" @click="resetForm" :label="t('clear')"/>
-                    <Button class="w-4/9" type="submit" severity="success" :label="t('confirm')"/>
+                <div class="flex justify-between gap-2">
+                    <Button severity="secondary" @click="resetForm" :label="t('clear')" fluid/>
+                    <Button type="submit" severity="success" :label="t('confirm')" fluid/>
                 </div>
             </Form>
         </div>
