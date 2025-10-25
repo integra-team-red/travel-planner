@@ -87,9 +87,9 @@ function approveProposal() {
                     <InputText disabled v-else
                                :placeholder="selectedProposal![fieldName as keyof ProposalDTO]?.toString()" fluid/>
                 </div>
-                <div v-if="selectedProposal" class="flex justify-around">
-                    <Button class="w-4/9" severity="danger" @click="rejectProposal" label="Reject"/>
-                    <Button class="w-4/9" severity="success" @click="approveProposal" label="Confirm"/>
+                <div v-if="selectedProposal" class="flex justify-around gap-2">
+                    <Button severity="danger" @click="rejectProposal" label="Reject" fluid/>
+                    <Button severity="success" @click="approveProposal" label="Confirm" fluid/>
                 </div>
             </div>
         </div>

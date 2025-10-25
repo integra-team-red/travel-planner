@@ -240,9 +240,9 @@ async function deleteSelection() {
                     </FormField>
                 </div>
 
-                <div class="flex justify-around">
-                    <Button class="w-4/9" severity="info" @click="resetForm" :label="t('clear')"/>
-                    <Button class="w-4/9" type="submit" severity="success" :label="t('confirm')"/>
+                <div class="flex justify-between gap-2">
+                    <Button severity="secondary" @click="resetForm" :label="t('clear')" fluid/>
+                    <Button type="submit" severity="success" :label="t('confirm')" fluid/>
                 </div>
             </Form>
         </div>
