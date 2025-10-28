@@ -1,0 +1,29 @@
+GET http://localhost:8080/api/trips
+###
+POST http://localhost:8080/api/trips
+Content-Type: application/json
+
+{
+  "name": "trip to paris",
+  "city": "Paris",
+  "days": 5,
+  "price": 499.99,
+  "userId": 1
+}
+###
+PUT http://localhost:8080/api/trips/1
+Content-Type: application/json
+
+{
+  "name": "trip to paris with my friends",
+  "city": "Paris",
+  "days": 7,
+  "price": 699.50,
+  "userId": 1
+}
+###
+DELETE http://localhost:8080/api/trips/2
+###
+GET http://localhost:8080/api/trips/byUser/1
+###
+GET http://localhost:8080/api/trips/byCity/1
