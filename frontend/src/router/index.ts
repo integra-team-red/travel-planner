@@ -44,8 +44,8 @@ const router = createRouter({
             component: CitiesImportExport
         },
         {
-            path: '/',
-            name: 'trips',
+            path: '/trips',
+            name: 'tripsCreation',
             component: TripsView
         },
         {
@@ -88,8 +88,6 @@ const router = createRouter({
             name: 'coffee-shops',
             component: CoffeeShopView
         }
-
-
     ],
 })
 
