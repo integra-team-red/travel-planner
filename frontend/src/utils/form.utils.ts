@@ -26,7 +26,8 @@ export class FormFieldBuilder {
     }
     public isNaturalNumber(errorMessage: string): FormFieldBuilder {
         this.validations.push(({value}: FormFieldResolverOptions): boolean => {
-            return !isNaN(Number(value)) && Number(value) >= 0;
+            const valueAsNumber: number = Number(value);
+            return !isNaN(valueAsNumber) && Number.isInteger(valueAsNumber) && valueAsNumber >= 0;
         });
         this.errorMessages.push(errorMessage);
         return this;
@@ -47,7 +48,7 @@ export class FormFieldBuilder {
     }
     public required(errorMessage: string): FormFieldBuilder {
         this.validations.push(({value}: FormFieldResolverOptions): boolean => {
-            return typeof value != 'undefined' && value.toString().trim() != '';
+            return typeof value == 'string' && value.toString().trim() != '';
         });
         this.errorMessages.push(errorMessage);
         return this;
