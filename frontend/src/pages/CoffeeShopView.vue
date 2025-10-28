@@ -180,7 +180,7 @@
                     <Message v-if="$form.rating?.invalid" severity="error" size="small" variant="simple">
                         {{$form.rating.error?.message}}
                     </Message>
-                    <InputText name = "image" :placeholder="t('fields.imageURL')" fluid/>
+                    <InputText name = "image" :placeholder="t('fields.image')" fluid/>
                 </div>
                 <div class="flex flex-row justify-between">
                     <Button severity="secondary" class="w-3/7" :label="t('cancel')" @click="inEditingMode=EditMode.NONE"/>
