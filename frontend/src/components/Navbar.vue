@@ -22,7 +22,7 @@
         router.push('/login');
     }
 
-    const items = computed<(MenuItem & { path: string })[]>(() => [
+    const items = computed<(MenuItem & { path?: string })[]>(() => [
         {
             label: t('home'),
             icon: 'pi pi-link',
@@ -50,30 +50,54 @@
             }
         },
         {
-            label: t('restaurants.header'),
-            icon: 'pi pi-link',
-            path: '/restaurants',
-            visible: userStore.isAdmin,
-            command: () => {
-                router.push('/restaurants');
-            }
-        },
-        {
-            label: t('pois.header'),
-            icon: 'pi pi-link',
-            path: '/points-of-interest',
-            visible: userStore.isAdmin,
-            command: () => {
-                router.push('/points-of-interest');
-            }
-        },
-        {
-            label: t('coffee-shops.header'),
-            icon: 'pi pi-link',
-            path: '/coffee-shops',
-            command: () => {
-                router.push('/coffee-shops');
-            }
+            label: t('activities.header'),
+            icon: 'pi pi-compass',
+            items: [
+                {
+                    label: t('coffee-shops.header'),
+                    icon: 'pi pi-link',
+                    path: '/coffee-shops',
+                    command: () => {
+                        router.push('/coffee-shops');
+                    }
+                },
+                {
+                    label: t('event.header'),
+                    icon: 'pi pi-send',
+                    path: '/events',
+                    visible: userStore.isAdmin,
+                    command: () => {
+                        router.push('/events');
+                    }
+                },
+                {
+                    label: t('spas.header'),
+                    icon: 'pi pi-send',
+                    path: '/spas',
+                    visible: userStore.isAdmin,
+                    command: () => {
+                        router.push('/spas');
+                    }
+                },
+                {
+                    label: t('restaurants.header'),
+                    icon: 'pi pi-link',
+                    path: '/restaurants',
+                    visible: userStore.isAdmin,
+                    command: () => {
+                        router.push('/restaurants');
+                    }
+                },
+                {
+                    label: t('pois.header'),
+                    icon: 'pi pi-link',
+                    path: '/points-of-interest',
+                    visible: userStore.isAdmin,
+                    command: () => {
+                        router.push('/points-of-interest');
+                    }
+                }
+            ]
         },
         {
             label: t('proposals.header'),
@@ -81,24 +105,6 @@
             path: '/proposals',
             command: () => {
                 router.push('/proposals');
-            }
-        },
-        {
-            label: t('event.header'),
-            icon: 'pi pi-send',
-            path: '/events',
-            visible: userStore.isAdmin,
-            command: () => {
-                router.push('/events');
-            }
-        },
-        {
-            label: t('spas.header'),
-            icon: 'pi pi-send',
-            path: '/spas',
-            visible: userStore.isAdmin,
-            command: () => {
-                router.push('/spas');
             }
         }
     ])
