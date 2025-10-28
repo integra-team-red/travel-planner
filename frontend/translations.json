@@ -5,6 +5,9 @@
             "romanian": "romanian"
         },
         "logout": "Logout",
+        "activities": {
+            "header": "Activities"
+        },
         "restaurants": {
             "header": "Restaurants",
             "add": "Add",
@@ -196,6 +199,9 @@
             "romanian": "română"
         },
         "logout": "Deconectare",
+        "activities": {
+            "header": "Activități"
+        },
         "restaurants": {
             "header": "Restaurante",
             "add": "Adaugă",
