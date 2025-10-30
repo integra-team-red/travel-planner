@@ -102,7 +102,7 @@
             "priceLowerBound": "Minimum Price",
             "priceUpperBound": "Maximum Price",
             "duration": "Duration [In Days]",
-            "schedule": "Schedule [XX:XX]",
+            "schedule": "Schedule [XX-XX]",
             "rating": "Rating",
             "openingHours": "Opening Hours"
         },
@@ -139,6 +139,25 @@
             "crudHeader": {
                 "add": "Submit a New Spa",
                 "update": "Edit Spa"
+            }
+        },
+        "nightlifes": {
+            "delete": {
+                "success": "Nightlife venue successfully deleted!",
+                "failure": "Nightlife venue deletion failed!"
+            },
+            "update": {
+                "success": "Nightlife venue successfully updated!",
+                "failure": "Nightlife venue update failed!"
+            },
+            "add": {
+                "success": "Nightlife venue successfully created!",
+                "failure": "Nightlife venue creation failed!"
+            },
+            "header": "Nightlife",
+            "crudHeader": {
+                "add": "Submit a New Nightlife Venue",
+                "update": "Edit Nightlife Venue"
             }
         },
         "proposals": {
@@ -296,7 +315,7 @@
             "pointOfInterestType": "Tipul Punctului De Interes",
             "priceLowerBound": "Preț minim",
             "priceUpperBound": "Preț maxim",
-            "schedule": "Program [XX:XX]",
+            "schedule": "Program [XX-XX]",
             "rating": "Notă",
             "openingHours": "Program"
         },
@@ -333,6 +352,25 @@
             "crudHeader": {
                 "add": "Adaugă un Spa Nou",
                 "update": "Editează Spa-ul"
+            }
+        },
+        "nightlifes": {
+            "delete": {
+                "success": "Localul de noapte a fost șters cu succes!",
+                "failure": "Ștergerea localului de noapte a eșuat!"
+            },
+            "update": {
+                "success": "Localul de noapte a fost actualizat cu succes!",
+                "failure": "Actualizarea localului de noapte a eșuat!"
+            },
+            "add": {
+                "success": "Localul de noapte a fost creat cu succes!",
+                "failure": "Crearea localului de noapte a eșuat!"
+            },
+            "header": "Localuri de noapte",
+            "crudHeader": {
+                "add": "Adaugă un nou local de noapte",
+                "update": "Editează localul de noapte"
             }
         },
         "proposals": {

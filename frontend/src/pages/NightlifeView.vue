@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import {ref} from "vue";
-import {cityApi, spaApi} from "@/api.ts";
+import {cityApi, nightlifeApi} from "@/api.ts";
 import {
     type CityDTO,
-    type SpaDTO
+    type NightlifeDTO,
+    NightlifeDTOTypeEnum
 } from "../../typescript-client";
 import type {FormSubmitEvent} from "@primevue/forms";
 import {useConfirm} from "primevue";
 import {promptConfirm} from "@/utils/confirm.utils.ts";
 import {showToast} from "@/utils/toast.utils.ts";
 import {useToast} from "primevue";
-import {toCamelCase} from "@/utils/text.utils.ts";
+import {toCamelCase, toCapitalCaseFromAllCaps} from "@/utils/text.utils.ts";
 import {useI18n} from "vue-i18n";
 import {type FormField, FormFieldBuilder} from "@/utils/form.utils.ts";
-import SpaCard from "@/components/SpaCard.vue";
+import NightlifeCard from "@/components/NightlifeCard.vue";
 
 const { t } = useI18n();
 const confirm = useConfirm();
@@ -21,37 +22,38 @@ const toast = useToast();
 const initialValues = ref<Record<string, unknown>>({});
 const formKey = ref<number>(0);
 const fields = ref<FormField[]>([]);
-const selectedSpas = ref<SpaDTO[]>([]);
+const selectedNightlifes = ref<NightlifeDTO[]>([]);
 const cities: CityDTO[] = await cityApi.getCities();
-const spas = ref<SpaDTO[]>();
+const nightlifes = ref<NightlifeDTO[]>();
 const priceUpperBound = ref<string>();
+const NIGHTLIFE_TYPES: string[] = Object.values(NightlifeDTOTypeEnum);
 initFormFields();
-fetchSpas();
+fetchNightlifes();
 
-async function fetchSpas() {
-    spas.value = await spaApi.getSpas();
+async function fetchNightlifes() {
+    nightlifes.value = await nightlifeApi.getNightlifes();
 }
 
-function sendSpaCreationRequest(spa: SpaDTO) {
-    spaApi.addSpa({spaDTO: spa})
+function sendNightlifeCreationRequest(nightlife: NightlifeDTO) {
+    nightlifeApi.addNightlife({nightlifeDTO: nightlife})
         .then(() => {
-            showToast("success", t('spas.add.success'), toast);
-            fetchSpas();
+            showToast("success", t('nightlifes.add.success'), toast);
+            fetchNightlifes();
         })
         .catch(() => {
-            showToast("error", t('spas.add.failure'), toast);
+            showToast("error", t('nightlifes.add.failure'), toast);
         });
 }
 
-function sendSpaUpdateRequest(spa: SpaDTO, updatedSpa: SpaDTO) {
-    spaApi.updateSpa({id: updatedSpa.id!, spaDTO: spa})
+function sendNightlifeUpdateRequest(nightlife: NightlifeDTO, updatedNightlife: NightlifeDTO) {
+    nightlifeApi.updateNightlife({id: updatedNightlife.id!, nightlifeDTO: nightlife})
         .then(() => {
-            showToast("success", t('spas.update.success'), toast);
-            fetchSpas();
+            showToast("success", t('nightlifes.update.success'), toast);
+            fetchNightlifes();
             clearSelection();
         })
         .catch(() => {
-            showToast("error", t('spas.update.failure'), toast);
+            showToast("error", t('nightlifes.update.failure'), toast);
         });
 }
 
@@ -59,13 +61,13 @@ function onFormSubmit({values, valid}: FormSubmitEvent) {
     if (!valid) {
         return;
     }
-    const spa: SpaDTO = {cityId: values.city, ...values};
-    const lastSelectedSpa: SpaDTO | undefined = getLastSelectedSpa();
-    if (lastSelectedSpa) {
-        sendSpaUpdateRequest(spa, lastSelectedSpa)
+    const nightlife: NightlifeDTO = {cityId: values.city, ...values};
+    const lastSelectedNightlife: NightlifeDTO | undefined = getLastSelectedNightlife();
+    if (lastSelectedNightlife) {
+        sendNightlifeUpdateRequest(nightlife, lastSelectedNightlife)
     }
     else {
-        sendSpaCreationRequest(spa);
+        sendNightlifeCreationRequest(nightlife);
     }
 }
 
@@ -73,6 +75,7 @@ function initFormFields() {
     fields.value = [
         new FormFieldBuilder('Name').required(t('formFieldError.fieldRequired')).build(),
         new FormFieldBuilder('City').required(t('formFieldError.fieldRequired')).build(),
+        new FormFieldBuilder('Type').required(t('formFieldError.fieldRequired')).build(),
         new FormFieldBuilder('Schedule')
             .required(t('formFieldError.fieldRequired'))
             .matches('[0-9]{2}-[0-9]{2}', t('formFieldError.improperFormat')).build(),
@@ -90,8 +93,8 @@ function initFormFields() {
     ];
 }
 
-function getLastSelectedSpa(): SpaDTO | undefined {
-    return selectedSpas.value.length > 0 ? selectedSpas.value[selectedSpas.value.length - 1] : undefined;
+function getLastSelectedNightlife(): NightlifeDTO | undefined {
+    return selectedNightlifes.value.length > 0 ? selectedNightlifes.value[selectedNightlifes.value.length - 1] : undefined;
 }
 
 function resetForm() {
@@ -100,23 +103,23 @@ function resetForm() {
     ++formKey.value;
 }
 
-function overwriteFormData(spa: SpaDTO) {
+function overwriteFormData(nightlife: NightlifeDTO) {
     resetForm();
-    priceUpperBound.value = String(spa.priceUpperBound);
+    priceUpperBound.value = String(nightlife.priceUpperBound);
     for (const field of fields.value) {
         const camelCasedFieldName = toCamelCase(field.name);
-        initialValues.value[camelCasedFieldName] = spa[(camelCasedFieldName == 'city' ? 'cityId' : camelCasedFieldName) as keyof SpaDTO];
+        initialValues.value[camelCasedFieldName] = nightlife[(camelCasedFieldName == 'city' ? 'cityId' : camelCasedFieldName) as keyof NightlifeDTO];
     }
 }
 
-function onCardClick(spa: SpaDTO) {
-    const spaIndex = selectedSpas.value.findIndex(_spa => _spa.id == spa.id);
-    if (spaIndex >= 0) {
-        selectedSpas.value.splice(spaIndex, 1);
-        if (spaIndex == selectedSpas.value.length) {
-            const lastSpa = getLastSelectedSpa();
-            if (lastSpa) {
-                overwriteFormData(lastSpa);
+function onCardClick(nightlife: NightlifeDTO) {
+    const nightlifeIndex = selectedNightlifes.value.findIndex(_nightlife => _nightlife.id == nightlife.id);
+    if (nightlifeIndex >= 0) {
+        selectedNightlifes.value.splice(nightlifeIndex, 1);
+        if (nightlifeIndex == selectedNightlifes.value.length) {
+            const lastNightlife = getLastSelectedNightlife();
+            if (lastNightlife) {
+                overwriteFormData(lastNightlife);
             }
             else {
                 resetForm();
@@ -124,29 +127,29 @@ function onCardClick(spa: SpaDTO) {
         }
     }
     else {
-        selectedSpas.value.push(spa);
-        overwriteFormData(spa);
+        selectedNightlifes.value.push(nightlife);
+        overwriteFormData(nightlife);
     }
 }
 
 function clearSelection() {
     resetForm();
-    selectedSpas.value = [];
+    selectedNightlifes.value = [];
 }
 
 async function deleteSelection() {
     let errorOccurred = false;
-    for (const spa of selectedSpas.value) {
-        await spaApi.deleteSpa({id: spa.id!})
+    for (const nightlife of selectedNightlifes.value) {
+        await nightlifeApi.deleteNightlife({id: nightlife.id!})
             .catch(() => errorOccurred = true);
         if (errorOccurred) {
-            showToast("error", t('spas.delete.failure'), toast);
+            showToast("error", t('nightlifes.delete.failure'), toast);
             return;
         }
     }
-    showToast("success", t('spas.delete.success'), toast);
+    showToast("success", t('nightlifes.delete.success'), toast);
     clearSelection();
-    fetchSpas();
+    fetchNightlifes();
 }
 
 </script>
@@ -154,24 +157,25 @@ async function deleteSelection() {
 <template>
     <div class="flex flex-col sm:flex-row gap-8">
         <div class="w-full sm:w-1/2 flex flex-col gap-4">
-            <spa-card v-for="spa in spas" :key="spa.id" :spa="spa" :isSelected="!!selectedSpas.find(_spa => _spa.id == spa.id)"
-                           :cityName="cities.find(city => city.id == spa.cityId)!.name!"
-                           @card-clicked="onCardClick(spa)"/>
+            <nightlife-card v-for="nightlife in nightlifes" :key="nightlife.id" :nightlife="nightlife" :isSelected="!!selectedNightlifes.find(_nightlife => _nightlife.id == nightlife.id)"
+                      :cityName="cities.find(city => city.id == nightlife.cityId)!.name!"
+                      @card-clicked="onCardClick(nightlife)"/>
             <div class="flex flex-row justify-between">
                 <Button :label="t('delete')" class="w-3/7" severity="danger" @click="promptConfirm(confirm, deleteSelection, undefined)"/>
                 <Button :label="t('clear')" class="w-3/7" severity="secondary" @click="clearSelection()"/>
             </div>
         </div>
         <div class="w-full sm:w-1/2 flex flex-col pl-8 border-l-2 gap-4">
-            <h2 v-if="!getLastSelectedSpa()" class="text-3xl">
-                {{t('spas.crudHeader.add')}}
+            <h2 v-if="!getLastSelectedNightlife()" class="text-3xl">
+                {{t('nightlifes.crudHeader.add')}}
             </h2>
             <h2 v-else class="text-3xl">
-                {{t('spas.crudHeader.update')}}
+                {{t('nightlifes.crudHeader.update')}}
             </h2>
             <Form :initialValues :key="formKey" @submit="onFormSubmit" class="flex flex-col gap-4">
                 <FormField v-for="{ name, resolver } in fields" :key="name" v-slot="$field" :resolver="resolver" class="flex flex-col">
                     <Select v-if="toCamelCase(name) == 'city'" :placeholder="t('fields.' + toCamelCase(name))" :id="name" :name="toCamelCase(name)" option-label="name" option-value="id" :options="cities" :model-value="initialValues[toCamelCase(name)]" fluid />
+                    <Select v-else-if="toCamelCase(name) == 'type'" :placeholder="t('fields.' + toCamelCase(name))" :id="name" :name="toCamelCase(name)" :optionLabel="(entry) => toCapitalCaseFromAllCaps(entry)" :options="NIGHTLIFE_TYPES" />
                     <InputText v-else-if="toCamelCase(name) == 'priceUpperBound'" :placeholder="t('fields.' + toCamelCase(name))" :name="toCamelCase(name)" :id="name" maxlength="30" v-model="priceUpperBound" fluid />
                     <InputText v-else :placeholder="t('fields.' + toCamelCase(name))" :name="toCamelCase(name)" :id="name" maxlength="30" fluid />
                     <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">

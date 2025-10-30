@@ -14,6 +14,7 @@ import EventsView from "@/pages/EventsView.vue";
 import '@/interceptor/interceptor.ts'
 import SpasView from "@/pages/SpasView.vue";
 import CoffeeShopView from "@/pages/CoffeeShopView.vue";
+import NightlifeView from "@/pages/NightlifeView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,11 @@ const router = createRouter({
             path: '/spas',
             name: 'spas',
             component: SpasView
+        },
+        {
+            path: '/nightlife',
+            name: 'nightlife',
+            component: NightlifeView
         },
         {
             path: '/proposals',

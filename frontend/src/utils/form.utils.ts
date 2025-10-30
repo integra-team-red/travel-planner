@@ -48,7 +48,7 @@ export class FormFieldBuilder {
     }
     public required(errorMessage: string): FormFieldBuilder {
         this.validations.push(({value}: FormFieldResolverOptions): boolean => {
-            return typeof value == 'string' && value.toString().trim() != '';
+            return (typeof value == 'string' || typeof value == 'number') && value.toString().trim() != '';
         });
         this.errorMessages.push(errorMessage);
         return this;

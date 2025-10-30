@@ -1,0 +1,32 @@
+GET http://localhost:8080/api/restaurant
+
+###
+POST http://localhost:8080/api/restaurant
+Content-Type: application/json
+
+{
+  "name": "Aa Mama",
+  "cityId": 1,
+  "averagePrice": 45.5,
+  "cuisineType": "Romanian"
+}
+
+###
+PUT http://localhost:8080/api/restaurant/1
+Content-Type: application/json
+
+{
+  "name": "Trattoria Roma",
+  "cityId": 1,
+  "averagePrice": 60.0,
+  "cuisineType": "Italian"
+}
+
+###
+DELETE http://localhost:8080/api/restaurant/2
+### GET BY CUISINE
+GET http://localhost:8080/api/restaurant/sortedByCuisine?pageSize=3&pageNumber=1&cuisineType=Romanian
+### GET BY NAME
+GET http://localhost:8080/api/restaurant/sortedByName?pageSize=3&pageNumber=1&isDescending=true
+### GET BY AVERAGE PRICE
+GET http://localhost:8080/api/restaurant/sortedByPrice?pageSize=2&pageNumber=1&isDescending=true
