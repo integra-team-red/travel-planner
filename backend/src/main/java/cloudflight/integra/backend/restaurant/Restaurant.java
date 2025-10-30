@@ -21,10 +21,49 @@ public class Restaurant {
     private City city;
 
     @NotNull
+    private String address;
+
+    @NotNull
+    private String openingHours;
+
+    @NotNull
+    private String description;
+
+    @NotNull
     private Double averagePrice;
 
     @NotNull
     private String cuisineType;
+
+    @NotNull
+    private Double rating;
+
+    private String image;
+
+    public Restaurant(
+            Long id,
+            String name,
+            City city,
+            String address,
+            String openingHours,
+            String description,
+            Double averagePrice,
+            String cuisineType,
+            Double rating,
+            String image) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+        this.address = address;
+        this.openingHours = openingHours;
+        this.description = description;
+        this.averagePrice = averagePrice;
+        this.cuisineType = cuisineType;
+        this.rating = rating;
+        this.image = image;
+    }
+
+    public Restaurant() {}
 
     public Long getId() {
         return id;
@@ -53,6 +92,37 @@ public class Restaurant {
         return this;
     }
 
+    public Long getCityId() {
+        return city.getId();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Restaurant setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public String getOpeningHours() {
+        return openingHours;
+    }
+
+    public Restaurant setOpeningHours(String openingHours) {
+        this.openingHours = openingHours;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Restaurant setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     public Double getAveragePrice() {
         return averagePrice;
     }
@@ -71,7 +141,21 @@ public class Restaurant {
         return this;
     }
 
-    public Long getCityId() {
-        return city.getId();
+    public Double getRating() {
+        return rating;
+    }
+
+    public Restaurant setRating(Double rating) {
+        this.rating = rating;
+        return this;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public Restaurant setImage(String image) {
+        this.image = image;
+        return this;
     }
 }

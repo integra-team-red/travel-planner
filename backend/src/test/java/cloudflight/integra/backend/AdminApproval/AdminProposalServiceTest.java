@@ -13,8 +13,8 @@ import cloudflight.integra.backend.proposal.Proposal;
 import cloudflight.integra.backend.proposal.ProposalRepository;
 import cloudflight.integra.backend.proposal.ProposalType;
 import cloudflight.integra.backend.proposal.Status;
-import cloudflight.integra.backend.restaurant.DBRestaurantRepository;
 import cloudflight.integra.backend.restaurant.Restaurant;
+import cloudflight.integra.backend.restaurant.RestaurantRepository;
 import cloudflight.integra.backend.user.Role;
 import cloudflight.integra.backend.user.User;
 import cloudflight.integra.backend.user.UserRepository;
@@ -38,7 +38,7 @@ class AdminProposalServiceTest {
     private POIRepository poiRepository;
 
     @Mock
-    private DBRestaurantRepository restaurantRepository;
+    private RestaurantRepository restaurantRepository;
 
     @InjectMocks
     private AdminProposalService service;

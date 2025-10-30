@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
-    private final DBRestaurantRepository repository;
+    private final RestaurantRepository repository;
     private final GenericConstraintValidator<Restaurant> validator;
 
     @Autowired
-    public RestaurantServiceImpl(DBRestaurantRepository repository, GenericConstraintValidator<Restaurant> validator) {
+    public RestaurantServiceImpl(RestaurantRepository repository, GenericConstraintValidator<Restaurant> validator) {
         this.validator = validator;
         this.repository = repository;
     }
@@ -40,14 +40,19 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant updateRestaurant(Long id, Restaurant newRestaurant) {
         validator.validate(newRestaurant);
-        var dbRestaurant = getRestaurant(id);
+        var restaurant = getRestaurant(id);
 
-        dbRestaurant.setName(newRestaurant.getName());
-        dbRestaurant.setCity(newRestaurant.getCity());
-        dbRestaurant.setAveragePrice(newRestaurant.getAveragePrice());
-        dbRestaurant.setCuisineType(newRestaurant.getCuisineType());
+        restaurant.setName(newRestaurant.getName());
+        restaurant.setCity(newRestaurant.getCity());
+        restaurant.setAddress(newRestaurant.getAddress());
+        restaurant.setOpeningHours(newRestaurant.getOpeningHours());
+        restaurant.setDescription(newRestaurant.getDescription());
+        restaurant.setAveragePrice(newRestaurant.getAveragePrice());
+        restaurant.setCuisineType(newRestaurant.getCuisineType());
+        restaurant.setRating(newRestaurant.getRating());
+        restaurant.setImage(newRestaurant.getImage());
 
-        return repository.save(dbRestaurant);
+        return repository.save(restaurant);
     }
 
     @Override

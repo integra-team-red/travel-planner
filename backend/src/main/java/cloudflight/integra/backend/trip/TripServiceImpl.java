@@ -4,8 +4,8 @@ import cloudflight.integra.backend.coffeeShop.CoffeeShop;
 import cloudflight.integra.backend.coffeeShop.CoffeeShopRepository;
 import cloudflight.integra.backend.poi.POI;
 import cloudflight.integra.backend.poi.POIRepository;
-import cloudflight.integra.backend.restaurant.DBRestaurantRepository;
 import cloudflight.integra.backend.restaurant.Restaurant;
+import cloudflight.integra.backend.restaurant.RestaurantRepository;
 import cloudflight.integra.backend.spa.SpaRepository;
 import cloudflight.integra.backend.user.User;
 import cloudflight.integra.backend.user.UserRepository;
@@ -18,7 +18,7 @@ public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final UserRepository userRepository;
     private final POIRepository poiRepository;
-    private final DBRestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
     private final CoffeeShopRepository coffeeShopRepository;
     private final SpaRepository spaRepository;
 
@@ -26,7 +26,7 @@ public class TripServiceImpl implements TripService {
             TripRepository tripRepository,
             UserRepository userRepository,
             POIRepository poiRepository,
-            DBRestaurantRepository restaurantRepository,
+            RestaurantRepository restaurantRepository,
             CoffeeShopRepository coffeeShopRepository,
             SpaRepository spaRepository) {
         this.tripRepository = tripRepository;

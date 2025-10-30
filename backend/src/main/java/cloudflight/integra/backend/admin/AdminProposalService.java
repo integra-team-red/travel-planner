@@ -3,8 +3,8 @@ package cloudflight.integra.backend.admin;
 import cloudflight.integra.backend.poi.POI;
 import cloudflight.integra.backend.poi.POIRepository;
 import cloudflight.integra.backend.proposal.*;
-import cloudflight.integra.backend.restaurant.DBRestaurantRepository;
 import cloudflight.integra.backend.restaurant.Restaurant;
+import cloudflight.integra.backend.restaurant.RestaurantRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +14,13 @@ import org.springframework.stereotype.Service;
 public class AdminProposalService {
     private final ProposalRepository proposalRepository;
     private final POIRepository poiRepository;
-    private final DBRestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
     public AdminProposalService(
             ProposalRepository proposalRepository,
             POIRepository poiRepository,
-            DBRestaurantRepository restaurantRepository) {
+            RestaurantRepository restaurantRepository) {
         this.proposalRepository = proposalRepository;
         this.poiRepository = poiRepository;
         this.restaurantRepository = restaurantRepository;
