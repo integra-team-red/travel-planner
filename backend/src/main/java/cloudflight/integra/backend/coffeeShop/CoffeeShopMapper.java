@@ -4,7 +4,7 @@ import cloudflight.integra.backend.city.City;
 import java.util.List;
 
 public class CoffeeShopMapper {
-    public static CoffeeShopDTO EntityToDTO(CoffeeShop coffeeShop) {
+    public static CoffeeShopDTO entityToDTO(CoffeeShop coffeeShop) {
         return new CoffeeShopDTO(
                 coffeeShop.getId(),
                 coffeeShop.getName(),
@@ -32,7 +32,7 @@ public class CoffeeShopMapper {
         return coffeeShop;
     }
 
-    public static List<CoffeeShopDTO> EntityListToDTOList(List<CoffeeShop> entityList) {
-        return entityList.stream().map(CoffeeShopMapper::EntityToDTO).toList();
+    public static List<CoffeeShopDTO> entityListToDTOList(List<CoffeeShop> entityList) {
+        return entityList.stream().map(CoffeeShopMapper::entityToDTO).toList();
     }
 }

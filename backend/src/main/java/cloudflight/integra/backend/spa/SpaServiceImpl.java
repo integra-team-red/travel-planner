@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SpaServiceImpl implements SpaService {
-    private final DBSpaRepository repository;
+    private final SpaRepository repository;
     private final GenericConstraintValidator<Spa> validator;
     private final SpaValidator spaValidator;
 
     @Autowired
     public SpaServiceImpl(
-            DBSpaRepository repository, GenericConstraintValidator<Spa> validator, SpaValidator spaValidator) {
+            SpaRepository repository, GenericConstraintValidator<Spa> validator, SpaValidator spaValidator) {
         this.validator = validator;
         this.spaValidator = spaValidator;
         this.repository = repository;

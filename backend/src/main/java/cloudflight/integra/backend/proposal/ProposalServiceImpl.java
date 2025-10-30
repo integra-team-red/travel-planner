@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProposalServiceImpl implements ProposalService {
 
-    private final DBProposalRepository repository;
+    private final ProposalRepository repository;
     private final GenericConstraintValidator<Proposal> validator;
 
     @Autowired
-    public ProposalServiceImpl(DBProposalRepository repository, GenericConstraintValidator<Proposal> validator) {
+    public ProposalServiceImpl(ProposalRepository repository, GenericConstraintValidator<Proposal> validator) {
         this.repository = repository;
         this.validator = validator;
     }

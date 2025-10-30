@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DBPOIRepository extends JpaRepository<POI, Long> {
+public interface POIRepository extends JpaRepository<POI, Long> {
     List<POI> findByCity_Id(Long cityId);
 
     List<POI> findByCity_Name(String cityName);

@@ -44,7 +44,7 @@ public class CoffeeShopController {
     @GetMapping
     public ResponseEntity<List<CoffeeShopDTO>> getCoffeeShops() {
         List<CoffeeShopDTO> coffees = coffeeService.getAllCoffeeShops().stream()
-                .map(CoffeeShopMapper::EntityToDTO)
+                .map(CoffeeShopMapper::entityToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(coffees);
     }
@@ -69,7 +69,7 @@ public class CoffeeShopController {
     public ResponseEntity<CoffeeShopDTO> addCoffeeShop(@RequestBody CoffeeShopDTO coffeeDTO) {
         City city = cityService.getCity(coffeeDTO.cityId());
         CoffeeShop savedCoffeeShop = coffeeService.addCoffeeShop(CoffeeShopMapper.DTOtoEntity(coffeeDTO, city));
-        return ResponseEntity.ok(CoffeeShopMapper.EntityToDTO(savedCoffeeShop));
+        return ResponseEntity.ok(CoffeeShopMapper.entityToDTO(savedCoffeeShop));
     }
 
     @Operation(
@@ -109,7 +109,7 @@ public class CoffeeShopController {
         City city = cityService.getCity(newCoffeeShopDTO.cityId());
         CoffeeShop updatedCoffeeShop =
                 coffeeService.updateCoffeeShop(id, CoffeeShopMapper.DTOtoEntity(newCoffeeShopDTO, city));
-        return ResponseEntity.ok(CoffeeShopMapper.EntityToDTO(updatedCoffeeShop));
+        return ResponseEntity.ok(CoffeeShopMapper.entityToDTO(updatedCoffeeShop));
     }
 
     @Operation(
@@ -128,7 +128,7 @@ public class CoffeeShopController {
     @GetMapping(value = "/sortedByName")
     public ResponseEntity<List<CoffeeShopDTO>> getAllCoffeeShopsSortedByName(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        return ResponseEntity.ok(CoffeeShopMapper.EntityListToDTOList(
+        return ResponseEntity.ok(CoffeeShopMapper.entityListToDTOList(
                 isDescending.isPresent()
                         ? coffeeService.getAllCoffeeShopsSortedByName(pageNumber, pageSize, isDescending.get())
                         : coffeeService.getAllCoffeeShopsSortedByName(pageNumber, pageSize, false)));
@@ -150,7 +150,7 @@ public class CoffeeShopController {
     @GetMapping(value = "/sortedByPrice")
     public ResponseEntity<List<CoffeeShopDTO>> getAllCoffeeShopsSortedByAveragePrice(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        return ResponseEntity.ok(CoffeeShopMapper.EntityListToDTOList(
+        return ResponseEntity.ok(CoffeeShopMapper.entityListToDTOList(
                 isDescending.isPresent()
                         ? coffeeService.getAllCoffeeShopsSortedByAveragePrice(pageNumber, pageSize, isDescending.get())
                         : coffeeService.getAllCoffeeShopsSortedByAveragePrice(pageNumber, pageSize, false)));
@@ -171,7 +171,7 @@ public class CoffeeShopController {
     @GetMapping(value = "/sortedByRating")
     public ResponseEntity<List<CoffeeShopDTO>> getAllCoffeeShopsSortedByRating(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        return ResponseEntity.ok(CoffeeShopMapper.EntityListToDTOList(
+        return ResponseEntity.ok(CoffeeShopMapper.entityListToDTOList(
                 isDescending.isPresent()
                         ? coffeeService.getAllCoffeeShopsSortedByRating(pageNumber, pageSize, isDescending.get())
                         : coffeeService.getAllCoffeeShopsSortedByRating(pageNumber, pageSize, false)));

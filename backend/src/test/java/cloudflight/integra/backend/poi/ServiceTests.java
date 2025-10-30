@@ -15,7 +15,7 @@ import org.springframework.data.domain.*;
 @ExtendWith(MockitoExtension.class)
 public class ServiceTests {
     @Mock
-    DBPOIRepository repo;
+    POIRepository repo;
 
     @InjectMocks
     POIServiceImpl service;

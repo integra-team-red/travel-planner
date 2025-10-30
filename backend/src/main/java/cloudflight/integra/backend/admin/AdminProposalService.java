@@ -1,7 +1,7 @@
 package cloudflight.integra.backend.admin;
 
-import cloudflight.integra.backend.poi.DBPOIRepository;
 import cloudflight.integra.backend.poi.POI;
+import cloudflight.integra.backend.poi.POIRepository;
 import cloudflight.integra.backend.proposal.*;
 import cloudflight.integra.backend.restaurant.DBRestaurantRepository;
 import cloudflight.integra.backend.restaurant.Restaurant;
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AdminProposalService {
-    private final DBProposalRepository proposalRepository;
-    private final DBPOIRepository poiRepository;
+    private final ProposalRepository proposalRepository;
+    private final POIRepository poiRepository;
     private final DBRestaurantRepository restaurantRepository;
 
     @Autowired
     public AdminProposalService(
-            DBProposalRepository proposalRepository,
-            DBPOIRepository poiRepository,
+            ProposalRepository proposalRepository,
+            POIRepository poiRepository,
             DBRestaurantRepository restaurantRepository) {
         this.proposalRepository = proposalRepository;
         this.poiRepository = poiRepository;

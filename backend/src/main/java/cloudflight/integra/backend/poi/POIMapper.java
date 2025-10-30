@@ -4,7 +4,7 @@ import cloudflight.integra.backend.city.City;
 import java.util.List;
 
 public class POIMapper {
-    public static POIDTO POIToDTO(POI poi) {
+    public static POIDTO entityToDTO(POI poi) {
         return new POIDTO(
                 poi.getId(),
                 poi.getName(),
@@ -16,7 +16,7 @@ public class POIMapper {
                 poi.getImage());
     }
 
-    public static POI POIToEntity(POIDTO poi_dto, City city) {
+    public static POI DTOtoEntity(POIDTO poi_dto, City city) {
         POI poi = new POI();
         poi.setId(null);
         poi.setName(poi_dto.name());
@@ -29,7 +29,7 @@ public class POIMapper {
         return poi;
     }
 
-    public static List<POIDTO> EntityListToDTOList(List<POI> entityList) {
-        return entityList.stream().map(POIMapper::POIToDTO).toList();
+    public static List<POIDTO> entityListToDTOList(List<POI> entityList) {
+        return entityList.stream().map(POIMapper::entityToDTO).toList();
     }
 }

@@ -38,7 +38,7 @@ public class AdminProposalController {
     @GetMapping("/pending")
     public ResponseEntity<List<ProposalDTO>> getPendingProposals() {
         List<ProposalDTO> pendingProposals = adminProposalService.getPendingProposals().stream()
-                .map(ProposalMapper::ProposalToDTO)
+                .map(ProposalMapper::entityToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(pendingProposals);
     }
@@ -62,7 +62,7 @@ public class AdminProposalController {
     @PostMapping("/{id}/approve")
     public ResponseEntity<ProposalDTO> approveProposal(@PathVariable Long id) {
         Proposal approved = adminProposalService.approveProposal(id);
-        return ResponseEntity.ok(ProposalMapper.ProposalToDTO(approved));
+        return ResponseEntity.ok(ProposalMapper.entityToDTO(approved));
     }
 
     @Operation(
@@ -84,6 +84,6 @@ public class AdminProposalController {
     @PostMapping("/{id}/reject")
     public ResponseEntity<ProposalDTO> rejectProposal(@PathVariable Long id) {
         Proposal rejected = adminProposalService.rejectProposal(id);
-        return ResponseEntity.ok(ProposalMapper.ProposalToDTO(rejected));
+        return ResponseEntity.ok(ProposalMapper.entityToDTO(rejected));
     }
 }

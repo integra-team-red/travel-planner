@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class POIServiceImpl implements POIService {
-    private final DBPOIRepository repository;
+    private final POIRepository repository;
     private final GenericConstraintValidator<POI> validator;
 
     @Autowired
-    public POIServiceImpl(DBPOIRepository repository, GenericConstraintValidator<POI> validator) {
+    public POIServiceImpl(POIRepository repository, GenericConstraintValidator<POI> validator) {
         this.validator = validator;
         this.repository = repository;
     }

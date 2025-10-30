@@ -1,7 +1,7 @@
 package cloudflight.integra.backend.trip;
 
-import cloudflight.integra.backend.user.DBUserRepository;
 import cloudflight.integra.backend.user.User;
+import cloudflight.integra.backend.user.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 public class TripController {
 
     private final TripService service;
-    private final DBUserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TripController(TripService service, DBUserRepository userRepository) {
+    public TripController(TripService service, UserRepository userRepository) {
         this.service = service;
         this.userRepository = userRepository;
     }
@@ -42,7 +42,7 @@ public class TripController {
             })
     @GetMapping
     public ResponseEntity<List<TripDTO>> getTrips() {
-        List<TripDTO> trips = TripMapper.EntityListToDTOList(service.getAllTrips());
+        List<TripDTO> trips = TripMapper.entityListToDTOList(service.getAllTrips());
         return ResponseEntity.ok(trips);
     }
 
@@ -64,8 +64,8 @@ public class TripController {
                 .findById(tripDTO.userId())
                 .orElseThrow(() -> new RuntimeException("user not found with id: " + tripDTO.userId()));
 
-        Trip savedTrip = service.addTrip(TripMapper.TripToEntity(tripDTO, user));
-        return ResponseEntity.ok(TripMapper.TripToDTO(savedTrip));
+        Trip savedTrip = service.addTrip(TripMapper.DTOtoEntity(tripDTO, user));
+        return ResponseEntity.ok(TripMapper.entityToDTO(savedTrip));
     }
 
     @Operation(
@@ -98,8 +98,8 @@ public class TripController {
                 .findById(newTripDTO.userId())
                 .orElseThrow(() -> new RuntimeException("user not found with id: " + newTripDTO.userId()));
 
-        Trip updatedTrip = service.updateTrip(id, TripMapper.TripToEntity(newTripDTO, user));
-        return ResponseEntity.ok(TripMapper.TripToDTO(updatedTrip));
+        Trip updatedTrip = service.updateTrip(id, TripMapper.DTOtoEntity(newTripDTO, user));
+        return ResponseEntity.ok(TripMapper.entityToDTO(updatedTrip));
     }
 
     @Operation(
@@ -116,7 +116,7 @@ public class TripController {
             })
     @GetMapping("/byUser/{userId}")
     public ResponseEntity<List<TripDTO>> getTripsByUser(@PathVariable Long userId) {
-        List<TripDTO> trips = TripMapper.EntityListToDTOList(service.getTripsByUser(userId));
+        List<TripDTO> trips = TripMapper.entityListToDTOList(service.getTripsByUser(userId));
         return ResponseEntity.ok(trips);
     }
 
