@@ -1,5 +1,6 @@
 package cloudflight.integra.backend.trip;
 
+import cloudflight.integra.backend.city.City;
 import cloudflight.integra.backend.user.User;
 import jakarta.persistence.*;
 
@@ -14,8 +15,9 @@ public class Trip {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String city;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
 
     @Column(nullable = false)
     private int days;
@@ -27,7 +29,7 @@ public class Trip {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Trip(Long id, String name, String city, int days, float price, User user) {
+    public Trip(Long id, String name, City city, int days, float price, User user) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -54,11 +56,11 @@ public class Trip {
         this.name = name;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 
