@@ -80,6 +80,15 @@
                     }
                 },
                 {
+                    label: t('nightlifes.header'),
+                    icon: 'pi pi-send',
+                    path: '/nightlife',
+                    visible: userStore.isAdmin,
+                    command: () => {
+                        router.push('/nightlife');
+                    }
+                },
+                {
                     label: t('restaurants.header'),
                     icon: 'pi pi-link',
                     path: '/restaurants',
