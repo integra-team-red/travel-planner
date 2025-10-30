@@ -21,4 +21,4 @@ public interface TripService {
     Map<String, List<?>> getAttractionsCityId(Long cityId);
 
     Itinerary generateItinerary(Trip trip);
-    }
+}
