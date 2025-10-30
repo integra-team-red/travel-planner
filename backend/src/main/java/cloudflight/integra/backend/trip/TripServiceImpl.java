@@ -1,11 +1,11 @@
 package cloudflight.integra.backend.trip;
 
 import cloudflight.integra.backend.coffeeShop.CoffeeShopRepository;
-import cloudflight.integra.backend.poi.DBPOIRepository;
+import cloudflight.integra.backend.poi.POIRepository;
 import cloudflight.integra.backend.restaurant.DBRestaurantRepository;
-import cloudflight.integra.backend.spa.DBSpaRepository;
-import cloudflight.integra.backend.user.DBUserRepository;
+import cloudflight.integra.backend.spa.SpaRepository;
 import cloudflight.integra.backend.user.User;
+import cloudflight.integra.backend.user.UserRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,20 +13,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TripServiceImpl implements TripService {
-    private final DBTripRepository tripRepository;
-    private final DBUserRepository userRepository;
-    private final DBPOIRepository poiRepository;
+    private final TripRepository tripRepository;
+    private final UserRepository userRepository;
+    private final POIRepository poiRepository;
     private final DBRestaurantRepository restaurantRepository;
     private final CoffeeShopRepository coffeeShopRepository;
-    private final DBSpaRepository spaRepository;
+    private final SpaRepository spaRepository;
 
     public TripServiceImpl(
-            DBTripRepository tripRepository,
-            DBUserRepository userRepository,
-            DBPOIRepository poiRepository,
+            TripRepository tripRepository,
+            UserRepository userRepository,
+            POIRepository poiRepository,
             DBRestaurantRepository restaurantRepository,
             CoffeeShopRepository coffeeShopRepository,
-            DBSpaRepository spaRepository) {
+            SpaRepository spaRepository) {
         this.tripRepository = tripRepository;
         this.userRepository = userRepository;
         this.poiRepository = poiRepository;

@@ -6,18 +6,18 @@ import static org.mockito.Mockito.*;
 
 import cloudflight.integra.backend.admin.AdminProposalService;
 import cloudflight.integra.backend.city.City;
-import cloudflight.integra.backend.poi.DBPOIRepository;
 import cloudflight.integra.backend.poi.POI;
+import cloudflight.integra.backend.poi.POIRepository;
 import cloudflight.integra.backend.poi.PointOfInterestType;
-import cloudflight.integra.backend.proposal.DBProposalRepository;
 import cloudflight.integra.backend.proposal.Proposal;
+import cloudflight.integra.backend.proposal.ProposalRepository;
 import cloudflight.integra.backend.proposal.ProposalType;
 import cloudflight.integra.backend.proposal.Status;
 import cloudflight.integra.backend.restaurant.DBRestaurantRepository;
 import cloudflight.integra.backend.restaurant.Restaurant;
-import cloudflight.integra.backend.user.DBUserRepository;
 import cloudflight.integra.backend.user.Role;
 import cloudflight.integra.backend.user.User;
+import cloudflight.integra.backend.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,13 +29,13 @@ import org.mockito.MockitoAnnotations;
 class AdminProposalServiceTest {
 
     @Mock
-    private DBProposalRepository proposalRepository;
+    private ProposalRepository proposalRepository;
 
     @Mock
-    private DBUserRepository userRepository;
+    private UserRepository userRepository;
 
     @Mock
-    private DBPOIRepository poiRepository;
+    private POIRepository poiRepository;
 
     @Mock
     private DBRestaurantRepository restaurantRepository;

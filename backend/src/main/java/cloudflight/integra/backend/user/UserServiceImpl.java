@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserDetailsService, UserService {
-    private final DBUserRepository repository;
+    private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(DBUserRepository repository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }

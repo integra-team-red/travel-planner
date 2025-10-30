@@ -43,7 +43,7 @@ public class CityController {
     @GetMapping()
     public ResponseEntity<List<CityDTO>> getCities() {
         List<CityDTO> cities =
-                service.getAllCities().stream().map(CityMapper::CityToDTO).collect(Collectors.toList());
+                service.getAllCities().stream().map(CityMapper::entityToDTO).collect(Collectors.toList());
         return ResponseEntity.ok(cities);
     }
 
@@ -61,8 +61,8 @@ public class CityController {
             })
     @PostMapping()
     public ResponseEntity<CityDTO> addCity(@RequestBody CityDTO cityDTO) {
-        City savedCity = service.addCity(CityMapper.CityToEntity(cityDTO));
-        return ResponseEntity.ok(CityMapper.CityToDTO(savedCity));
+        City savedCity = service.addCity(CityMapper.DTOtoEntity(cityDTO));
+        return ResponseEntity.ok(CityMapper.entityToDTO(savedCity));
     }
 
     @Operation(
@@ -91,8 +91,8 @@ public class CityController {
             })
     @PutMapping(value = "/{id}")
     public ResponseEntity<CityDTO> updateCity(@PathVariable Long id, @RequestBody CityDTO newCityDTO) {
-        City updatedCity = service.updateCity(id, CityMapper.CityToEntity(newCityDTO));
-        return ResponseEntity.ok(CityMapper.CityToDTO(updatedCity));
+        City updatedCity = service.updateCity(id, CityMapper.DTOtoEntity(newCityDTO));
+        return ResponseEntity.ok(CityMapper.entityToDTO(updatedCity));
     }
 
     @Operation(
@@ -116,7 +116,7 @@ public class CityController {
         final var jsonMapper = new ObjectMapper();
         final var outputStream = new StringWriter();
 
-        jsonMapper.writeValue(outputStream, CityMapper.EntityListToDTOList(service.getAllCities()));
+        jsonMapper.writeValue(outputStream, CityMapper.entityListToDTOList(service.getAllCities()));
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Disposition", "attachment; filename=\"ApprovedCities.json\"")
                 .contentLength(outputStream.getBuffer().length())
@@ -141,7 +141,7 @@ public class CityController {
             })
     @PostMapping(value = "/upload")
     public ResponseEntity<List<CityDTO>> importApprovedCitiesFromJson(@RequestBody List<CityDTO> cities) {
-        service.addCities(cities.stream().map(CityMapper::CityToEntity).toList());
-        return ResponseEntity.ok(CityMapper.EntityListToDTOList(service.getAllCities()));
+        service.addCities(cities.stream().map(CityMapper::DTOtoEntity).toList());
+        return ResponseEntity.ok(CityMapper.entityListToDTOList(service.getAllCities()));
     }
 }

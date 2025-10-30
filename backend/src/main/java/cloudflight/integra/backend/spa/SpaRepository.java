@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DBSpaRepository extends JpaRepository<Spa, Long> {
+public interface SpaRepository extends JpaRepository<Spa, Long> {
     List<Spa> findByCity_Id(Long cityId);
 }

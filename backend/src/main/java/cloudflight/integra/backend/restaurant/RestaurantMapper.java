@@ -4,7 +4,7 @@ import cloudflight.integra.backend.city.City;
 import java.util.List;
 
 public class RestaurantMapper {
-    public static RestaurantDTO RestaurantToDTO(Restaurant restaurant) {
+    public static RestaurantDTO entityToDTO(Restaurant restaurant) {
         return new RestaurantDTO(
                 restaurant.getId(),
                 restaurant.getName(),
@@ -13,7 +13,7 @@ public class RestaurantMapper {
                 restaurant.getCuisineType());
     }
 
-    public static Restaurant RestaurantToEntity(RestaurantDTO restaurant_dto, City city) {
+    public static Restaurant DTOtoEntity(RestaurantDTO restaurant_dto, City city) {
         Restaurant restaurant = new Restaurant()
                 .setId(restaurant_dto.id())
                 .setName(restaurant_dto.name())
@@ -23,7 +23,7 @@ public class RestaurantMapper {
         return restaurant;
     }
 
-    public static List<RestaurantDTO> EntityListToDTOList(List<Restaurant> restaurants) {
-        return restaurants.stream().map(RestaurantMapper::RestaurantToDTO).toList();
+    public static List<RestaurantDTO> entityListToDTOList(List<Restaurant> restaurants) {
+        return restaurants.stream().map(RestaurantMapper::entityToDTO).toList();
     }
 }

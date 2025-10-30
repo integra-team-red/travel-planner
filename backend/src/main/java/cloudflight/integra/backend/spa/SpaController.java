@@ -42,7 +42,7 @@ public class SpaController {
     @GetMapping
     public ResponseEntity<List<SpaDTO>> getSpas() {
         List<SpaDTO> spas =
-                service.getAllSpas().stream().map(SpaMapper::SpaToDTO).collect(Collectors.toList());
+                service.getAllSpas().stream().map(SpaMapper::entityToDTO).collect(Collectors.toList());
         return ResponseEntity.ok(spas);
     }
 
@@ -62,8 +62,8 @@ public class SpaController {
     @PostMapping
     public ResponseEntity<SpaDTO> addSpa(@RequestBody SpaDTO spaDTO) {
         City city = cityService.getCity(spaDTO.cityId());
-        Spa savedSpa = service.addSpa(SpaMapper.SpaToEntity(spaDTO, city));
-        return ResponseEntity.ok(SpaMapper.SpaToDTO(savedSpa));
+        Spa savedSpa = service.addSpa(SpaMapper.DTOtoEntity(spaDTO, city));
+        return ResponseEntity.ok(SpaMapper.entityToDTO(savedSpa));
     }
 
     @Operation(
@@ -94,7 +94,7 @@ public class SpaController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<SpaDTO> updateSpa(@PathVariable Long id, @RequestBody SpaDTO newSpaDTO) {
         City city = cityService.getCity(newSpaDTO.cityId());
-        Spa updatedSpa = service.updateSpa(id, SpaMapper.SpaToEntity(newSpaDTO, city));
-        return ResponseEntity.ok(SpaMapper.SpaToDTO(updatedSpa));
+        Spa updatedSpa = service.updateSpa(id, SpaMapper.DTOtoEntity(newSpaDTO, city));
+        return ResponseEntity.ok(SpaMapper.entityToDTO(updatedSpa));
     }
 }
