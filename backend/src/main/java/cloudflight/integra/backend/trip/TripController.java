@@ -147,13 +147,32 @@ public class TripController {
         return ResponseEntity.ok(result);
     }
 
+    @Operation(
+            summary = "generate an itinerary",
+            responses = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "itinerary generated successfully",
+                        content =
+                                @Content(
+                                        mediaType = "application/json",
+                                        schema = @Schema(implementation = ItineraryDTO.class))),
+                @ApiResponse(responseCode = "404", description = "user id or city not found", content = @Content),
+                @ApiResponse(
+                        responseCode = "406",
+                        description = "minimum cost exceeds budget",
+                        content =
+                                @Content(
+                                        mediaType = "application/json",
+                                        schema = @Schema(implementation = ItineraryDTO.class)))
+            })
     @PostMapping("/generate")
-    public ResponseEntity<ItineraryDTO> generateItinerary(@RequestBody TripDTO tripDTO){
+    public ResponseEntity<ItineraryDTO> generateItinerary(@RequestBody TripDTO tripDTO) {
         User user = userRepository
                 .findById(tripDTO.userId())
                 .orElseThrow(() -> new RuntimeException("user not found with id: " + tripDTO.userId()));
         City city = cityService.getCity(tripDTO.cityId());
-        Trip trip = TripMapper.TripToEntity(tripDTO, user, city);
+        Trip trip = TripMapper.DTOtoEntity(tripDTO, user, city);
         Itinerary itinerary = service.generateItinerary(trip);
         ItineraryDTO itineraryDTO = ItineraryMapper.ItineraryToDTO(itinerary);
 

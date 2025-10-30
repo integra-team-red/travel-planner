@@ -5,5 +5,4 @@ public record DailyItineraryDTO(
         Long coffeeShopId,
         Object morningActivity,
         Object afternoonActivity,
-        Object eveningActivity
-) {}
+        Object eveningActivity) {}

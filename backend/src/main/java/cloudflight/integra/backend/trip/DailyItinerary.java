@@ -10,7 +10,12 @@ public class DailyItinerary {
     Object afternoonActivity;
     Object eveningActivity;
 
-    public DailyItinerary(Restaurant restaurant, CoffeeShop coffeeShop, Object morningActivity, Object afternoonActivity, Object eveningActivity) {
+    public DailyItinerary(
+            Restaurant restaurant,
+            CoffeeShop coffeeShop,
+            Object morningActivity,
+            Object afternoonActivity,
+            Object eveningActivity) {
         this.restaurant = restaurant;
         this.coffeeShop = coffeeShop;
         this.morningActivity = morningActivity;
