@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 @ExtendWith(MockitoExtension.class)
 public class ServiceTests {
     @Mock
-    DBRestaurantRepository repository;
+    RestaurantRepository repository;
 
     @Mock
     Pageable pageable;

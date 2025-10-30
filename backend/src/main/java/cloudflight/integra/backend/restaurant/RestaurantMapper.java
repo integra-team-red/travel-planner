@@ -9,17 +9,27 @@ public class RestaurantMapper {
                 restaurant.getId(),
                 restaurant.getName(),
                 restaurant.getCityId(),
+                restaurant.getAddress(),
+                restaurant.getOpeningHours(),
+                restaurant.getDescription(),
                 restaurant.getAveragePrice(),
-                restaurant.getCuisineType());
+                restaurant.getCuisineType(),
+                restaurant.getRating(),
+                restaurant.getImage());
     }
 
     public static Restaurant DTOtoEntity(RestaurantDTO restaurant_dto, City city) {
-        Restaurant restaurant = new Restaurant()
-                .setId(restaurant_dto.id())
-                .setName(restaurant_dto.name())
-                .setAveragePrice(restaurant_dto.averagePrice())
-                .setCuisineType(restaurant_dto.cuisineType())
-                .setCity(city);
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId(null);
+        restaurant.setName(restaurant_dto.name());
+        restaurant.setCity(city);
+        restaurant.setAddress(restaurant_dto.address());
+        restaurant.setOpeningHours(restaurant_dto.openingHours());
+        restaurant.setDescription(restaurant_dto.description());
+        restaurant.setAveragePrice(restaurant_dto.averagePrice());
+        restaurant.setCuisineType(restaurant_dto.cuisineType());
+        restaurant.setRating(restaurant_dto.rating());
+        restaurant.setImage(restaurant_dto.image());
         return restaurant;
     }
 
