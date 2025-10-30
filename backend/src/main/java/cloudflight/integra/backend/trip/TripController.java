@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ public class TripController {
     public ResponseEntity<TripDTO> addTrip(@RequestBody TripDTO tripDTO) {
         User user = userRepository
                 .findById(tripDTO.userId())
-                .orElseThrow(() -> new RuntimeException("user not found with id: " + tripDTO.userId()));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + tripDTO.userId()));
 
         City city = cityService.getCity(tripDTO.cityId());
         Trip savedTrip = service.addTrip(TripMapper.DTOtoEntity(tripDTO, user, city));
@@ -101,7 +102,7 @@ public class TripController {
     public ResponseEntity<TripDTO> updateTrip(@PathVariable Long id, @RequestBody TripDTO newTripDTO) {
         User user = userRepository
                 .findById(newTripDTO.userId())
-                .orElseThrow(() -> new RuntimeException("user not found with id: " + newTripDTO.userId()));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + newTripDTO.userId()));
 
         City city = cityService.getCity(newTripDTO.cityId());
         Trip updatedTrip = service.updateTrip(id, TripMapper.DTOtoEntity(newTripDTO, user, city));
@@ -127,11 +128,11 @@ public class TripController {
     }
 
     @Operation(
-            summary = "get all pois, restaurants, coffee shops, and spas for a specific cityId by ID",
+            summary = "get all pois, restaurants, coffee shops, and spas for a specific city by ID",
             responses = {
                 @ApiResponse(
                         responseCode = "200",
-                        description = "cityId attractions returned successfully",
+                        description = "city attractions returned successfully",
                         content = @Content(mediaType = "application/json")),
                 @ApiResponse(responseCode = "404", description = "no attractions found", content = @Content)
             })

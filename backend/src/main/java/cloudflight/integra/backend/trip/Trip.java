@@ -3,6 +3,7 @@ package cloudflight.integra.backend.trip;
 import cloudflight.integra.backend.city.City;
 import cloudflight.integra.backend.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "trips")
@@ -12,17 +13,17 @@ public class Trip {
     @Column(columnDefinition = "serial")
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    @Column(nullable = false)
+    @NotNull
     private int days;
 
-    @Column(nullable = false)
+    @NotNull
     private float price;
 
     @ManyToOne(fetch = FetchType.LAZY)
