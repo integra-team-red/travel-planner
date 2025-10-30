@@ -1,5 +1,7 @@
 package cloudflight.integra.backend.trip;
 
+import cloudflight.integra.backend.city.City;
+import cloudflight.integra.backend.city.CityService;
 import cloudflight.integra.backend.user.User;
 import cloudflight.integra.backend.user.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,11 +24,13 @@ public class TripController {
 
     private final TripService service;
     private final UserRepository userRepository;
+    private final CityService cityService;
 
     @Autowired
-    public TripController(TripService service, UserRepository userRepository) {
+    public TripController(TripService service, UserRepository userRepository, CityService cityService) {
         this.service = service;
         this.userRepository = userRepository;
+        this.cityService = cityService;
     }
 
     @Operation(
@@ -64,7 +68,8 @@ public class TripController {
                 .findById(tripDTO.userId())
                 .orElseThrow(() -> new RuntimeException("user not found with id: " + tripDTO.userId()));
 
-        Trip savedTrip = service.addTrip(TripMapper.DTOtoEntity(tripDTO, user));
+        City city = cityService.getCity(tripDTO.cityId());
+        Trip savedTrip = service.addTrip(TripMapper.DTOtoEntity(tripDTO, user, city));
         return ResponseEntity.ok(TripMapper.entityToDTO(savedTrip));
     }
 
@@ -98,7 +103,8 @@ public class TripController {
                 .findById(newTripDTO.userId())
                 .orElseThrow(() -> new RuntimeException("user not found with id: " + newTripDTO.userId()));
 
-        Trip updatedTrip = service.updateTrip(id, TripMapper.DTOtoEntity(newTripDTO, user));
+        City city = cityService.getCity(newTripDTO.cityId());
+        Trip updatedTrip = service.updateTrip(id, TripMapper.DTOtoEntity(newTripDTO, user, city));
         return ResponseEntity.ok(TripMapper.entityToDTO(updatedTrip));
     }
 
@@ -121,11 +127,11 @@ public class TripController {
     }
 
     @Operation(
-            summary = "get all pois, restaurants, coffee shops, and spas for a specific city by ID",
+            summary = "get all pois, restaurants, coffee shops, and spas for a specific cityId by ID",
             responses = {
                 @ApiResponse(
                         responseCode = "200",
-                        description = "city attractions returned successfully",
+                        description = "cityId attractions returned successfully",
                         content = @Content(mediaType = "application/json")),
                 @ApiResponse(responseCode = "404", description = "no attractions found", content = @Content)
             })
@@ -139,5 +145,18 @@ public class TripController {
         }
 
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/generate")
+    public ResponseEntity<ItineraryDTO> generateItinerary(@RequestBody TripDTO tripDTO){
+        User user = userRepository
+                .findById(tripDTO.userId())
+                .orElseThrow(() -> new RuntimeException("user not found with id: " + tripDTO.userId()));
+        City city = cityService.getCity(tripDTO.cityId());
+        Trip trip = TripMapper.TripToEntity(tripDTO, user, city);
+        Itinerary itinerary = service.generateItinerary(trip);
+        ItineraryDTO itineraryDTO = ItineraryMapper.ItineraryToDTO(itinerary);
+
+        return ResponseEntity.ok(itineraryDTO);
     }
 }

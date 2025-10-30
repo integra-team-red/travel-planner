@@ -1,14 +1,17 @@
 package cloudflight.integra.backend.trip;
 
+import cloudflight.integra.backend.coffeeShop.CoffeeShop;
 import cloudflight.integra.backend.coffeeShop.CoffeeShopRepository;
 import cloudflight.integra.backend.poi.POIRepository;
+import cloudflight.integra.backend.poi.POI;
 import cloudflight.integra.backend.restaurant.DBRestaurantRepository;
+import cloudflight.integra.backend.restaurant.Restaurant;
 import cloudflight.integra.backend.spa.SpaRepository;
 import cloudflight.integra.backend.user.User;
 import cloudflight.integra.backend.user.UserRepository;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -91,5 +94,25 @@ public class TripServiceImpl implements TripService {
         result.put("coffeeShops", coffeeShopRepository.findByCity_Id(cityId));
         result.put("spas", spaRepository.findByCity_Id(cityId));
         return result;
+    }
+
+    @Override
+    public Itinerary generateItinerary(Trip trip) {
+        List<Restaurant> restaurants = restaurantRepository.findByCity_Id(trip.getCity().getId());
+        List<CoffeeShop> coffeeShops = coffeeShopRepository.findByCity_Id(trip.getCity().getId());
+        List<POI> pois = poiRepository.findByCity_Id(trip.getCity().getId());
+        List<DailyItinerary> itineraries = new ArrayList<>();
+        Random random = new Random();
+
+        for (int day = 0; day < trip.getDays(); day++) {
+            itineraries.add(new DailyItinerary(
+                    restaurants.get(random.nextInt(restaurants.size())),
+                    coffeeShops.get(random.nextInt(coffeeShops.size())),
+                    pois.get(random.nextInt(restaurants.size())),
+                    pois.get(random.nextInt(restaurants.size())),
+                    pois.get(random.nextInt(restaurants.size()))
+            ));
+        }
+        return new Itinerary(itineraries);
     }
 }
