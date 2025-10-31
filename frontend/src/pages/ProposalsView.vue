@@ -55,20 +55,28 @@ function formResolver({values}: FormResolverOptions) {
 
 function sendProposalCreationRequest(proposal: ProposalDTO) {
     proposalApi.addProposal({proposalDTO: proposal})
-        .then(() => {
+        .then((createdProposal) => {
             showToast("success", t('proposals.add.success'), toast);
-            fetchProposals();
+            if (proposals.value) {
+                proposals.value.push(createdProposal);
+            } else {
+                proposals.value = [createdProposal];
+            }
         })
         .catch(() => {
             showToast("error", t('proposals.add.failure'), toast);
         });
 }
 
+
 function sendProposalUpdateRequest(proposal: ProposalDTO, updatedProposal: ProposalDTO) {
     proposalApi.updateProposal({id: updatedProposal.id!, proposalDTO: proposal})
-        .then(() => {
+        .then((savedProposal) => {
             showToast("success", t('proposals.update.success'), toast);
-            fetchProposals();
+            const index = proposals.value?.findIndex(p => p.id === updatedProposal.id);
+            if (index !== undefined && index !== -1 && proposals.value) {
+                proposals.value[index] = savedProposal;
+            }
             clearSelection();
         })
         .catch(() => {
@@ -76,12 +84,26 @@ function sendProposalUpdateRequest(proposal: ProposalDTO, updatedProposal: Propo
         });
 }
 
+
 function onFormSubmit({values, valid}: FormSubmitEvent) {
     if (!valid) {
         return;
     }
     values.type = selectedType.value;
-    const proposal: ProposalDTO = {cityId: values.city.id, poiType: values.pointOfInterestType, ...values};
+    const proposal: ProposalDTO = {
+        id: undefined,
+        name: values.name?.trim(),
+        type: selectedType.value as ProposalDTOTypeEnum,
+        cityId: (values.city as CityDTO)?.id,
+        poiType: values.pointOfInterestType as ProposalDTOPoiTypeEnum,
+        description: values.description ?? undefined,
+        address: values.address ?? undefined,
+        price: values.price ? Number(values.price) : undefined,
+        averagePrice: values.averagePrice ? Number(values.averagePrice) : undefined,
+        cuisineType: values.cuisineType ?? undefined,
+        image: values.image ?? undefined,
+    };
+
     const lastPendingProposal: ProposalDTO | undefined = getLastSelectedPendingProposal();
     if (lastPendingProposal) {
         sendProposalUpdateRequest(proposal, lastPendingProposal)
@@ -103,8 +125,8 @@ function getPoiFields() {
         new FormFieldBuilder('Price').isNaturalNumber(t('formFieldError.fieldType')).build(),
         new FormFieldBuilder('Point Of Interest Type').required(t('formFieldError.fieldRequired')).build(),
         new FormFieldBuilder('Image').build(),
-        new FormFieldBuilder('Address').build(),
-        new FormFieldBuilder('Description').build()
+        new FormFieldBuilder('Address').required(t('formFieldError.fieldRequired')).build(),
+        new FormFieldBuilder('Description').required(t('formFieldError.fieldRequired')).build()
     ];
 }
 
@@ -120,7 +142,6 @@ function changeAdditionalFields(value?: string) {
             additionalFields.value = [];
         }
     }
-    ++formKey.value;
 }
 
 function getLastSelectedPendingProposal(): ProposalDTO | undefined {
@@ -128,7 +149,7 @@ function getLastSelectedPendingProposal(): ProposalDTO | undefined {
 }
 
 function resetForm() {
-    Object.keys(initialValues).forEach((key: string) => delete initialValues.value[key]);
+    Object.keys(initialValues.value).forEach((key: string) => delete initialValues.value[key]);
     selectedType.value = undefined;
     changeAdditionalFields();
 }
@@ -136,65 +157,72 @@ function resetForm() {
 function overwriteFormData(proposal: ProposalDTO) {
     resetForm();
     changeAdditionalFields(proposal.type);
-    initialValues.value.name = proposal.name;
-    initialValues.value.type = proposal.type;
+    initialValues.value = {
+        name: proposal.name,
+        type: proposal.type,
+        city: cities.find(city => city.id === proposal.cityId),
+        description: proposal.description,
+        address: proposal.address,
+        price: proposal.price,
+        averagePrice: proposal.averagePrice,
+        cuisineType: proposal.cuisineType,
+        pointOfInterestType: proposal.poiType,
+        image: proposal.image
+    };
     selectedType.value = proposal.type as ProposalDTOPoiTypeEnum;
-    initialValues.value.city = cities.find(city => city.id == proposal.cityId)!;
-    for (const field of additionalFields.value) {
-        const camelCasedFieldName = toCamelCase(field.name);
-        // @ts-expect-error -- might just be anything here
-        initialValues[camelCasedFieldName] = proposal[camelCasedFieldName == 'pointOfInterestType' ? 'poiType' : camelCasedFieldName as keyof ProposalDTO];
-    }
+    formKey.value++;
 }
+
 
 function onCardClick(proposal: ProposalDTO) {
-    const proposalIndex = selectedProposals.value.findIndex(prop => prop.id == proposal.id);
-    if (proposalIndex >= 0) {
-        selectedProposals.value.splice(proposalIndex, 1);
-        if (proposalIndex == selectedProposals.value.length) {
-            const lastProposal = getLastSelectedPendingProposal();
-            if (lastProposal) {
-                overwriteFormData(lastProposal);
-            }
-            else {
-                resetForm();
-            }
-        }
+    if (selectedProposals.value.find(p => p.id === proposal.id)) {
+        selectedProposals.value = selectedProposals.value.filter(p => p.id !== proposal.id);
+        resetForm();
+        return;
     }
-    else {
-        selectedProposals.value.push(proposal);
-        if (proposal.status == 'PENDING') {
-            overwriteFormData(proposal);
-        }
-    }
+    selectedProposals.value = [proposal];
+    overwriteFormData(proposal);
 }
 
+
 function clearSelection() {
-    resetForm();
-    selectedProposals.value = [];
+    initialValues.value = {};
+    selectedType.value = undefined;
+    changeAdditionalFields();
+    formKey.value++;
 }
 
 async function deleteSelection() {
-    for (const proposal of selectedProposals.value) {
-        if (proposal.status == 'APPROVED') {
-            showToast("error", t('proposals.delete.failure.generic') + t('proposals.delete.failure.disallowApproved'), toast);
-            return;
-        }
+    if (selectedProposals.value.some(p => p.status === 'APPROVED')) {
+        showToast("error", t('proposals.delete.failure.generic') + t('proposals.delete.failure.disallowApproved'), toast);
+        return;
+    }
 
-    }
     let errorOccurred = false;
+
     for (const proposal of selectedProposals.value) {
-        await proposalApi.deleteProposal({id: proposal.id!})
-            .catch(() => errorOccurred = true);
-        if (errorOccurred) {
-            showToast("error", t('proposals.delete.failure.generic'), toast);
-            return;
+        try {
+            await proposalApi.deleteProposal({ id: proposal.id! });
+        } catch (e) {
+            console.error("Delete failed for proposal:", proposal.id, e);
+            errorOccurred = true;
         }
     }
-    showToast("success", t('proposals.delete.success'), toast);
+
+    proposals.value = proposals.value?.filter(
+        (p) => !selectedProposals.value.some(sel => sel.id === p.id)
+    );
+
+    if (errorOccurred) {
+        showToast("warn", t('proposals.delete.partial'), toast);
+    } else {
+        showToast("success", t('proposals.delete.success'), toast);
+    }
+
     clearSelection();
-    fetchProposals();
 }
+
+
 
 </script>
 
@@ -216,7 +244,7 @@ async function deleteSelection() {
             <h2 v-else class="text-3xl">
                 {{t('proposals.crudHeader.update')}}
             </h2>
-            <Form :initialValues :key="formKey" v-slot="$form" :resolver="formResolver" @submit="onFormSubmit" class="flex flex-col gap-4">
+            <Form :initialValues="initialValues" :key="formKey" v-slot="$form" :resolver="formResolver" @submit="onFormSubmit" class="flex flex-col gap-4">
                 <InputText :placeholder="t('fields.name')" name="name" maxlength="30" fluid />
                 <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">
                     {{ $form.name.error.message }}
@@ -242,7 +270,6 @@ async function deleteSelection() {
                 </div>
 
                 <div class="flex justify-between gap-2">
-                    <Button severity="secondary" @click="resetForm" :label="t('clear')" fluid/>
                     <Button type="submit" severity="success" :label="t('confirm')" fluid/>
                 </div>
             </Form>
