@@ -55,26 +55,35 @@ function formResolver({values}: FormResolverOptions) {
 
 function sendProposalCreationRequest(proposal: ProposalDTO) {
     proposalApi.addProposal({proposalDTO: proposal})
-        .then(() => {
+        .then((createdProposal) => {
             showToast("success", t('proposals.add.success'), toast);
-            fetchProposals();
+            if (proposals.value) {
+                proposals.value.push(createdProposal);
+            } else {
+                proposals.value = [createdProposal];
+            }
         })
         .catch(() => {
             showToast("error", t('proposals.add.failure'), toast);
         });
 }
 
+
 function sendProposalUpdateRequest(proposal: ProposalDTO, updatedProposal: ProposalDTO) {
     proposalApi.updateProposal({id: updatedProposal.id!, proposalDTO: proposal})
-        .then(() => {
+        .then((savedProposal) => {
             showToast("success", t('proposals.update.success'), toast);
-            fetchProposals();
+            const index = proposals.value?.findIndex(p => p.id === updatedProposal.id);
+            if (index !== undefined && index !== -1 && proposals.value) {
+                proposals.value[index] = savedProposal;
+            }
             clearSelection();
         })
         .catch(() => {
             showToast("error", t('proposals.update.failure.generic'), toast);
         });
 }
+
 
 function onFormSubmit({values, valid}: FormSubmitEvent) {
     if (!valid) {
@@ -116,8 +125,8 @@ function getPoiFields() {
         new FormFieldBuilder('Price').isNaturalNumber(t('formFieldError.fieldType')).build(),
         new FormFieldBuilder('Point Of Interest Type').required(t('formFieldError.fieldRequired')).build(),
         new FormFieldBuilder('Image').build(),
-        new FormFieldBuilder('Address').build(),
-        new FormFieldBuilder('Description').build()
+        new FormFieldBuilder('Address').required(t('formFieldError.fieldRequired')).build(),
+        new FormFieldBuilder('Description').required(t('formFieldError.fieldRequired')).build()
     ];
 }
 
@@ -184,26 +193,36 @@ function clearSelection() {
 }
 
 async function deleteSelection() {
-    for (const proposal of selectedProposals.value) {
-        if (proposal.status == 'APPROVED') {
-            showToast("error", t('proposals.delete.failure.generic') + t('proposals.delete.failure.disallowApproved'), toast);
-            return;
-        }
+    if (selectedProposals.value.some(p => p.status === 'APPROVED')) {
+        showToast("error", t('proposals.delete.failure.generic') + t('proposals.delete.failure.disallowApproved'), toast);
+        return;
+    }
 
-    }
     let errorOccurred = false;
+
     for (const proposal of selectedProposals.value) {
-        await proposalApi.deleteProposal({id: proposal.id!})
-            .catch(() => errorOccurred = true);
-        if (errorOccurred) {
-            showToast("error", t('proposals.delete.failure.generic'), toast);
-            return;
+        try {
+            await proposalApi.deleteProposal({ id: proposal.id! });
+        } catch (e) {
+            console.error("Delete failed for proposal:", proposal.id, e);
+            errorOccurred = true;
         }
     }
-    showToast("success", t('proposals.delete.success'), toast);
+
+    proposals.value = proposals.value?.filter(
+        (p) => !selectedProposals.value.some(sel => sel.id === p.id)
+    );
+
+    if (errorOccurred) {
+        showToast("warn", t('proposals.delete.partial'), toast);
+    } else {
+        showToast("success", t('proposals.delete.success'), toast);
+    }
+
     clearSelection();
-    fetchProposals();
 }
+
+
 
 </script>
 
