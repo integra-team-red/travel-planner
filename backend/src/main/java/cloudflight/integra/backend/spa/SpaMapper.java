@@ -3,7 +3,7 @@ package cloudflight.integra.backend.spa;
 import cloudflight.integra.backend.city.City;
 
 public class SpaMapper {
-    public static SpaDTO SpaToDTO(Spa spa) {
+    public static SpaDTO entityToDTO(Spa spa) {
         return new SpaDTO(
                 spa.getId(),
                 spa.getName(),
@@ -15,7 +15,7 @@ public class SpaMapper {
                 spa.getDescription());
     }
 
-    public static Spa SpaToEntity(SpaDTO spaDTO, City city) {
+    public static Spa DTOtoEntity(SpaDTO spaDTO, City city) {
         return new Spa()
                 .setId(spaDTO.id())
                 .setName(spaDTO.name())

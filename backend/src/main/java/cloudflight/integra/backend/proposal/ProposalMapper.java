@@ -3,7 +3,7 @@ package cloudflight.integra.backend.proposal;
 import cloudflight.integra.backend.city.City;
 
 public class ProposalMapper {
-    public static ProposalDTO ProposalToDTO(Proposal proposal) {
+    public static ProposalDTO entityToDTO(Proposal proposal) {
         return new ProposalDTO(
                 proposal.getId(),
                 proposal.getName(),
@@ -19,7 +19,7 @@ public class ProposalMapper {
                 proposal.getImage());
     }
 
-    public static Proposal ProposalToEntity(ProposalDTO dto) {
+    public static Proposal DTOtoEntity(ProposalDTO dto) {
         Proposal proposal = new Proposal();
         proposal.setId(dto.id());
         proposal.setName(dto.name());

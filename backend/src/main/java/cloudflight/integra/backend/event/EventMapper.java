@@ -4,7 +4,7 @@ import cloudflight.integra.backend.poi.POI;
 import java.util.List;
 
 public class EventMapper {
-    public static EventDTO EntityToDTO(Event event) {
+    public static EventDTO entityToDTO(Event event) {
         return new EventDTO(
                 event.getId(),
                 event.getName(),
@@ -16,7 +16,7 @@ public class EventMapper {
                 event.getAudience() != null ? event.getAudience().name() : null);
     }
 
-    public static Event DTOToEntity(EventDTO dto, POI poi) {
+    public static Event DTOtoEntity(EventDTO dto, POI poi) {
         Event event = new Event();
         event.setId(null);
         event.setName(dto.name());
@@ -29,7 +29,7 @@ public class EventMapper {
         return event;
     }
 
-    public static List<EventDTO> EntityListToDTOList(List<Event> events) {
-        return events.stream().map(EventMapper::EntityToDTO).toList();
+    public static List<EventDTO> entityListToDTOList(List<Event> events) {
+        return events.stream().map(EventMapper::entityToDTO).toList();
     }
 }

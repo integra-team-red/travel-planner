@@ -19,4 +19,6 @@ public interface TripService {
     List<Trip> getTripsByUser(Long userId);
 
     Map<String, List<?>> getAttractionsCityId(Long cityId);
+
+    Itinerary generateItinerary(Trip trip);
 }

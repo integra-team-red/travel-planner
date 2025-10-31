@@ -38,8 +38,8 @@ public class ProposalController {
             })
     @PostMapping
     public ResponseEntity<ProposalDTO> addProposal(@RequestBody ProposalDTO proposalDTO) {
-        Proposal savedProposal = service.addProposal(ProposalMapper.ProposalToEntity(proposalDTO));
-        return ResponseEntity.ok(ProposalMapper.ProposalToDTO(savedProposal));
+        Proposal savedProposal = service.addProposal(ProposalMapper.DTOtoEntity(proposalDTO));
+        return ResponseEntity.ok(ProposalMapper.entityToDTO(savedProposal));
     }
 
     @Operation(
@@ -56,7 +56,7 @@ public class ProposalController {
     @GetMapping
     public ResponseEntity<List<ProposalDTO>> getProposals() {
         List<ProposalDTO> proposals = service.getAllProposals().stream()
-                .map(ProposalMapper::ProposalToDTO)
+                .map(ProposalMapper::entityToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(proposals);
     }
@@ -75,7 +75,7 @@ public class ProposalController {
             })
     @GetMapping("/{id}")
     public ResponseEntity<ProposalDTO> getProposalById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(ProposalMapper.ProposalToDTO(service.getProposal(id)));
+        return ResponseEntity.ok(ProposalMapper.entityToDTO(service.getProposal(id)));
     }
 
     @Operation(
@@ -93,8 +93,8 @@ public class ProposalController {
             })
     @PutMapping("/{id}")
     public ResponseEntity<ProposalDTO> updateProposal(@PathVariable Long id, @RequestBody ProposalDTO newProposalDTO) {
-        Proposal updatedProposal = service.updateProposal(id, ProposalMapper.ProposalToEntity(newProposalDTO));
-        return ResponseEntity.ok(ProposalMapper.ProposalToDTO(updatedProposal));
+        Proposal updatedProposal = service.updateProposal(id, ProposalMapper.DTOtoEntity(newProposalDTO));
+        return ResponseEntity.ok(ProposalMapper.entityToDTO(updatedProposal));
     }
 
     @Operation(

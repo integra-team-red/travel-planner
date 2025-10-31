@@ -43,7 +43,7 @@ public class EventController {
     @GetMapping
     public ResponseEntity<List<EventDTO>> getEvents() {
         List<EventDTO> events =
-                service.getAllEvents().stream().map(EventMapper::EntityToDTO).collect(Collectors.toList());
+                service.getAllEvents().stream().map(EventMapper::entityToDTO).collect(Collectors.toList());
         return ResponseEntity.ok(events);
     }
 
@@ -63,8 +63,8 @@ public class EventController {
     @PostMapping
     public ResponseEntity<EventDTO> addEvent(@RequestBody EventDTO eventDTO) {
         POI poi = poiService.getPointOfInterest(eventDTO.poiId());
-        Event savedEvent = service.addEvent(EventMapper.DTOToEntity(eventDTO, poi));
-        return ResponseEntity.ok(EventMapper.EntityToDTO(savedEvent));
+        Event savedEvent = service.addEvent(EventMapper.DTOtoEntity(eventDTO, poi));
+        return ResponseEntity.ok(EventMapper.entityToDTO(savedEvent));
     }
 
     @Operation(
@@ -95,8 +95,8 @@ public class EventController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<EventDTO> updateEvent(@PathVariable Long id, @RequestBody EventDTO newEventDTO) {
         POI poi = poiService.getPointOfInterest(newEventDTO.poiId());
-        Event updatedEvent = service.updateEvent(id, EventMapper.DTOToEntity(newEventDTO, poi));
-        return ResponseEntity.ok(EventMapper.EntityToDTO(updatedEvent));
+        Event updatedEvent = service.updateEvent(id, EventMapper.DTOtoEntity(newEventDTO, poi));
+        return ResponseEntity.ok(EventMapper.entityToDTO(updatedEvent));
     }
 
     @Operation(
@@ -130,7 +130,7 @@ public class EventController {
     @GetMapping(value = "/sortedByName")
     public ResponseEntity<List<EventDTO>> getAllEventsSortedByName(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        return ResponseEntity.ok(EventMapper.EntityListToDTOList(
+        return ResponseEntity.ok(EventMapper.entityListToDTOList(
                 isDescending.isPresent()
                         ? service.getAllEventsSortedByName(pageNumber, pageSize, isDescending.get())
                         : service.getAllEventsSortedByName(pageNumber, pageSize, false)));
@@ -151,7 +151,7 @@ public class EventController {
     @GetMapping(value = "/sortedByPrice")
     public ResponseEntity<List<EventDTO>> getAllEventsSortedByPrice(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        return ResponseEntity.ok(EventMapper.EntityListToDTOList(
+        return ResponseEntity.ok(EventMapper.entityListToDTOList(
                 isDescending.isPresent()
                         ? service.getAllEventsSortedByPrice(pageNumber, pageSize, isDescending.get())
                         : service.getAllEventsSortedByPrice(pageNumber, pageSize, false)));
@@ -173,7 +173,7 @@ public class EventController {
     public ResponseEntity<List<EventDTO>> getAllEventsSortedByAudience(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam String audience) {
         return ResponseEntity.ok(
-                EventMapper.EntityListToDTOList(service.getAllEventsSortedByAudience(pageNumber, pageSize, audience)));
+                EventMapper.entityListToDTOList(service.getAllEventsSortedByAudience(pageNumber, pageSize, audience)));
     }
 
     @Operation(

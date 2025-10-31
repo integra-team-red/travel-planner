@@ -43,7 +43,7 @@ public class RestaurantController {
     @GetMapping
     public ResponseEntity<List<RestaurantDTO>> getRestaurants() {
         List<RestaurantDTO> restaurants = service.getAllRestaurants().stream()
-                .map(RestaurantMapper::RestaurantToDTO)
+                .map(RestaurantMapper::entityToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(restaurants);
     }
@@ -64,8 +64,8 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<RestaurantDTO> addRestaurant(@RequestBody RestaurantDTO restaurantDTO) {
         City city = cityService.getCity(restaurantDTO.cityId());
-        Restaurant savedRestaurant = service.addRestaurant(RestaurantMapper.RestaurantToEntity(restaurantDTO, city));
-        return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(savedRestaurant));
+        Restaurant savedRestaurant = service.addRestaurant(RestaurantMapper.DTOtoEntity(restaurantDTO, city));
+        return ResponseEntity.ok(RestaurantMapper.entityToDTO(savedRestaurant));
     }
 
     @Operation(
@@ -101,8 +101,8 @@ public class RestaurantController {
             @PathVariable Long id, @RequestBody RestaurantDTO newRestaurantDTO) {
         City city = cityService.getCity(newRestaurantDTO.cityId());
         Restaurant updatedRestaurant =
-                service.updateRestaurant(id, RestaurantMapper.RestaurantToEntity(newRestaurantDTO, city));
-        return ResponseEntity.ok(RestaurantMapper.RestaurantToDTO(updatedRestaurant));
+                service.updateRestaurant(id, RestaurantMapper.DTOtoEntity(newRestaurantDTO, city));
+        return ResponseEntity.ok(RestaurantMapper.entityToDTO(updatedRestaurant));
     }
 
     @Operation(
@@ -121,7 +121,7 @@ public class RestaurantController {
     @GetMapping(value = "/sortedByName")
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByName(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        return ResponseEntity.ok(RestaurantMapper.EntityListToDTOList(
+        return ResponseEntity.ok(RestaurantMapper.entityListToDTOList(
                 isDescending.isPresent()
                         ? service.getAllRestaurantsSortedByName(pageNumber, pageSize, isDescending.get())
                         : service.getAllRestaurantsSortedByName(pageNumber, pageSize, false)));
@@ -143,7 +143,7 @@ public class RestaurantController {
     @GetMapping(value = "/sortedByPrice")
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByAveragePrice(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        return ResponseEntity.ok(RestaurantMapper.EntityListToDTOList(
+        return ResponseEntity.ok(RestaurantMapper.entityListToDTOList(
                 isDescending.isPresent()
                         ? service.getAllRestaurantsSortedByAveragePrice(pageNumber, pageSize, isDescending.get())
                         : service.getAllRestaurantsSortedByAveragePrice(pageNumber, pageSize, false)));
@@ -164,7 +164,7 @@ public class RestaurantController {
     @GetMapping(value = "/sortedByCuisine")
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurantsSortedByCuisineType(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam String cuisineType) {
-        return ResponseEntity.ok(RestaurantMapper.EntityListToDTOList(
+        return ResponseEntity.ok(RestaurantMapper.entityListToDTOList(
                 service.getAllRestaurantsByCuisine(pageNumber, pageSize, cuisineType)));
     }
 }

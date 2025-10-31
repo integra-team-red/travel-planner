@@ -51,7 +51,7 @@ public class POIController {
     @GetMapping
     public ResponseEntity<List<POIDTO>> getPointsOfInterest() {
         List<POIDTO> pois = service.getAllPointsOfInterest().stream()
-                .map(POIMapper::POIToDTO)
+                .map(POIMapper::entityToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(pois);
     }
@@ -72,8 +72,8 @@ public class POIController {
     @PostMapping
     public ResponseEntity<POIDTO> addPointOfInterest(@RequestBody POIDTO poiDTO) {
         City city = cityService.getCity(poiDTO.cityId());
-        POI savedPoi = service.addPointOfInterest(POIMapper.POIToEntity(poiDTO, city));
-        return ResponseEntity.ok(POIMapper.POIToDTO(savedPoi));
+        POI savedPoi = service.addPointOfInterest(POIMapper.DTOtoEntity(poiDTO, city));
+        return ResponseEntity.ok(POIMapper.entityToDTO(savedPoi));
     }
 
     @Operation(
@@ -105,8 +105,8 @@ public class POIController {
     public ResponseEntity<POIDTO> updatePointOfInterest(
             @PathVariable Long id, @RequestBody POIDTO newPointOfInterestDTO) {
         City city = cityService.getCity(newPointOfInterestDTO.cityId());
-        POI updatedPOI = service.updatePointOfInterest(id, POIMapper.POIToEntity(newPointOfInterestDTO, city));
-        return ResponseEntity.ok(POIMapper.POIToDTO(updatedPOI));
+        POI updatedPOI = service.updatePointOfInterest(id, POIMapper.DTOtoEntity(newPointOfInterestDTO, city));
+        return ResponseEntity.ok(POIMapper.entityToDTO(updatedPOI));
     }
 
     @Operation(
@@ -148,7 +148,7 @@ public class POIController {
         final var outputStream = new StringWriter();
 
         // TODO(MC): Maybe find a **clean** way to remove the "id" field here or get mixins to work
-        jsonMapper.writeValue(outputStream, POIMapper.EntityListToDTOList(service.getAllPointsOfInterest()));
+        jsonMapper.writeValue(outputStream, POIMapper.entityListToDTOList(service.getAllPointsOfInterest()));
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Disposition", "attachment; filename=\"ApprovedPOIs.json\"")
                 .contentLength(outputStream.getBuffer().length())
@@ -177,13 +177,13 @@ public class POIController {
         List<POI> poiEntities;
         try {
             poiEntities = pois.stream()
-                    .map(poidto -> POIMapper.POIToEntity(poidto, cityService.getCity(poidto.cityId())))
+                    .map(poidto -> POIMapper.DTOtoEntity(poidto, cityService.getCity(poidto.cityId())))
                     .toList();
         } catch (EntityNotFoundException err) {
             throw new EntityNotFoundException("One or more POIs' city IDs were not found");
         }
         service.addPointsOfInterest(poiEntities);
-        return ResponseEntity.ok(POIMapper.EntityListToDTOList(service.getAllPointsOfInterest()));
+        return ResponseEntity.ok(POIMapper.entityListToDTOList(service.getAllPointsOfInterest()));
     }
 
     @Operation(
@@ -201,7 +201,7 @@ public class POIController {
     @GetMapping(value = "/sortedByName")
     public ResponseEntity<List<POIDTO>> getAllPointsOfInterestSortedByName(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        return ResponseEntity.ok(POIMapper.EntityListToDTOList(
+        return ResponseEntity.ok(POIMapper.entityListToDTOList(
                 isDescending.isPresent()
                         ? service.getAllPointsOfInterestSortedByName(pageNumber, pageSize, isDescending.get())
                         : service.getAllPointsOfInterestSortedByName(pageNumber, pageSize, false)));
@@ -222,7 +222,7 @@ public class POIController {
     @GetMapping(value = "/sortedByPrice")
     public ResponseEntity<List<POIDTO>> getAllPointsOfInterestSortedByPrice(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam Optional<Boolean> isDescending) {
-        return ResponseEntity.ok(POIMapper.EntityListToDTOList(
+        return ResponseEntity.ok(POIMapper.entityListToDTOList(
                 isDescending.isPresent()
                         ? service.getAllPointsOfInterestSortedByPrice(pageNumber, pageSize, isDescending.get())
                         : service.getAllPointsOfInterestSortedByPrice(pageNumber, pageSize, false)));
@@ -244,7 +244,7 @@ public class POIController {
     public ResponseEntity<List<POIDTO>> getAllPointsOfInterestSortedByType(
             @RequestParam int pageSize, @RequestParam int pageNumber, @RequestParam String type) {
         return ResponseEntity.ok(
-                POIMapper.EntityListToDTOList(service.getAllPointsOfInterestSortedByType(pageNumber, pageSize, type)));
+                POIMapper.entityListToDTOList(service.getAllPointsOfInterestSortedByType(pageNumber, pageSize, type)));
     }
 
     @Operation(
