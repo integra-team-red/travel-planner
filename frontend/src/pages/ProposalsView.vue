@@ -81,7 +81,20 @@ function onFormSubmit({values, valid}: FormSubmitEvent) {
         return;
     }
     values.type = selectedType.value;
-    const proposal: ProposalDTO = {cityId: values.city.id, poiType: values.pointOfInterestType, ...values};
+    const proposal: ProposalDTO = {
+        id: undefined,
+        name: values.name?.trim(),
+        type: selectedType.value as ProposalDTOTypeEnum,
+        cityId: (values.city as CityDTO)?.id,
+        poiType: values.pointOfInterestType as ProposalDTOPoiTypeEnum,
+        description: values.description ?? undefined,
+        address: values.address ?? undefined,
+        price: values.price ? Number(values.price) : undefined,
+        averagePrice: values.averagePrice ? Number(values.averagePrice) : undefined,
+        cuisineType: values.cuisineType ?? undefined,
+        image: values.image ?? undefined,
+    };
+
     const lastPendingProposal: ProposalDTO | undefined = getLastSelectedPendingProposal();
     if (lastPendingProposal) {
         sendProposalUpdateRequest(proposal, lastPendingProposal)
@@ -120,7 +133,6 @@ function changeAdditionalFields(value?: string) {
             additionalFields.value = [];
         }
     }
-    ++formKey.value;
 }
 
 function getLastSelectedPendingProposal(): ProposalDTO | undefined {
@@ -128,7 +140,7 @@ function getLastSelectedPendingProposal(): ProposalDTO | undefined {
 }
 
 function resetForm() {
-    Object.keys(initialValues).forEach((key: string) => delete initialValues.value[key]);
+    Object.keys(initialValues.value).forEach((key: string) => delete initialValues.value[key]);
     selectedType.value = undefined;
     changeAdditionalFields();
 }
@@ -136,42 +148,39 @@ function resetForm() {
 function overwriteFormData(proposal: ProposalDTO) {
     resetForm();
     changeAdditionalFields(proposal.type);
-    initialValues.value.name = proposal.name;
-    initialValues.value.type = proposal.type;
+    initialValues.value = {
+        name: proposal.name,
+        type: proposal.type,
+        city: cities.find(city => city.id === proposal.cityId),
+        description: proposal.description,
+        address: proposal.address,
+        price: proposal.price,
+        averagePrice: proposal.averagePrice,
+        cuisineType: proposal.cuisineType,
+        pointOfInterestType: proposal.poiType,
+        image: proposal.image
+    };
     selectedType.value = proposal.type as ProposalDTOPoiTypeEnum;
-    initialValues.value.city = cities.find(city => city.id == proposal.cityId)!;
-    for (const field of additionalFields.value) {
-        const camelCasedFieldName = toCamelCase(field.name);
-        // @ts-expect-error -- might just be anything here
-        initialValues[camelCasedFieldName] = proposal[camelCasedFieldName == 'pointOfInterestType' ? 'poiType' : camelCasedFieldName as keyof ProposalDTO];
-    }
+    formKey.value++;
 }
+
 
 function onCardClick(proposal: ProposalDTO) {
-    const proposalIndex = selectedProposals.value.findIndex(prop => prop.id == proposal.id);
-    if (proposalIndex >= 0) {
-        selectedProposals.value.splice(proposalIndex, 1);
-        if (proposalIndex == selectedProposals.value.length) {
-            const lastProposal = getLastSelectedPendingProposal();
-            if (lastProposal) {
-                overwriteFormData(lastProposal);
-            }
-            else {
-                resetForm();
-            }
-        }
+    if (selectedProposals.value.find(p => p.id === proposal.id)) {
+        selectedProposals.value = selectedProposals.value.filter(p => p.id !== proposal.id);
+        resetForm();
+        return;
     }
-    else {
-        selectedProposals.value.push(proposal);
-        if (proposal.status == 'PENDING') {
-            overwriteFormData(proposal);
-        }
-    }
+    selectedProposals.value = [proposal];
+    overwriteFormData(proposal);
 }
 
+
 function clearSelection() {
-    resetForm();
-    selectedProposals.value = [];
+    initialValues.value = {};
+    selectedType.value = undefined;
+    changeAdditionalFields();
+    formKey.value++;
 }
 
 async function deleteSelection() {
@@ -216,7 +225,7 @@ async function deleteSelection() {
             <h2 v-else class="text-3xl">
                 {{t('proposals.crudHeader.update')}}
             </h2>
-            <Form :initialValues :key="formKey" v-slot="$form" :resolver="formResolver" @submit="onFormSubmit" class="flex flex-col gap-4">
+            <Form :initialValues="initialValues" :key="formKey" v-slot="$form" :resolver="formResolver" @submit="onFormSubmit" class="flex flex-col gap-4">
                 <InputText :placeholder="t('fields.name')" name="name" maxlength="30" fluid />
                 <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">
                     {{ $form.name.error.message }}
@@ -242,7 +251,6 @@ async function deleteSelection() {
                 </div>
 
                 <div class="flex justify-between gap-2">
-                    <Button severity="secondary" @click="resetForm" :label="t('clear')" fluid/>
                     <Button type="submit" severity="success" :label="t('confirm')" fluid/>
                 </div>
             </Form>
